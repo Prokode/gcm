@@ -1,0 +1,11 @@
+<mat-card>
+    <mat-card-title>
+      <div class="mat-card-title-content">
+        <mat-icon [routerLink]="['/console']">arrow_back</mat-icon>
+        <span class="organization-modification-title">Détails</span>
+        <span class="theme-color organization-name">Console</span>
+      </div>
+    </mat-card-title>
+    <app-console-form [console]="console" [formstate]="'show'"></app-console-form>
+  </mat-card>
+  

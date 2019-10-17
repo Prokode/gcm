@@ -1,0 +1,45 @@
+<wizard [navBarLocation]="'bottom'" [navBarLayout]="'large-filled'">
+  <wizard-step stepTitle="Présentation">
+    <div class="centered-content">
+      <div class="wizard-content">
+        <h1 class="presentation-title">Présentation</h1>
+        <div class="presentation-description">
+          <p style="text-align: center; color: white;">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus fugit provident debitis consectetur id. Repudiandae,
+            nisi quia voluptates aliquid animi perspiciatis vitae dolores non nobis porro dolorem, eveniet ad illo!
+          </p>
+        </div>
+        <button mat-raised-button mat-button-sm color="primary" class="next-step" nextStep>Suivant</button>
+      </div>
+    </div>
+  </wizard-step>
+  <wizard-step class="wiz-content" stepTitle="Activation" optionalStep>
+    <div class="centered-content">
+      <div class="wizard-content">
+        <app-activation (onActivationSuccess)="onActivationSuccess($event)" ></app-activation>
+        <button *ngIf="activation" mat-raised-button mat-button-sm color="primary" class="next-step" nextStep>Suivant</button>
+        <button mat-raised-button mat-button-sm color="primary" class="previous-step" previousStep>Précédent</button>
+      </div>
+    </div>
+  </wizard-step>
+  <wizard-step class="wiz-content" stepTitle="Informations">
+    <div class="centered-content">
+      <div class="wizard-content">
+        <app-information (onInformationSuccess)="onInformationSuccess($event)" ></app-information>
+        <button *ngIf="information" mat-raised-button mat-button-sm color="primary" class="next-step"  nextStep >Suivant</button>
+        <button mat-raised-button mat-button-sm color="primary" class="previous-step" previousStep>Précédent</button>
+      </div>
+    </div>
+  </wizard-step>
+
+  <wizard-step class="wiz-content" stepTitle="Compte">
+    <div class="centered-content">
+      <div class="wizard-content">
+        <app-account  (onAccountSuccess)="onAccountSuccess($event)" ></app-account>
+        <button *ngIf="account" mat-raised-button mat-button-sm color="primary" class="next-step" (click)="endWizard()" >Terminer</button>
+        <button mat-raised-button mat-button-sm color="primary" class="previous-step" previousStep>Précédent</button>
+      </div>
+    </div>
+  </wizard-step>
+
+</wizard>

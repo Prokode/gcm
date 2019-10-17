@@ -1,0 +1,10 @@
+<mat-card>
+  <mat-card-title>
+    <div class="mat-card-title-content">
+      <mat-icon [routerLink]="['/console']">arrow_back</mat-icon>
+      <span class="organization-modification-title">Editer</span>
+      <span class="theme-color organization-name">Console</span>
+    </div>
+  </mat-card-title>
+  <app-console-form (onConsoleFormSubmit)="onConsoleFormSubmit($event)" [console]="console" [formstate]="'edit'"></app-console-form>
+</mat-card>

@@ -1,0 +1,10 @@
+<div>
+  <button mat-icon-button
+          mat-button-sm color="danger"
+          class="mr-1"
+          matTooltip="FERMER"
+          (click)="onClose()">
+    <mat-icon>close</mat-icon>
+  </button>
+  {{snackMessage.message | translate}}
+</div>

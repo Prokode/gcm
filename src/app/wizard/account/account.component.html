@@ -1,0 +1,61 @@
+<h1 class="presentation-title">Création compte ADMIN</h1>
+<div class="presentation-description">
+  <p style="text-align: center; color: white;">
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus fugit provident debitis consectetur id. Repudiandae,
+    nisi quia voluptates aliquid animi perspiciatis vitae dolores non nobis porro dolorem, eveniet ad illo!
+  </p>
+</div>
+<div class="wizard-form-container">
+  <mat-card style="border-radius:20px;">
+    <mat-card-content >
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div fxLayout="column" fxLayoutAlign="space-around">
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Nom utilisateur"
+               [formControl]="form.controls['username']">
+               
+            </mat-form-field>
+            <small *ngIf="form.controls['username'].hasError('required') &&
+            form.controls['username'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
+              <small *ngIf="form.controls['username'].hasError('usernameUnique') &&
+            form.controls['username'].touched" class="mat-text-warn">
+              Ce nom est déjà utilisé par un autre utilisateur</small>
+          </div>
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput type="password" placeholder="Mot de passe"
+               [formControl]="form.controls['password']">
+            </mat-form-field>
+            <small *ngIf="form.controls['password'].hasError('required') &&
+            form.controls['password'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
+              <small *ngIf="form.controls['password'].hasError('minlength') &&
+                form.controls['password'].touched" class="mat-text-warn">
+              Ce champs requière au minimum 8 caractères.</small>
+          </div>
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput type="password" placeholder="Confirmer le mot de passe"
+                [formControl]="form.controls['passwordConfirm']">
+            </mat-form-field>
+            <small *ngIf="form.controls['passwordConfirm'].hasError('required') &&
+                form.controls['passwordConfirm'].touched" class="mat-text-warn">
+                 Ce champs est requis.</small>
+              <small *ngIf="form.controls['passwordConfirm'].hasError('samePassword') &&
+                form.controls['passwordConfirm'].touched" class="mat-text-warn">
+              les 2 mots de passe ne sont pas identiques</small>
+          </div>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button>
+        </div>
+      </form>
+      <br>
+      <!-- <div *ngIf="code_recover">
+        <p style="text-align: center; color: white;">Voici votre code secret de réactivation de votre achat.</p>
+        <p style="text-align: center; color: white;">Ce code doit être noté et bien gardé</p>
+        <h1 style="text-align: center; color: white;"><b>{{code_recover}}</b></h1>
+      </div> -->
+    </mat-card-content>
+  </mat-card>
+</div>

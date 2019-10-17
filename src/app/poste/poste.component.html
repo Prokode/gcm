@@ -1,0 +1,85 @@
+<mat-card>
+  <mat-card-content class="page-title">
+    POSTES
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <mat-form-field style="width: 100%" class="mb-1">
+      <input matInput placeholder="Filtrer la liste par nom" required (keyup)='updateFilter($event)'>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+<ngx-datatable
+class='material'
+[columnMode]="'force'"
+[headerHeight]="50"
+[footerHeight]="50"
+[rowHeight]="'auto'"
+[limit]="10"
+[rows]='postes'
+[loadingIndicator]="loading"
+[messages]="{emptyMessage: 'Pas de données disponibles'}">
+  <ngx-datatable-column name="name" [sortable]="false">
+    <ng-template let-column="column" ngx-datatable-header-template>
+      <strong >Nom</strong>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name=console [sortable]="false">
+    <ng-template let-column="column" ngx-datatable-header-template>
+      <strong >Console</strong>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value.name}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="createdAt" [sortable]="false">
+    <ng-template let-column="column" ngx-datatable-header-template>
+      <strong>Date de création</strong>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="ACTIONS" [sortable]="false" >
+    <ng-template ngx-datatable-header-template>
+      <strong>ACTIONS</strong>
+    </ng-template>
+    <ng-template ngx-datatable-cell-template let-row="row">
+      <button mat-icon-button
+              mat-button-sm
+              class="mr-1 mat-green"
+              matTooltip="EDITER"
+              [routerLink]="[row.id, 'edit']"
+              >
+        <mat-icon>create</mat-icon>
+      </button>
+      <button mat-icon-button
+              mat-button-sm color="warn"
+              class="mr-1"
+              matTooltip="SUPPRIMER"
+              (click)="onConsoleDelate(row)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
+
+
+<div class="pb-1">
+    <button mat-fab class="mr-1 mat-mini-fab mat-blue-grey-A100 refresh-elements-button"
+     (click)="getPostes()">
+      <mat-icon>cached</mat-icon>
+    </button>
+  </div>
+
+  <div class="pb-1 add-element-button-container">
+    <button mat-fab class="mr-1 mat-green add-element-button" routerLink="/poste/create">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>

@@ -1,0 +1,42 @@
+.centered-content
+{
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  display: block;
+}
+
+.wizard-content
+{
+  width: 100%;
+  background-color: #fff;
+  min-height: 400px;
+  box-sizing: border-box;
+  display: block;
+  padding: 0px;
+  margin: 0px;
+  border-top: solid 1px rgba(180, 180, 180, 1);
+  background-color: rgb(247, 74, 74) !important;
+  max-height : 400px !important;
+  overflow: scroll;
+}
+
+.next-step {
+  position: absolute;
+  bottom: 100px;
+  right: 50px;
+}
+
+.previous-step {
+  position: absolute;
+  bottom: 100px;
+  left: 50px;
+}
+
+// .horizontal.large-filled[_nghost-c8] ul.steps-indicator[_ngcontent-c8] li.done[_ngcontent-c8]:after {
+//   background-color: rgb(247, 74, 74) !important;
+// }
+.wizard-form-container {
+  max-height : 200px !important;
+  overflow: scroll;
+}

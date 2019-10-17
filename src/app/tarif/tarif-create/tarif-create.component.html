@@ -1,0 +1,13 @@
+<mat-card>
+    <mat-card-title>
+      <div class="mat-card-title-content">
+        <mat-icon [routerLink]="['/tarif']">arrow_back</mat-icon>
+        <span class="organization-modification-title">Création</span>
+        <span class="theme-color organization-name">Tarif</span>
+      </div>
+    </mat-card-title>
+    <app-tarif-form [formstate]="'create'" [consoles]="consoles" [console_id]="console_id" ></app-tarif-form>
+  </mat-card>
+  
+  
+  

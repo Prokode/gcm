@@ -1,0 +1,26 @@
+var LinvoDB = require("linvodb3");
+
+var modelName = "activation";
+
+var schema = {
+    token: {
+        type: String,
+        unique: true
+    },
+    created_at: {
+        type: Date,
+        default: new Date()
+    },
+    updated_at: {
+        type: Date,
+        default: null
+    }
+}; 
+
+var options = { };
+ 
+var Activation = new LinvoDB(modelName, schema, options); 
+
+Activation.on('updated', function(activation) { activation.updated_at = new Date(); })
+
+module.exports = Activation;

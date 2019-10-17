@@ -1,0 +1,131 @@
+<h1 class="presentation-title">Informations utilisateur</h1>
+<div class="presentation-description">
+  <p style="text-align: center; color: white;">
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus fugit provident debitis consectetur id. Repudiandae,
+    nisi quia voluptates aliquid animi perspiciatis vitae dolores non nobis porro dolorem, eveniet ad illo!
+  </p>
+  <p *ngIf="!recover" style="text-align: center; color: white;">
+    Vous avez déjà un compte utilisateur? 
+    <a (click)="toggleRecover()" style="text-decoration: underline; color: rgb(69, 69, 204)" >Cliquez-ici</a>
+  </p>
+  <p *ngIf="recover" style="text-align: center; color: white;">
+    Entrer votre numéro de téléphone utilisé lors de votre dernière inscription
+  </p>
+</div>
+<div class="wizard-form-container">
+  <mat-card style="border-radius:20px;">
+    <mat-card-content *ngIf="!recover">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div fxLayout="column" fxLayoutAlign="space-around">
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Nom" [formControl]="form.controls['lastname']">
+            </mat-form-field>
+            <small *ngIf="form.controls['lastname'].hasError('required') &&
+            form.controls['lastname'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
+          </div>
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Prénoms" [formControl]="form.controls['firstname']">
+            </mat-form-field>
+            <small *ngIf="form.controls['firstname'].hasError('required') &&
+            form.controls['firstname'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
+          </div>
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Addresse" [formControl]="form.controls['address']">
+              <mat-error *ngIf="form.controls['address'].hasError('required') && form.controls['address'].touched"
+                         class="mat-text-warn">Ce champs est requis</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+                <mat-select placeholder="Pays"
+                            [formControl]="form.controls['country']">
+                  <mat-option  *ngFor="let country of countries" [value]="country"
+                               [matTooltip]="country.lib">
+                    {{country.lib}} </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls['country'].hasError('required') && form.controls['country'].touched"
+                           class="mat-text-warn">Ce champs est requis</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="pb-1">
+            <span><span style="color: red;">{{countryCode}}</span></span>
+            <mat-form-field style="width: 90%">
+              <input matInput placeholder="Téléphone" type="tel" [formControl]="form.controls['phone']">
+            </mat-form-field>
+            <br>
+            <small *ngIf="form.controls['phone'].hasError('required') &&
+            form.controls['phone'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
+            <small *ngIf="form.controls['phone'].hasError('phoneUnique') &&
+            form.controls['phone'].touched" class="mat-text-warn">
+              Ce numéro est déjà utilisé par un autre utilisateur</small>
+
+          </div>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button>
+        </div>
+      </form>
+      <br>
+      <!-- <div *ngIf="code_recover">
+        <p style="text-align: center; color: white;">Voici votre code secret de réactivation de votre achat.</p>
+        <p style="text-align: center; color: white;">Ce code doit être noté et bien gardé</p>
+        <h1 style="text-align: center; color: white;"><b>{{code_recover}}</b></h1>
+      </div> -->
+    </mat-card-content>
+    <mat-card-content *ngIf="recover">
+      <form [formGroup]="recoverForm" (ngSubmit)="recoverSubmit()">
+        <div fxLayout="column" fxLayoutAlign="space-around">
+          <div class="pb-1">
+              <mat-form-field style="width: 100%">
+                  <mat-select placeholder="Pays"
+                              [formControl]="recoverForm.controls['country']">
+                    <mat-option  *ngFor="let country of countries" [value]="country"
+                                 [matTooltip]="country.lib">
+                      {{country.lib}} </mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="recoverForm.controls['country'].hasError('required') &&
+                  recoverForm.controls['country'].touched"
+                             class="mat-text-warn">Ce champs est requis</mat-error>
+              </mat-form-field>
+          </div>
+          <div class="pb-1">
+              <span><span style="color: red;">{{countryCode}}</span></span>
+              <mat-form-field style="width: 90%">
+                <input matInput placeholder="Téléphone" type="tel"
+                 [formControl]="recoverForm.controls['phone']" >
+              </mat-form-field>
+              <br>
+              <small *ngIf="recoverForm.controls['phone'].hasError('required') &&
+              recoverForm.controls['phone'].touched" class="mat-text-warn">
+                Ce champs est requis.</small>
+          </div>
+          <button mat-raised-button color="primary" type="submit" 
+            [disabled]="!recoverForm.valid">Valider</button>
+          <button mat-raised-button color="danger" type="submit" 
+            (click)="toggleRecover()">Annuler</button>
+          </div>
+      </form>
+
+      <div *ngIf="userRecovered">
+        <div fxLayout="column" fxLayoutAlign="space-around">
+          <h4 style="text-align: center;">Confirmez votre identité</h4>
+          <ul style="list-style: none;">
+            <li><b>Nom : </b> {{ userRecovered.lastname }} </li>
+            <hr>
+            <li><b>Prénoms : </b> {{ userRecovered.firstname }} </li>
+            <hr>
+            <li><b>Pays : </b> {{ userRecovered.country }} </li>
+            <hr>
+            <li><b>Adresse : </b> {{ userRecovered.address }} </li>
+          </ul>
+          <button mat-raised-button color="primary" type="submit" 
+          (click)="confirmUserRecovered()" >Je confirme</button>
+        </div>  
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

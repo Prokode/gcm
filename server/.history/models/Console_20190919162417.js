@@ -1,0 +1,10 @@
+var uniqid = require('uniqid');
+function Console(name, id=uniqid.time(), userId createdAt=new Date(), delatedAt=null, updatedAt=null) {
+    this.name = name;
+    this.id = id;
+    this.createdAt = createdAt;
+    this.delatedAt = delatedAt;
+    this.updatedAt = updatedAt; 
+}
+
+module.exports = Console;

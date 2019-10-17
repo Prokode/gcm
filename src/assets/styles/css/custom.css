@@ -1,0 +1,1298 @@
+/*.validate-spinner mat-progress-spinner
+{
+  position: absolute !important;
+  top: 5px !important;
+  right: 3px !important;
+}
+
+.validate-spinner ::ng-deep .mat-progress-spinner circle
+{
+  stroke: #fff !important;
+}*/
+
+.right-top-menu
+{
+  position: absolute;
+  right: 10px;
+}
+
+snack-bar-container.info {
+  background-color: blue!important;
+}
+
+snack-bar-container.danger {
+  background-color: red !important;
+}
+
+snack-bar-container.success {
+  background-color: green;
+}
+
+snack-bar-container.warning {
+  background-color: orange;
+}
+
+input.ng-pending {
+  cursor: not-allowed;
+}
+
+mat-progress-spinner.ng-pendig-spinner {
+  display: none;
+}
+
+input.ng-pending + mat-progress-spinner.ng-pendig-spinner {
+  display: block;
+  position: absolute;
+  cursor: not-allowed;
+  top: 0;
+  right: 0;
+}
+
+mat-progress-spinner.ng-pendig-spinner-spin {
+  display: block;
+  position: absolute;
+  cursor: not-allowed;
+  top: 0;
+  right: 0;
+}
+
+/** bouton d'ajout d'éléments **/
+button.add-element-button {
+  position: fixed;
+  bottom: 15px;
+  right: 0;
+}
+.add-element-button-container {
+  height: 0px;
+}
+
+/** bouton d'actualisation des éléments **/
+button.refresh-elements-button {
+  position: fixed;
+  bottom: 80px;
+  right: 7px;
+}
+
+/** sortable **/
+datatable-header-cell.sortable {
+  cursor: pointer;
+}
+
+/***** My style *******/
+
+/***** Show organization style ****/
+.mat-tab-body
+{
+  min-height: 348px
+}
+
+.show-organization-top-content
+{
+  width: 100%;
+  margin: 0;
+  padding: 0 0 20px 0;
+  box-sizing: border-box;
+  display: block !important;
+  border-bottom: solid 1px rgba(200, 200, 200, 1);
+  position: relative;
+  min-height: 140px;
+}
+
+.organization-name
+{
+  margin-left: 10px;
+  font-size: 1.1rem;
+}
+
+.organization-modification-title
+{
+  font-size: 0.98rem;
+  color: #000;
+}
+
+/**** First Tab *****/
+
+.show-organization-image
+{
+  width: 110px;
+  height: 110px;
+  margin: 0;
+  padding: 0px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  display: block;
+  box-shadow: 0 3px 3px rgba(0,0,0,.24), 0 0 3px rgba(0,0,0,.12);
+}
+
+.show-organization-image img
+{
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.show-organization-title
+{
+  width: calc(100% - 135px);
+  position: relative;
+  display: block;
+  float: right;
+  margin: 0;
+  padding: 0 0 0 15px;
+}
+
+.show-organization-title h1
+{
+  font-size: 1.4em !important;
+  line-height: 1.3em;
+  margin: 0px !important;
+}
+
+.show-organization-title a
+{
+  font-size: 1.2em;
+  line-height: 1.3em;
+  margin: 0;
+  text-decoration: none;
+}
+
+.show-organization-list-item
+{
+  width: 49%;
+  float: left;
+  padding: 10px 0;
+  margin: 0;
+  display: block;
+  border-bottom: solid 1px rgba(200, 200, 200, 1);
+}
+
+.show-organization-list-item:nth-child(2n+1)
+{
+  margin-right: 2%;
+}
+
+.show-organization-list-item-text
+{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.show-organization-list-item-text li
+{
+  list-style-type: none;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.show-organization-list-item-text:first-child
+{
+  font-size: 0.95rem;
+  font-weight: normal;
+  line-height: 1.3em;
+  color: rgba(150, 150, 150, 1);
+}
+
+.show-organization-list-item-text:last-child
+{
+  font-size: 0.95rem;
+  font-weight: normal;
+  line-height: 1.3em;
+  color: #000;
+}
+
+.theme-background-color
+{
+  background-color: #3f51b5;
+}
+
+.theme-color
+{
+  color: #3f51b5;
+}
+
+.mat-card-title
+{
+  width: 100%;
+  padding-bottom: 1.3rem;
+  background-color: #f6f8fa;
+  margin-bottom: 0 !important;
+  border-bottom: solid 1px rgba(200, 200, 200, .5);
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+}
+
+.mat-card-title .mat-card-title-content
+{
+  float: left;
+  margin: -5px 10px 0 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: block;
+}
+
+.mat-card-title .mat-card-title-buttons
+{
+  float: right;
+}
+
+.mat-card-title-content mat-icon
+{
+  color: #000;
+  position: relative;
+  top: 6px;
+  margin-right: 10px;
+  cursor: pointer;
+  outline: none;
+  padding: 5px;
+  border: solid 1px rgba(200, 200, 200, 1);
+  border-radius: 50%;
+  -webkit-transition-duration: 200ms;
+  -moz-transition-duration: 200ms;
+  -o-transition-duration: 200ms;
+  -ms-transition-duration: 200ms;
+  transition-duration: 200ms;
+}
+
+.mat-card-title-content mat-icon:hover
+{
+  background-color: #ffffff;
+}
+
+.mat-card-title-content .mat-group-title
+{
+  color: #3f51b5;
+  font-size: 1.05rem;
+  font-weight: normal;
+  text-transform: uppercase;
+}
+
+mat-card-title-buttons .mat-group-button
+{
+  float: right;
+  margin-right: 10px;
+}
+
+mat-card-actions .mat-group-button mat-icon, mat-card-actions .organization-submit mat-icon
+{
+  font-size: 20px;
+  position: relative;
+  top: 1px;
+  margin-right: 0px;
+}
+
+mat-card-actions .organization-submit
+{
+  float: right;
+  padding: 0 25px !important;
+}
+
+/****** Commission content ********/
+
+.commission-container
+{
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.ref-first input
+{
+  color: rgba(0,0,0,.42) !important;
+}
+
+
+.ref-first .mat-form-field-underline {
+  background-image: linear-gradient(90deg,rgba(0,0,0,.42) 0,rgba(0,0,0,.42) 33%,transparent 0) !important;
+  background-size: 4px 1px !important;
+  background-repeat: repeat-x !important;
+  position: absolute !important;
+  height: 1px !important;
+  width: 100% !important;
+  transform: perspective(1px) !important;
+  background-color: transparent !important;
+}
+
+input.example-right-align
+{
+  text-align: right;
+  margin-left: -5px;
+}
+
+input.example-right-align::-webkit-outer-spin-button,
+input.example-right-align::-webkit-inner-spin-button {
+  display: none;
+}
+
+.commission-title
+{
+  margin-top: 15px;
+}
+
+/****** End Commission content *******/
+
+/******* End First Tab *******/
+
+/****** Second Tab ********/
+
+
+
+/****** End Second Tab ****/
+
+/***** End show organization style *****/
+
+/****** Organization-form style ******/
+
+.ref-first input
+{
+  color: rgba(0,0,0,.42) !important;
+}
+
+
+/*.ref-first .mat-form-field-underline {
+  background-image: linear-gradient(90deg,rgba(0,0,0,.42) 0,rgba(0,0,0,.42) 33%,transparent 0) !important;
+  background-size: 4px 1px !important;
+  background-repeat: repeat-x !important;
+  position: absolute !important;
+  height: 1px !important;
+  width: 100% !important;
+  transform: perspective(1px) !important;
+  background-color: transparent !important;
+}*/
+
+/****** End organisation style *******/
+
+
+/****** Start general commission *****/
+
+.commission-view-content
+{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+  box-sizing: border-box;
+}
+
+.commission-view-item
+{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  display: block;
+  box-sizing: border-box;
+  float: left;
+}
+
+.commission-view-item-title
+{
+  width: 20%;
+  float: left;
+  display: block;
+  box-sizing: border-box;
+}
+
+.commission-view-item-title h1
+{
+  font-size: 0.95rem !important;
+  text-transform: uppercase;
+  float: left;
+  position: relative !important;
+  top: 30px !important;
+  font-weight: 500 !important;
+}
+
+.commission-view-item-content
+{
+  width: 80%;
+  float: left;
+}
+
+.commission-view-item-content ul
+{
+  width: 32%;
+  margin-right: 1.33%;
+  box-sizing: border-box;
+  display: block;
+  float: left;
+}
+
+.commission-view-item-content ul li
+{
+  width: 100%;
+  display: block;
+  list-style-type: none;
+}
+
+.commission-view-item-content ul .commisssion-type
+{
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.6em;
+  margin-bottom: 0px;
+  color: #3f51b5;
+}
+
+.commission-view-item-content ul .commission-percent
+{
+  text-align: left;
+  font-size: 0.95rem;
+  border-bottom: solid 1px rgba(180, 180, 180, 1);
+}
+
+.commission-view-item-content:last-child span
+{
+  text-align: left;
+  margin-right: 5px;
+  line-height: 1.5em;
+}
+
+/***** End general commission ******/
+
+/***** Operations style ********/
+
+.operations-right-side
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  padding: 10px 0 10px 0px;
+}
+
+.operations-right-side .mat-progress-spinner
+{
+  position: absolute !important;
+  top: 10px !important;
+  right: 0 !important;
+}
+
+.show-operations-list-item
+{
+  width: 49%;
+  float: left;
+  padding: 5px 0;
+  margin: 0;
+  display: block;
+  /*border-bottom: solid 1px rgba(200, 200, 200, 1);*/
+}
+
+.show-operations-list-item:nth-child(2n)
+{
+  margin-right: 2%;
+}
+
+.show-operations-list-item-text
+{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.show-operations-list-item-text li
+{
+  list-style-type: none;
+  display: block;
+  margin-right: 10px;
+  margin-bottom: 3px;
+  padding: 0;
+}
+
+.show-operations-list-item-text:first-child
+{
+  font-size: 0.95rem;
+  font-weight: normal;
+  line-height: 1.2em;
+  text-transform: uppercase;
+  color: rgba(150, 150, 150, 1);
+}
+
+.show-operations-list-item-text:last-child
+{
+  font-size: 0.95rem;
+  font-weight: normal;
+  line-height: 1.2em;
+  color: #000;
+  text-transform: capitalize;
+}
+
+.show-operations-top-content
+{
+  width: 120px;
+  position: absolute;
+  top: 0;
+  left: 0px;
+}
+
+.show-operations-user-infos
+{
+  width: calc(100% - 130px);
+  position: relative;
+  display: block;
+  float: right;
+  margin: -10px 0 0 0;
+  padding: 0 0 0 8px;
+}
+
+.show-operations-user-infos-bottom
+{
+  width: calc(100% - 120px);
+  position: relative;
+  display: block;
+  float: right;
+  margin: 0px 0 0 0;
+  padding: 0 0 0 15px;
+}
+
+.show-operations-username
+{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.show-operations-username h1
+{
+  margin: 0 !important;
+  /*margin: 10px 0 0 0 !important;*/
+  font-size: 1rem !important;
+  line-height: 1.5rem !important;
+}
+
+.show-operations-image
+{
+  width: 100px;
+  height: 100px;
+  margin: 0px;
+  padding: 10px;
+  box-shadow: 0 3px 3px rgba(0,0,0,.24), 0 0 3px rgba(0,0,0,.12);
+}
+
+.show-operations-image img
+{
+  width: 100%;
+  height: 100%;
+}
+
+.show-customer-image
+{
+  width: 100px;
+  height: 100px;
+  margin: 0px;
+  padding: 10px;
+  position: relative;
+  top: 20px;
+  left: 20px;
+  box-shadow: 0 3px 3px rgba(0,0,0,.24), 0 0 3px rgba(0,0,0,.12);
+}
+
+.show-customer-image img
+{
+  width: 100%;
+  height: 100%;
+}
+
+.operations-bottom-buttons
+{
+  width: 100%;
+  margin: 0;
+  padding-top: 0px;
+}
+
+.operations-bottom-buttons button
+{
+  width: 24%;
+  margin-right: 1.33%;
+  float: left;
+}
+
+.operations-bottom-buttons button:last-child
+{
+  margin-right: 0;
+}
+
+.operations-submit
+{
+  margin-top: 5px;
+  padding: 0 12px !important;
+}
+
+.operations-submit .material-icons
+{
+  margin-top: 0px;
+  font-size: 18px !important;
+}
+
+.operations-submit .mat-icon
+{
+  height: 20px !important;
+  width: 20px !important;
+}
+
+.operations-form-submit
+{
+  margin-top: 5px;
+  padding: 0 25px !important;
+}
+
+.operations-form-submit mat-progress-spinner
+{
+  position: absolute !important;
+  top: 5px !important;
+  right: 3px !important;
+}
+
+::ng-deep .operations-form-submit .mat-progress-spinner circle
+{
+  stroke: #fff !important;
+}
+
+.operations-form-submit mat-icon
+{
+  margin-right: 5px;
+}
+
+.amount-submit
+{
+  float: left;
+}
+
+/*.credit-form mat-card-actions
+{
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+}*/
+
+.operations-bottom-right-side
+{
+  padding: 20px 30px;
+  position: relative;
+  margin-bottom: 15px;
+  min-height: 130px;
+}
+
+.tranfer-user-infos-content .operations-bottom-right-side
+{
+  padding: 0 30px !important;
+  margin-bottom: 15px !important;
+  min-height: 130px;
+}
+
+.operations-bottom-right-side .mat-progress-spinner
+{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, 50%);
+  -moz-transform: translate(-50%, 50%);
+  -ms-transform: translate(-50%, 50%);
+  -o-transform: translate(-50%, 50%);
+  transform: translate(-50%, 50%);
+}
+
+
+/****** Operations popup one **********/
+
+.operations-popup-one
+{
+  width: 100%;
+  padding: 0px;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  margin: 0;
+}
+
+.operations-popup-one .mat-card-actions
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #ffffff;
+  margin: 0 !important;
+  padding: 10px;
+  border-top: solid 1px rgba(200, 200, 200, 1);
+}
+
+.operations-popup-one .mat-card-actions button
+{
+  float: left;
+}
+
+.operations-popup-one .mat-card-actions button:first-child
+{
+  margin-right: 10px;
+}
+
+.operations-popup-one .mat-card-actions button:last-child
+{
+  float: right;
+}
+
+.operations-popup-one .mat-card-actions .customer-infos-editing
+{
+  float: left;
+}
+
+.operations-popup-one .mat-card-actions .customer-infos-editing .save-button
+{
+  background-color: #3fa044;
+  color: #ffffff;
+}
+
+.operations-popup-one .mat-card-content
+{
+  height: auto;
+  overflow: auto;
+  max-height: 500px;
+  padding: 20px;
+}
+
+.mat-dialog-container {
+  box-shadow: 0 11px 15px -7px rgba(0,0,0,.2), 0 24px 38px 3px rgba(0,0,0,.14), 0 9px 46px 8px rgba(0,0,0,.12);
+  display: block;
+  padding: 0px !important;
+  border-radius: 2px;
+  box-sizing: border-box;
+  overflow: auto;
+  outline: 0;
+  width: 80%;
+  margin: 0 auto;
+  height: 100%;
+}
+
+/****** End operations popup ********/
+
+/****** operations-dialog-popup ******/
+
+.operations-dialog-popup
+{
+  width: 100%;
+  padding: 0px;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+}
+
+.operations-dialog-popup .mat-card-title
+{
+  margin-top: 0 !important;
+}
+
+.operations-dialog-error-message
+{
+  position: absolute;
+  height: 45px;
+  top: 10px;
+  right: 8px;
+  padding: 0 49px 0 15px;
+  background-color: red;
+}
+
+.operations-dialog-error-message p, .operations-dialog-succes-message p
+{
+  color: #ffffff;
+  font-size: .9rem;
+  line-height: 1rem;
+}
+
+.operations-dialog-succes-message
+{
+  position: absolute;
+  top: 10px;
+  right: 8px;
+  padding: 0 49px 0 15px;
+  background-color: green;
+}
+
+.operations-dialog-error-message mat-icon, .operations-dialog-succes-message mat-icon
+{
+  font-size: 1.2rem;
+  color: #ffffff;
+  position: absolute;
+  top: 13px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.operations-dialog-popup h1
+{
+  font-weight: normal;
+  font-size: 1.1rem;
+  margin: 0 !important;
+}
+
+.operations-dialog-popup h1 mat-icon
+{
+  margin: 0 3px;
+  border: none;
+  padding: 0;
+  position: relative;
+  top: 6px;
+}
+
+.operations-dialog-popup .mat-card
+{
+  margin: 0 !important;
+}
+
+/*.operations-dialog-popup ::ng-deep .mat-card-content
+{
+  max-height: 400px !important;
+  padding: 10px 20px !important;
+  box-sizing: border-box;
+  display: block;
+  overflow: auto !important;
+  background-color: #ffffff;
+  margin: 0;
+}*/
+
+.operations-dialog-popup .operation-confirmation-block
+{
+  padding: 0 20px !important;
+}
+
+.operation-confirmation-block .operation-confirmation-input
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.confirmation-dialog-code
+{
+  width: calc(100% - 310px) !important;
+  float: left;
+  margin-top: 10px !important;
+}
+
+.operation-confirmation-input button
+{
+  width: 300px;
+  float: right;
+  margin-top: 13px;
+}
+
+.operations-dialog-popup .mat-card-actions
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  overflow: hidden;
+  background-color: #ffffff;
+  margin: 0;
+  padding: 10px;
+  border-top: solid 1px rgba(200, 200, 200, 1);
+}
+
+.operations-dialog-popup .mat-card-actions .customer-infos-editing
+{
+  float: left;
+  margin-left: 10px;
+}
+
+.operations-dialog-popup .mat-card-actions button
+{
+  float: left;
+}
+
+.operations-dialog-confirmation-buttons
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.operations-dialog-confirmation-buttons .operations-dialog-buttons-container
+{
+  float: left;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.operations-dialog-confirmation-buttons button
+{
+  margin: 0 15px 10px 0 !important;
+}
+
+.operations-dialog-confirmation-buttons button:last-child
+{
+  margin-right: 0;
+}
+
+.operation-all-infos
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  padding: 10px 20px;
+  overflow: hidden;
+}
+
+.operation-all-infos .operations-popup-title
+{
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+  margin: 0 auto 10px auto;
+  padding: 0;
+  display: inline-block;
+  overflow: hidden;
+  font-weight: 600;
+}
+
+.operations-popup-title span
+{
+  color: rgba(0, 0, 0, 1);
+  padding: 0px 10px;
+ /* border: solid 1px rgba(150, 150, 150, .5);
+  border-radius: 0%;*/
+}
+
+.operations-popup-title:after, .operations-popup-title:before
+{
+  background-color: rgba(100, 100, 100, .5);
+  content: "";
+  display: inline-block;
+  height: 1px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+
+.operations-popup-title:before
+{
+  margin-left: -50%;
+}
+
+.operations-popup-title:after
+{
+  margin-right: -50%;
+}
+
+.operation-all-infos .customer-operations-infos, .operation-all-infos .operation-infos, .operation-all-infos .deposit-account-infos, .operation-all-infos .deposit-account-madantary-infos
+{
+  width: 50%;
+  box-sizing: border-box;
+  display: block;
+  margin: 0 0 10px 0;
+  float: left;
+  overflow: hidden;
+}
+
+.operation-all-infos .customer-operations-infos, .operation-all-infos .deposit-account-madantary-infos
+{
+  padding: 0 0 0 15px;
+}
+
+.operation-all-infos .operation-infos, .operation-all-infos .deposit-account-infos
+{
+  padding: 0 15px 0 0;
+}
+
+.recipient
+{
+  padding: 0 15px 0 0 !important;
+}
+
+.operation-all-infos .operator-infos, .operation-all-infos .deposit-account-oraganisation-infos
+{
+  width: 100%;
+  float: left;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: block;
+}
+
+.customer-list-item, .operation-list-item, .deposit-account-infos-item, .deposit-account-madantary-infos-item
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.customer-list-item .customer-list-item-text, .operation-list-item .operation-list-item-text, .deposit-account-infos-item .deposit-account-infos-item-text, .deposit-account-madantary-infos-item .deposit-account-madantary-infos-item-text
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.customer-list-item-text li, .operation-list-item-text li, .deposit-account-infos-item-text li, .deposit-account-madantary-infos-item-text li
+{
+  list-style: none;
+  float: left;
+  margin: 0;
+  font-size: 1rem;
+  padding: 7px 0;
+  position: relative;
+}
+
+.customer-list-item-text .list-item-first, .operation-list-item-text .list-item-first, .deposit-account-infos-item-text .list-item-first, .deposit-account-madantary-infos-item-text .list-item-first
+{
+  width: 150px;
+}
+
+.customer-list-item-text .list-item-last, .operation-list-item-text .list-item-last, .deposit-account-infos-item-text .list-item-last, .deposit-account-madantary-infos-item-text .list-item-last
+{
+  width: calc(100% - 150px);
+}
+
+.operator-list-item, .deposit-account-oraganisation-infos-item
+{
+  width: 50%;
+  float: left;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.operator-list-item .operator-list-item-text, .deposit-account-oraganisation-infos-item .deposit-account-oraganisation-infos-item-text
+{
+  width: 100%;
+  float: left;
+  box-sizing: border-box;
+  display: block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.operator-list-item-text li, .deposit-account-oraganisation-infos-item-text li
+{
+  width: 50%;
+  list-style: none;
+  float: left;
+  font-size: 1rem;
+  margin: 0;
+  padding: 7px 0;
+}
+
+.operation-dialog-loading
+{
+  position: absolute !important;
+  top: 5px !important;
+  left: 3px !important;
+}
+
+::ng-deep .operation-dialog-loading circle
+{
+  stroke: #fff !important;
+}
+
+/***** End operations-dialog-popup *****/
+
+
+/***** End Operations style *****/
+
+/***** Customer Style ****/
+
+.show-customer-text-content
+{
+  width: calc(100% - 135px);
+  position: relative;
+  display: block;
+  float: right;
+  margin: 0;
+  padding: 0 0 0 15px;
+}
+
+.show-customer-title
+{
+  width: 50%;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+.show-customer-title h1
+{
+  margin: 0 0 5px 0 !important;
+  line-height: 24px !important;
+  font-size: 1.1rem !important;
+}
+
+.show-customer-title h2
+{
+  margin: 0 !important;
+  font-size: 1rem !important;
+  line-height: 20px !important;
+}
+
+.show-customers-buttons
+{
+  width: 50%;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+.show-customers-buttons button
+{
+  width: 49% !important;
+  float: left !important;
+  margin: 0 0 10px 0 !important;
+  display: inline-block !important;
+  padding: 0 10px !important;
+  white-space: normal;
+}
+
+.show-customers-buttons button:nth-child(2n+1)
+{
+  margin-right: 2% !important;
+}
+
+.show-customers-buttons button mat-icon
+{
+  margin-right: 5px;
+}
+
+.customer-popup-form
+{
+  width: 100%;
+  padding: 0px;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+}
+
+.customer-popup-form .mat-card-actions
+{
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background-color: #ffffff;
+  margin: 0 !important;
+  padding: 10px;
+  border-top: solid 1px rgba(200, 200, 200, 1);
+}
+
+.customer-popup-form .mat-card-content
+{
+  height: 500px;
+  overflow: auto;
+  padding: 20px;
+  margin-bottom: 50px;
+}
+
+.customer-search-content
+{
+  position: relative;
+}
+
+.customer-search-content mat-progress-spinner
+{
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+}
+
+/***** End Customer *****/
+
+.mat-card-actions
+{
+  margin-bottom: 0px !important;
+}
+
+/******* Credit / Debit / Transferer ******/
+
+
+
+/****** End Credit / Debit / Transferer ****/
+
+/****** End My style *****/
+
+.page-title
+{
+  font-size: 1.3rem !important;
+}
+
+/* for chrome */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* for mozilla */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]:hover,
+input[type="number"]:focus {
+  -moz-appearance: number-input;
+}/* for chrome */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+/* for mozilla */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]:hover,
+input[type="number"]:focus {
+  -moz-appearance: number-input;
+}
+.app-header {
+  background-color: #1C9C1C !important;
+  color: white !important;
+}
+.presentation-title {
+    color: white;
+    font-size: 3em;
+    text-align: center;
+  }
+  
+.presentation-description {
+    width: 60%;
+    height: auto;
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.wizard-form-container {
+    width: 60%;
+    height: auto;
+    box-sizing: border-box;
+    margin: 0 auto;
+}

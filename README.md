@@ -1,8 +1,6 @@
-# Primer
+# GCM
 
-Primer is a creative material design admin template built with Angular 2. It comes out of the box with AoT and lazy loading support, Language translation , RTL support and light and dark colour schemes. With this, you get all you need to start working on your SAAS, CRM, CMS or dashboard based project.
-
-Once you've purchased Primer please consider giving a `5 star rating`, it helps in pushing out more updates and adding a lot more features.
+Gcm is Tamekloe koffi samuel M. project for manage game centers. 
 
 ####Key Features Include:
 * LTR/RTL Support

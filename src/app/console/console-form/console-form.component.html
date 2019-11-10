@@ -16,7 +16,22 @@
           form.controls['name'].touched" class="mat-text-warn">
             Ce nom est déjà utilisé.</small>
         </div>
-        <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button> -->
+        <div class="pb-1">
+          <mat-form-field style="width: 100%">
+                <mat-select placeholder="Image de la console"
+                            [formControl]="form.controls['img']">
+                  <mat-option class="c_img_option" selected [value]="null"
+                            >Pas d'images</mat-option>          
+                  <mat-option class="c_img_option" *ngFor="let c_img of consoles_imgs" [value]="c_img.img"
+                               [matTooltip]="c_img.name">
+                    <img class="c_img" src="./assets/images/consoles/{{c_img.img}}" alt="">
+                    <br>
+                    <hr>
+                    <br>
+                  </mat-option>
+                </mat-select>
+          </mat-form-field>
+        </div>
       </div>
     </mat-card-content>
     <hr>

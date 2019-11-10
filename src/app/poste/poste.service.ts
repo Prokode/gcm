@@ -11,7 +11,7 @@ export class PosteService {
   constructor(private http: HttpClient) {
   }
 
-  gtPostes() {
+  getPostes() {
     return this.http.get(GlobalVariable.BASE_API_URL+'/logged/poste/list')
     .map(
         (response: any) => {  return response; }
@@ -26,4 +26,140 @@ export class PosteService {
       );
   }
 
+  getPoste(id) {
+    return this.http.get(GlobalVariable.BASE_API_URL+'/logged/poste/show', {
+      params: {id: id}
+    })
+    .map(
+        (response: any) => {  return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+
+  getPosteActivationDetails() {
+    return this.http.get(GlobalVariable.BASE_API_URL+'/logged/posteact/detail')
+    .map(
+        (response: any) => {  return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+  postOnlinePosteActivation(data) {
+    return this.http.post(GlobalVariable.BASE_ONLINE_API_URL +'/postPosteActivation.php', data)
+    .map(
+        (response: any) => {  return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+
+   postLocalPosteActivation(data) {
+    return this.http.post(GlobalVariable.BASE_API_URL+'/logged/posteact/', data)
+    .map(
+        (response: any) => {  return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+
+  getNewPosteName() {
+    return this.http.get(GlobalVariable.BASE_API_URL+'/logged/poste/name/resolve')
+    .map(
+        (response: any) => {  return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+    }
+
+    createPoste(data) {
+      return this.http.post(GlobalVariable.BASE_API_URL+'/logged/poste/create', data)
+      .map(
+          (response: any) => { return response; }
+        ).catch(
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            return Observable.throw({
+              code: error.status,
+              content: JSON.parse(error.error).message
+            });
+          }
+        );
+    }
+
+    checkPosteLimitation() {
+      return this.http.get(GlobalVariable.BASE_API_URL+'/logged/poste/check/limitation')
+      .map(
+          (response: any) => {  return response; }
+        ).catch(
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            return Observable.throw({
+              code: error.status,
+              content: JSON.parse(error.error).message
+            });
+          }
+        );
+    }
+
+    updatePoste(data) {
+      return this.http.put(GlobalVariable.BASE_API_URL+'/logged/poste/update', data)
+      .map(
+          (response: any) => { return response; }
+        ).catch(
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            return Observable.throw({
+              code: error.status,
+              content: JSON.parse(error.error).message
+            });
+          }
+        );
+    }
+
+    getPostesTarifs() {
+      return this.http.get(GlobalVariable.BASE_API_URL+'/logged/poste/list/tarifs')
+      .map(
+          (response: any) => {  return response; }
+        ).catch(
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            return Observable.throw({
+              code: error.status,
+              content: JSON.parse(error.error).message
+            });
+          }
+        );
+    }
+ 
 }

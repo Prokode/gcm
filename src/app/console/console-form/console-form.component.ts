@@ -5,6 +5,7 @@ import { ConsoleService } from '../console.service';
 import { SnackMessageService } from '../../shared/snack-messages/snack-message.service';
 import { SnackMessage } from '../../shared/snack-messages/snack-message.model';
 import { Router } from '@angular/router';
+import {GlobalVariable} from '../../global';
 
 @Component({
   selector: 'app-console-form',
@@ -17,6 +18,7 @@ export class ConsoleFormComponent implements OnInit {
   @Input('formstate') formstate: any;
   @Input('console') console: any;
   @Output() onConsoleFormSubmit: EventEmitter<any> = new EventEmitter<any>(); 
+  consoles_imgs = GlobalVariable.CONSOLES;
   constructor(private fb: FormBuilder,
     private router: Router,
     private consoleService: ConsoleService,
@@ -25,6 +27,7 @@ export class ConsoleFormComponent implements OnInit {
       this.form = this.fb.group ({
         name: [null , Validators.compose ([Validators.required, Validators.minLength(2)]),
           Validators.composeAsync([this.consoleValidators.uniqueNameValidator.bind(this.consoleValidators)])],
+        img: [null , Validators.compose ([])],  
         _id: [null , Validators.compose ([])]
       });
    }

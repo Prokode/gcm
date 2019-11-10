@@ -8,6 +8,6 @@ const user = require('./loggedOut/user');
 
 loggedOut.use('/activation', activation);
 loggedOut.use('/mac', mac);
-loggedOut.use('/users', user);
+loggedOut.use('/user', user);
 
 module.exports = loggedOut;

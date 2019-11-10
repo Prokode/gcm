@@ -17,6 +17,13 @@ import { PosteEditComponent } from './poste-edit/poste-edit.component';
 import { ConsoleModule } from '../console/console.module';
 import { ConsoleListResolver } from '../console/console-list.resolver';
 import { ConsoleService } from '../console/console.service';
+import { PosteactResolver } from './posteact.resolver';
+import { ActivationService } from '../shared/activation/activation.service';
+import { PosteNameResolver } from './poste-name.resolver';
+import { PosteValidators } from './poste.validators';
+import { PosteDetailResolver } from './poste-detail.resolver';
+import { PosteShowComponent } from './poste-show/poste-show.component';
+import { PosteListResolver } from './poste-list.resolver';
 
 @NgModule({
   imports: [
@@ -40,12 +47,19 @@ import { ConsoleService } from '../console/console.service';
       PosteComponent,
       PosteFormComponent,
       PosteCreateComponent,
-      PosteEditComponent
+      PosteEditComponent,
+      PosteShowComponent
   ],
   providers: [ 
     PosteService,
     ConsoleListResolver,
-    ConsoleService
+    ConsoleService,
+    PosteactResolver,
+    PosteNameResolver,
+    ActivationService,
+    PosteValidators,
+    PosteDetailResolver,
+    PosteListResolver
   ],
   entryComponents: []
 })

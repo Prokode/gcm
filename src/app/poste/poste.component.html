@@ -1,3 +1,24 @@
+<div *ngIf="!posteactivation" class="poste-block">
+  <div class="poste-block-content">
+    <h2 style="color: #3f51b5 !important;" text-center><b>ACTIVATION POSTE</b></h2>
+    <p text-center>Vous devez entrer votre code activation pour activer cette partie.</p>
+    <form [formGroup]="form" (ngSubmit)="submitPosteActivation()">
+      <div fxLayout="column" fxLayoutAlign="space-around">
+        <div class="pb-1">
+          <mat-form-field style="width: 100%">
+            <input matInput placeholder="Code d'activation poste"
+             [formControl]="form.controls['code']">
+          </mat-form-field>
+          <!-- <small *ngIf="reactivationForm.controls['activationCode'].hasError('required') && 
+          reactivationForm.controls['activationCode'].touched" class="mat-text-warn">
+            Ce champs est requis.</small> -->
+        </div>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Activer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <mat-card>
   <mat-card-content class="page-title">
     POSTES
@@ -7,7 +28,7 @@
 <mat-card>
   <mat-card-content>
     <mat-form-field style="width: 100%" class="mb-1">
-      <input matInput placeholder="Filtrer la liste par nom" required (keyup)='updateFilter($event)'>
+      <input matInput placeholder="Filtrer la liste par numéro du poste ou numéro arduino pin" required (keyup)='updateFilter($event)'>
     </mat-form-field>
   </mat-card-content>
 </mat-card>
@@ -23,27 +44,35 @@ class='material'
 [loadingIndicator]="loading"
 [messages]="{emptyMessage: 'Pas de données disponibles'}">
   <ngx-datatable-column name="name" [sortable]="false">
-    <ng-template let-column="column" ngx-datatable-header-template>
+    <ng-template ngx-datatable-header-template>
       <strong >Nom</strong>
     </ng-template>
-    <ng-template let-value="value" ngx-datatable-cell-template>
-      {{value}}
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.poste.name}}
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name=console [sortable]="false">
-    <ng-template let-column="column" ngx-datatable-header-template>
+    <ng-template ngx-datatable-header-template>
       <strong >Console</strong>
     </ng-template>
-    <ng-template let-value="value" ngx-datatable-cell-template>
-      {{value.name}}
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.console.name}}
     </ng-template>
   </ngx-datatable-column>
+  <!-- <ngx-datatable-column name="arduino_pin" [sortable]="false">
+    <ng-template ngx-datatable-header-template>
+      <strong>Numéro pin</strong>
+    </ng-template>
+    <ng-template let-row="row"  ngx-datatable-cell-template>
+      {{row.poste.arduino_pin}}
+    </ng-template>
+  </ngx-datatable-column> -->
   <ngx-datatable-column name="createdAt" [sortable]="false">
-    <ng-template let-column="column" ngx-datatable-header-template>
+    <ng-template ngx-datatable-header-template>
       <strong>Date de création</strong>
     </ng-template>
-    <ng-template let-value="value" ngx-datatable-cell-template>
-      {{value}}
+    <ng-template let-row="row"  ngx-datatable-cell-template>
+      {{row.poste.created_at | date: 'dd/MM/yyyy'}}
     </ng-template>
   </ngx-datatable-column>
   <ngx-datatable-column name="ACTIONS" [sortable]="false" >
@@ -55,31 +84,39 @@ class='material'
               mat-button-sm
               class="mr-1 mat-green"
               matTooltip="EDITER"
-              [routerLink]="[row.id, 'edit']"
+              [routerLink]="[row.poste._id, 'edit']"
               >
         <mat-icon>create</mat-icon>
       </button>
       <button mat-icon-button
+              mat-button-sm
+              class="mr-1 mat-red"
+              matTooltip="DETAILS"
+              [routerLink]="[row.poste._id, 'show']"
+              >
+        <mat-icon>eye</mat-icon>
+      </button>
+      <!-- <button mat-icon-button
               mat-button-sm color="warn"
               class="mr-1"
               matTooltip="SUPPRIMER"
               (click)="onConsoleDelate(row)">
         <mat-icon>delete</mat-icon>
-      </button>
+      </button> -->
     </ng-template>
   </ngx-datatable-column>
 </ngx-datatable>
 
 
-<div class="pb-1">
+<div *ngIf="posteactivation" class="pb-1">
     <button mat-fab class="mr-1 mat-mini-fab mat-blue-grey-A100 refresh-elements-button"
      (click)="getPostes()">
       <mat-icon>cached</mat-icon>
     </button>
   </div>
 
-  <div class="pb-1 add-element-button-container">
-    <button mat-fab class="mr-1 mat-green add-element-button" routerLink="/poste/create">
+<div  *ngIf="posteactivation" class="pb-1 add-element-button-container">
+    <button (click)="checkPosteLimitation()" mat-fab class="mr-1 mat-green add-element-button">
       <mat-icon>add</mat-icon>
     </button>
-  </div>
+</div>

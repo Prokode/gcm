@@ -16,6 +16,8 @@ export class AccountComponent implements OnInit {
   constructor(private fb: FormBuilder, private accountValidators: AccountValidators,
      private wizardService: WizardService,  private snackMessageService : SnackMessageService ) {
     this.form = this.fb.group ( {
+      lastname: [null , Validators.compose ( [ Validators.required ] )],
+      firstname: [null , Validators.compose ( [ Validators.required ] )],
       username: [null , Validators.compose ( [ Validators.required ] ),
        Validators.composeAsync([ this.accountValidators.uniqueUsernameValidator.bind(this.accountValidators) ]) ],
       password: [null , Validators.compose ( [ Validators.required, Validators.minLength(8) ] )],

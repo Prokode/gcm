@@ -8,12 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PosteCreateComponent implements OnInit {
   consoles: any = [];
+  newPosteName: any = null;
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.data.subscribe(
       (data: any) => {
         this.consoles = data['consoles'];
+        this.newPosteName = (data['posteName']).name;
       }
     );
   }

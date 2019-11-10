@@ -13,6 +13,10 @@ export const AppRoutes: Routes = [{
     loadChildren: './dashboard/dashboard.module#DashboardModule'
   },
   {
+    path: 'vente',
+    loadChildren: './vente/vente.module#VenteModule'
+  },
+  {
     path: 'poste',
     loadChildren: './poste/poste.module#PosteModule'
   },
@@ -23,6 +27,14 @@ export const AppRoutes: Routes = [{
   {
     path: 'tarif',
     loadChildren: './tarif/tarif.module#TarifModule'
+  },
+  {
+    path: 'raport',
+    loadChildren: './raport/raport.module#RaportModule'
+  },
+  {
+    path: 'user',
+    loadChildren: './user/user.module#UserModule'
   }
 ]
   }, {

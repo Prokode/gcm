@@ -15,12 +15,12 @@
                 Ce champs doit être de 2 caractères minimum.</small>
             </div>
             <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button> -->
-          </div>
+        </div>
         <div class="pb-1">
             <mat-form-field style="width: 100%">
                 <mat-select placeholder="Console"
                             [formControl]="form.controls['console_id']">
-                  <mat-option  *ngFor="let console of consoles" [value]="console.id"
+                  <mat-option  *ngFor="let console of consoles" [value]="console._id"
                                [matTooltip]="console.name">
                     {{console.name}} </mat-option>
                 </mat-select>
@@ -28,6 +28,22 @@
                  form.controls['console_id'].touched"
                            class="mat-text-warn">Ce champs est requis</mat-error>
             </mat-form-field>
+        </div>
+        <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Numéro pin android"
+               [formControl]="form.controls['arduino_pin']" type="number" >
+            </mat-form-field>
+            <mat-error *ngIf="form.controls['arduino_pin'].hasError('required') &&
+              form.controls['arduino_pin'].touched"
+                        class="mat-text-warn">Ce champs est requis</mat-error>
+            <mat-error *ngIf="form.controls['arduino_pin'].hasError('pinNotValid') &&
+              form.controls['arduino_pin'].touched"
+                        class="mat-text-warn">Le Pin n'est pas valide ou il est déjà utilisé
+                      </mat-error>  
+            <mat-error *ngIf="form.controls['arduino_pin'].hasError('maxlength') &&
+                                form.controls['arduino_pin'].touched"
+                                          class="mat-text-warn">Longueure invalide</mat-error>                                
         </div>
     </div>
   </mat-card-content>

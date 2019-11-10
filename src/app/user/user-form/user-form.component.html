@@ -1,0 +1,94 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-card-content>
+    <div fxLayout="column" fxLayoutAlign="space-around">
+        <div class="pb-1">
+          <mat-form-field style="width: 100%">
+                <input matInput placeholder="Nom" [formControl]="form.controls['lastname']">
+              </mat-form-field>
+              <small *ngIf="form.controls['lastname'].hasError('required') &&
+              form.controls['lastname'].touched" class="mat-text-warn">
+                Ce champs est requis.</small>  
+        </div>
+        <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Prénoms" [formControl]="form.controls['firstname']">
+            </mat-form-field>
+            <small *ngIf="form.controls['firstname'].hasError('required') &&
+            form.controls['firstname'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
+          </div>
+        <div class="pb-1">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Nom utilisateur"
+           [formControl]="form.controls['username']">
+           
+        </mat-form-field>
+        <small *ngIf="form.controls['username'].hasError('required') &&
+        form.controls['username'].touched" class="mat-text-warn">
+          Ce champs est requis.</small>
+          <small *ngIf="form.controls['username'].hasError('usernameUnique') &&
+        form.controls['username'].touched" class="mat-text-warn">
+          Ce nom est déjà utilisé par un autre utilisateur</small>
+      </div>
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+          <input matInput type="password" placeholder="Mot de passe"
+           [formControl]="form.controls['password']">
+        </mat-form-field>
+        <small *ngIf="form.controls['password'].hasError('required') &&
+        form.controls['password'].touched" class="mat-text-warn">
+          Ce champs est requis.</small>
+          <small *ngIf="form.controls['password'].hasError('minlength') &&
+            form.controls['password'].touched" class="mat-text-warn">
+          Ce champs requière au minimum 8 caractères.</small>
+      </div>
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+          <input matInput type="password" placeholder="Confirmer le mot de passe"
+            [formControl]="form.controls['passwordConfirm']">
+        </mat-form-field>
+        <small *ngIf="form.controls['passwordConfirm'].hasError('required') &&
+            form.controls['passwordConfirm'].touched" class="mat-text-warn">
+             Ce champs est requis.</small>
+          <small *ngIf="form.controls['passwordConfirm'].hasError('samePassword') &&
+            form.controls['passwordConfirm'].touched" class="mat-text-warn">
+          les 2 mots de passe ne sont pas identiques</small>
+      </div>
+      <div class="pb-1">
+          <mat-form-field style="width: 100%">
+              <mat-select placeholder="Droit"
+                          [formControl]="form.controls['role']">
+                <mat-option  *ngFor="let role of roles" [value]="role"
+                             [matTooltip]="role">
+                  {{role}} </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['role'].hasError('required') &&
+               form.controls['role'].touched" class="mat-text-warn">
+              Ce champs est requis</mat-error>
+          </mat-form-field>
+      </div>
+    </div>
+  </mat-card-content>  
+  <mat-card-actions  *ngIf="formstate === 'create' || formstate === 'edit'">
+      <div fxLayout="row wrap">
+        <div fxFlex.gt-sm="60" fxFlex.gt-xs="100" fxFlex="100"></div>
+        <div fxFlex.gt-sm="40" fxFlex.gt-xs="100" fxFlex="100">
+          <a  type="button" mat-raised-button class="" color="accent"
+              [routerLink]="['/user']">
+            <mat-icon>clear</mat-icon> Annuler
+          </a>
+          <button
+          mat-raised-button color="primary" type="submit"
+          [disabled]="!form.valid || loading" class="organization-submit">
+            <mat-icon>done</mat-icon> Valider
+            <mat-progress-spinner
+              mode="indeterminate"
+              class="warn loading-circle"
+              *ngIf="loading"
+              [diameter]="25" [strokeWidth]="2">
+            </mat-progress-spinner>
+          </button>
+        </div>
+      </div>
+    </mat-card-actions>
+</form>

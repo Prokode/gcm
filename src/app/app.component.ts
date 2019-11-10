@@ -39,7 +39,7 @@ export class AppComponent {
           this.authService.signOutUser().subscribe(
             (res) => {
               window.localStorage.removeItem('gcmUser');
-              this.router.navigate(['/signin'])
+              this.router.navigate(['/session/signin'])
             }
           );
         }

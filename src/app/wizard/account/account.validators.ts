@@ -10,7 +10,7 @@ export class AccountValidators {
     constructor(private http: HttpClient) {}
 
   uniqueUsernameValidator(control: FormControl): Promise<any> | Observable<any> {
-    return this.http.get(GlobalVariable.BASE_API_URL + '/logged-out/users/username/check', {
+    return this.http.get(GlobalVariable.BASE_API_URL + '/logged-out/user/username/check', {
         params: {username: control.value}
     })
       .map(

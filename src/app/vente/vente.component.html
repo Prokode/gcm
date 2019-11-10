@@ -1,0 +1,63 @@
+<mat-card>
+  <mat-card-content class="page-title">
+    VENTE
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <div fxLayout="row wrap">
+        <div fxFlex.gt-sm="5" fxFlex.gt-xs="100" fxFlex="5"></div>
+        <div class="poste-block" *ngFor="let poste of postes" fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
+            <h2 style="text-align: center;"><b>{{poste.poste.name}}</b></h2>
+            <img class="poste-img" src="./assets/images/tele.png" alt="">
+            <div class="console">
+              <b>{{poste.console.name}}</b>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="70" fxFlex.gt-xs="100" fxFlex="70" style="text-align: center; padding-top: 5px;">
+                  <h1  style="color:brown; ">
+                    <b  *ngIf="!poste.time && !poste.tarif">{{'00 : 00 : 00'}} </b>
+                    <b *ngIf="!poste.time && poste.tarif">{{poste.tarif.hour + ' : ' + poste.tarif.minute + ' : ' + '00' }} </b>
+                    <b  *ngIf="poste.time && poste.tarif">{{poste.time}}</b>
+                  </h1>
+                </div>
+                <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
+                  <a *ngIf="!poste.time && !poste.tarif" type="button" mat-raised-button class=""
+                   (click)="openVenteDialog(poste, 'create')" color="accent">
+                      Vendre
+                  </a>
+                  <a *ngIf="!poste.time && poste.tarif" type="button" mat-raised-button
+                   class="" (click)="startTime(poste)" color="accent">
+                    Commencer
+                  </a>
+                  <a style="margin-top: 6px;" *ngIf="!poste.time && poste.tarif" type="button" mat-raised-button
+                   class="" (click)="abortTime(poste)" color="warn">
+                    Annuler
+                  </a>
+                  <a *ngIf="poste.time && poste.tarif" type="button" mat-raised-button class=""
+                   (click)="openVenteDialog(poste, 'add')" color="accent">
+                      Ajouter
+                  </a>
+                  <a style="margin-top: 6px;" *ngIf="poste.time && poste.tarif" type="button"
+                   mat-raised-button class="" (click)="stopTime(poste)" color="warn">
+                      Arrêter
+                  </a>
+                </div>
+            </div>
+        </div>
+        <!-- <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
+            <img class="poste-img" src="./assets/images/tele.png" alt="">
+        </div>
+        <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
+            <img class="poste-img" src="./assets/images/tele.png" alt="">
+        </div> -->
+    </div>
+  </mat-card-content> 
+</mat-card>
+
+<div class="pb-1 add-element-button-container">
+    <button mat-fab class="mr-1 mat-warn add-element-button" routerLink="/vente/list">
+      <mat-icon>list</mat-icon>
+    </button>
+</div>

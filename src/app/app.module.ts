@@ -59,6 +59,7 @@ import { HttpInterceptorService } from './shared/auth/http-interceptor.service';
 import { ActivationDetailLoaderModule } from './shared/activation/activation-loader.module';
 import { ActivationGuard } from './shared/activation/activation-guard.service';
 
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }

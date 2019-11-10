@@ -42,7 +42,7 @@ export class WizardService {
   }
 
    createAdminAccount(data) {
-    return this.http.post(GlobalVariable.BASE_API_URL+'/logged-out/users/create', data)
+    return this.http.post(GlobalVariable.BASE_API_URL+'/logged-out/user/create', data)
       .map(
         (response: any) => {  return response; }
       ).catch(
@@ -56,7 +56,7 @@ export class WizardService {
       );
   }
     checkForUniqueUsername(value) {
-      return this.http.get(GlobalVariable.BASE_API_URL + '/logged-out/users/username/check', {
+      return this.http.get(GlobalVariable.BASE_API_URL + '/logged-out/user/username/check', {
         params: {username: value}
       })
       .map(

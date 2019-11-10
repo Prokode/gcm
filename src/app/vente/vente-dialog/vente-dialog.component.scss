@@ -1,0 +1,10 @@
+.vente-dialog-popup ::ng-deep .mat-card-content
+{
+  max-height: 400px !important;
+  padding: 30px 20px !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  overflow: auto !important;
+  background-color: #ffffff;
+  margin: 0 !important;
+}

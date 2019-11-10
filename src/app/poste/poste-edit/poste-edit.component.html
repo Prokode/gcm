@@ -1,3 +1,12 @@
-<p>
-  poste-edit works!
-</p>
+<mat-card>
+  <mat-card-title>
+    <div class="mat-card-title-content">
+      <mat-icon [routerLink]="['/poste']">arrow_back</mat-icon>
+      <span class="organization-modification-title">Edition</span>
+      <span class="theme-color organization-name">Poste</span>
+    </div>
+  </mat-card-title>
+  <app-poste-form [poste]="poste" [consoles]="consoles" [formstate]="'edit'"></app-poste-form>
+</mat-card>
+
+

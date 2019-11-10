@@ -10,7 +10,23 @@
     <mat-card-content >
       <form [formGroup]="form" (ngSubmit)="submit()">
         <div fxLayout="column" fxLayoutAlign="space-around">
-          <div class="pb-1">
+            <div class="pb-1">
+              <mat-form-field style="width: 100%">
+                    <input matInput placeholder="Nom" [formControl]="form.controls['lastname']">
+                  </mat-form-field>
+                  <small *ngIf="form.controls['lastname'].hasError('required') &&
+                  form.controls['lastname'].touched" class="mat-text-warn">
+                    Ce champs est requis.</small>  
+            </div>
+            <div class="pb-1">
+                <mat-form-field style="width: 100%">
+                  <input matInput placeholder="Prénoms" [formControl]="form.controls['firstname']">
+                </mat-form-field>
+                <small *ngIf="form.controls['firstname'].hasError('required') &&
+                form.controls['firstname'].touched" class="mat-text-warn">
+                  Ce champs est requis.</small>
+              </div>
+            <div class="pb-1">
             <mat-form-field style="width: 100%">
               <input matInput placeholder="Nom utilisateur"
                [formControl]="form.controls['username']">

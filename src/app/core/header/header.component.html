@@ -22,7 +22,7 @@
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #user="matMenu" x-position="before">
-    <button mat-menu-item>
+    <button (click)="logout()" mat-menu-item>
       <mat-icon>power_settings_new</mat-icon>
       Déconnexion
     </button>

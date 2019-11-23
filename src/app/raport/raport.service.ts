@@ -11,8 +11,10 @@ export class RaportService {
     constructor(private http: HttpClient) {
     }
 
-    createVente(data) {
-        return this.http.post(GlobalVariable.BASE_API_URL+'/logged/vente/create', data)
+    getRaport(params) {
+        return this.http.get(GlobalVariable.BASE_API_URL+'/logged/raport/', {
+          params: params
+        })
         .map(
             (response: any) => { return response; }
           ).catch(

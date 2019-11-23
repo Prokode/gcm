@@ -45,13 +45,13 @@ const MENUITEMS: Menu[] = [
   },
   {
     state: '',
-    name: 'Paramètres',
+    name: 'Configurations',
     type: 'sub',
-    icon: 'settings',
+    icon: 'settings_input_composite',
     children: [
       {state: 'poste', name: 'Postes'},
       {state: 'console', name: 'Consoles'},
-      {state: 'tarif', name: 'Tarifs'},
+      {state: 'tarif', name: 'Tarifs'}
     ],
     role: ['ADMIN']
   },
@@ -81,20 +81,31 @@ const MENUITEMS: Menu[] = [
     state: 'raport',
     name: 'Raport',
     type: 'link',
-    icon: 'games',
-    role: ['ADMIN']
-  }
+    icon: 'reorder',
+    role: ['ADMIN', 'AGENT']
+  },
+  {
+    state: '',
+    name: 'Paramètres',
+    type: 'sub',
+    icon: 'settings',
+    children: [
+      {state: 'password', name: 'Sécurité'},
+      {state: 'information', name: 'Profile'},
+    ],
+    role: ['ADMIN', 'AGENT']
+  },
 ];
 
 @Injectable()
 export class MenuService {
   getAll(): Menu[] {
     const currentUser: any = JSON.parse(window.localStorage.getItem('gcmUser'));
-    const role = 'ADMIN';
+    // const role = 'ADMIN';
     return MENUITEMS.filter(
       (menu) => {
         if (menu.role) {
-          return menu.role.includes(role);
+          return menu.role.includes(currentUser.role);
         } else {
           return menu;
         }

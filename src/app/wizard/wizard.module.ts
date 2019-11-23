@@ -45,7 +45,10 @@ import { InformationValidators } from './information/information.validators';
     AccountValidators,
     InformationValidators    
   ],
-  entryComponents: []
+  entryComponents: [],
+  exports: [
+    ActivationComponent
+  ]
 })
 
 export class WizardModule {}

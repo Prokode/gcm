@@ -8,18 +8,27 @@ const venteReqValidators = require('../../shared/vente.req.validators');
 
 const Vente = require('../../shared/db/models/Vente');
 const Poste = require('../../shared/db/models/Poste');
+const Console = require('../../shared/db/models/Console');
 
 var io = require('../../app_inits').io;
 
 var Stopwatch = require('timer-stopwatch');
 var msToTime = require('pretty-ms');
 const jwt = require('jsonwebtoken');
+var five = require("johnny-five");
+// https://github.com/rwaldron/johnny-five/wiki/Getting-Started#trouble-shooting
+var board = new five.Board();
+board.on("ready", function() {
+    console.log("board ready");
+});
+
 
 function NewVenteObj(temps, vente) {
     var timerOptions = {
         refreshRateMS: 1000,    // How often the clock should be updated 
         almostDoneMS: 0,  // When counting down - this event will fire with this many milliseconds remaining on the clock 
     }
+    this.tele = new five.Led(Number(vente.poste.arduino_pin));
     this.ident = 0;
     this.vente = vente;
     this.countDown = new Stopwatch(temps, timerOptions);//new Timer({direction:'up',startValue:'00:00:00',showHours: true});
@@ -46,35 +55,43 @@ router.post('/create', venteReqValidators.validate('create'), function (req, res
 
             const body = _.pick(req.body, ['poste', 'tarif']);
 
-            const venteObj = new Vente({
-                unid: uniqid.time(),
-                poste: {
-                    name: body.poste.name,
-                    arduino_pin: body.poste.arduino_pin,
-                    _id: body.poste._id
-                }, 
-                tarif: {
-                    hour: body.tarif.hour,
-                    minute: body.tarif.minute,
-                    cost: body.tarif.cost,
-                    _id: body.tarif._id
-                },
-                user_id: req.user.user_id,
-                remaining_time: { hour: body.tarif.hour, minute: body.tarif.minute } 
-            });
-
-            venteObj.save(function(err) {
+            Console.find({_id: body.poste.console_id}, function(err, consoleData) {
                 if (err) {
                     error.status = 500;
                     error.message = err;
                     next(error);
                 }
-                res.send({
-                    message: 'success',
-                    vente: venteObj
+
+                const venteObj = new Vente({
+                    unid: uniqid.time(),
+                    poste: {
+                        name: body.poste.name,
+                        arduino_pin: body.poste.arduino_pin,
+                        _id: body.poste._id
+                    },
+                    console: consoleData[0], 
+                    tarif: {
+                        hour: body.tarif.hour,
+                        minute: body.tarif.minute,
+                        cost: body.tarif.cost,
+                        _id: body.tarif._id
+                    },
+                    user_id: req.user.user_id,
+                    remaining_time: { hour: body.tarif.hour, minute: body.tarif.minute } 
                 });
-            });   
-  
+    
+                venteObj.save(function(err) {
+                    if (err) {
+                        error.status = 500;
+                        error.message = err;
+                        next(error);
+                    }
+                    res.send({
+                        message: 'success',
+                        vente: venteObj
+                    });
+                });
+            });
     } catch(err) {
         error.status = 500;
         error.message = err;
@@ -88,7 +105,7 @@ router.get('/list', function (req, res, next) {
     try {
         var user  = jwt.decode(req.user.token, {
             json: true,
-            complete: true
+            complete: false
         }, globals.jwtSecret);
 
         const findOptions = user.role === 'ADMIN' ? {} : {user_id: req.user.user_id};
@@ -167,11 +184,12 @@ io.on('connection', function (socket) {
         });
 
         newVente.timeChange().onDone(function(){
+            newVente.tele.off();
             socket.emit('clock_end', {
                 poste: newVente.vente.poste
             })
         });
-
+        newVente.tele.on();
         newVente.startTime();  
     });
 
@@ -189,9 +207,22 @@ io.on('connection', function (socket) {
             );
             games = gameFiltered2;
             gameFiltered[0].stopTime();
-            socket.emit('clock_end', {
-                poste: poste
-            });
+            let where = {
+                _id: gameFiltered[0].vente._id
+              };
+               
+            let set = {
+                wasStop: true
+              }
+            Vente.update(where, {$set: set}, {}, function(err, num, vente) {
+                if (vente.wasStop) {
+                    gameFiltered[0].tele.off();
+                    socket.emit('clock_end', {
+                        poste: poste
+                    });
+                }   
+            });   
+           
         }
     });
 });    

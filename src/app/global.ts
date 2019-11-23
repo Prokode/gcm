@@ -10,7 +10,8 @@ export const GlobalVariable = Object.freeze({
     BASE_ONLINE_API_URL: 'http://localhost:80/gcm',
     HOPITAL_MEDIA_URL: 'https://dev.api.emedicalrdv.com/ADMIN/hospitals/',
     APP_ID: 'GCM_IOT_APP',
-    FormatMoney: function(money, n = 0, x = 3, s = ' ', c) {
+    FormatMoney: function(money) {
+      const n = 0, x = 3, s = ' ', c=false;
       money = Number(money);
       var moneyInString = money.toString();
       if (moneyInString.length >= 3) {

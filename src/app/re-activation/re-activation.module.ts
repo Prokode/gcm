@@ -9,9 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReActivationComponent } from './re-activation.component';
 import { ReActivationRoutes } from './re-activation.routing';
-import { ActivationComponent } from '../wizard/activation/activation.component';
+// import { ActivationComponent } from '../wizard/activation/activation.component';
 import { WizardService } from '../wizard/wizard.service';
-
+import { WizardModule } from '../wizard/wizard.module';
 
 @NgModule({
   imports: [
@@ -27,16 +27,17 @@ import { WizardService } from '../wizard/wizard.service';
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    WizardModule
    ],
   declarations: [
-    ReActivationComponent,
-    ActivationComponent
+    ReActivationComponent
   ],
   providers: [ 
       WizardService
   ],
-  entryComponents: []
+  entryComponents: [
+  ]
 })
 
 export class ReActivationModule {}

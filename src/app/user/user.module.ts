@@ -18,6 +18,7 @@ import { UserCreateComponent } from './user-create/user-create.component';
 import { UserLoggedService } from './user-logged.service';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UserListResolver } from './user-list.resolver';
+import { UserEditComponent } from './user-edit/user-edit.component';
 
 
 
@@ -46,7 +47,8 @@ import { UserListResolver } from './user-list.resolver';
   declarations: [
      UserComponent,
      UserCreateComponent,
-     UserFormComponent
+     UserFormComponent,
+     UserEditComponent
   ],
   providers: [ 
       UserValidators,

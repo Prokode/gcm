@@ -1,0 +1,82 @@
+<mat-card>
+  <mat-card-title>
+    <div class="mat-card-title-content">
+      <mat-icon [routerLink]="['/raport']">arrow_back</mat-icon>
+      <span class="organization-modification-title">Raport des</span>
+      <span class="theme-color organization-name">ventes</span>
+    </div>
+  </mat-card-title>
+</mat-card>
+
+<mat-card>
+  <mat-card-content style="text-align: right;">
+    Gain Total: <span style="background-color: rgb(248, 18, 18); color: white;
+     padding: 10px; border-radius: 10px; ">{{globals.FormatMoney(totalVente)}}</span> 
+  </mat-card-content>
+</mat-card>
+<ngx-datatable
+class='material'
+[columnMode]="'force'"
+[headerHeight]="50"
+[footerHeight]="50"
+[rowHeight]="'auto'"
+[limit]="10"
+[rows]='ventes'
+[messages]="{emptyMessage: 'Pas de données disponibles'}">
+  <ngx-datatable-column name="poste" [sortable]="false">
+    <ng-template ngx-datatable-header-template>
+      <strong >Poste</strong>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value.name}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="console" [sortable]="false">
+    <ng-template ngx-datatable-header-template>
+      <strong >Console</strong>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value.name}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Heure" [sortable]="false">
+    <ng-template ngx-datatable-header-template>
+      <strong >Heure</strong>
+    </ng-template>
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.tarif.hour + ' : ' + row.tarif.minute}}
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="Coût" [sortable]="false">
+      <ng-template ngx-datatable-header-template>
+        <strong >Coût</strong>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{globals.FormatMoney(row.tarif.cost)}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="wasStop" [sortable]="false">
+        <ng-template style="text-align: center;" ngx-datatable-header-template>
+          <strong >Temps arrêté</strong>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div style="height: 20px; width: 20px; margin: 0 auto; box-sizing: border-box; border-radius: 50%; background-color:rgb(248, 18, 18);" *ngIf="row.wasStop">
+          </div>
+        </ng-template>
+    </ngx-datatable-column>  
+  <ngx-datatable-column name="created_at" [sortable]="false">
+    <ng-template ngx-datatable-header-template>
+      <strong>Date</strong>
+    </ng-template>
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.created_at | date: 'dd/MM/yyyy HH:MM:SS'}}
+    </ng-template>
+  </ngx-datatable-column>
+</ngx-datatable>
+<!-- 
+<div class="pb-1">
+    <button mat-fab class="mr-1 mat-mini-fab mat-blue-grey-A100 refresh-elements-button"
+     (click)="getVentes()">
+      <mat-icon>cached</mat-icon>
+    </button>
+  </div> -->

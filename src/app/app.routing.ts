@@ -35,6 +35,15 @@ export const AppRoutes: Routes = [{
   {
     path: 'user',
     loadChildren: './user/user.module#UserModule'
+  },
+  
+  {
+    path: 'information',
+    loadChildren: './information/information.module#InformationModule'
+  },
+  {
+    path: 'password',
+    loadChildren: './password/password.module#PasswordModule'
   }
 ]
   }, {

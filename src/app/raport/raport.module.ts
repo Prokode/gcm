@@ -20,6 +20,7 @@ import { UserListResolver } from '../user/user-list.resolver';
 import { PosteService } from '../poste/poste.service';
 import { ConsoleService } from '../console/console.service';
 import { UserLoggedService } from '../user/user-logged.service';
+import { RaportResultComponent } from './raport-result/raport-result.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { UserLoggedService } from '../user/user-logged.service';
     MatExpansionModule
    ],
   declarations: [
-     RaportComponent
+     RaportComponent,
+     RaportResultComponent
   ],
   providers: [ 
       RaportService,

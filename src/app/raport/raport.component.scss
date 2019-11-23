@@ -20,7 +20,7 @@
 
 .report-content .report-item
 {
-  width: 25%;
+  width: 50%;
   float: left;
   margin: 0;
   padding: 0 15px;
@@ -108,24 +108,35 @@
   box-sizing: border-box;
   margin: 0 0 20px 0;
   padding: 10px 3px;
+  height: auto !important;
 }
 
-/*.mat-expansion-panel-header
-{
-  padding: 2px 20px !important;
+// .mat-expansion-panel-header
+// {
+//   background-color: rgb(219, 82, 82) !important;
+//   color: white !important;
+//   font-weight: bold !important;
+// }
+::ng-deep .mat-expansion-panel-body {
+  height: 180px !important;
+  // padding: 0 24px 70px !important;
 }
+// .mat-expansion-panel-header
+// {
+//   padding: 2px 20px !important;
+// }
 
-.mat-expansion-panel
-{
-  padding: 0 !important;
-}
+// .mat-expansion-panel
+// {
+//   padding: 0 !important;
+// }
 
-.mat-expansion-panel-header:hover
-{
-  background-color: rgba(240, 240, 240, 1) !important;
-}
+// .mat-expansion-panel-header:hover
+// {
+//   background-color: rgba(240, 240, 240, 1) !important;
+// }
 
-::ng-deep .mat-expansion-panel-header
-{
-  padding: 2px 20px!important;
-}*/
+// ::ng-deep .mat-expansion-panel-header
+// {
+//   padding: 2px 20px!important;
+// }

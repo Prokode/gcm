@@ -28,7 +28,7 @@ export class SigninComponent implements OnInit {
   onSubmit() {
     this.authService.signingUser(this.form.value).subscribe(
       (res) => {
-        const user = new User(this.form.value.username, null, res.token);
+        const user = new User(this.form.value.username, null, res.token, res.role);
         const gcmUser = window.localStorage.getItem('gcmUser');
         if (gcmUser) {
           window.localStorage.removeItem('gcmUser');

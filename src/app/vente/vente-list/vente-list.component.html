@@ -47,13 +47,22 @@
         <ng-template let-row="row" ngx-datatable-cell-template>
           {{globals.FormatMoney(row.tarif.cost)}}
         </ng-template>
-      </ngx-datatable-column>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="wasStop" [sortable]="false">
+        <ng-template style="text-align: center;" ngx-datatable-header-template>
+          <strong >Temps arrêté</strong>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          <div style="height: 20px; width: 20px; margin: 0 auto; box-sizing: border-box; border-radius: 50%; background-color:rgb(248, 18, 18);" *ngIf="row.wasStop">
+          </div>
+        </ng-template>
+    </ngx-datatable-column>
     <ngx-datatable-column name="created_at" [sortable]="false">
       <ng-template ngx-datatable-header-template>
         <strong>Date</strong>
       </ng-template>
       <ng-template let-row="row" ngx-datatable-cell-template>
-        {{row.created_at | date: 'dd/MM/yyyy'}}
+        {{row.created_at | date: 'dd/MM/yyyy HH:MM:SS'}}
       </ng-template>
     </ngx-datatable-column>
     <!-- <ngx-datatable-column name="ACTIONS" [sortable]="false" >

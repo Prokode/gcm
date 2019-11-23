@@ -6,45 +6,33 @@
     </mat-card-title>
     <mat-card-content>
       <div class="report-content">
-        <form (submit)="onSubmit()">
+        <form [formGroup]="form" (ngSubmit)="submit()">
           <div class="report-item">
             <mat-form-field>
-              <input 
+              <input formControlName="date_debut"
                      matInput [matDatepicker]="FirstDatepicker" placeholder="Date Début" (click)="FirstDatepicker.open()">
               <mat-datepicker-toggle matSuffix [for]="FirstDatepicker"></mat-datepicker-toggle>
               <mat-datepicker #FirstDatepicker></mat-datepicker>
             </mat-form-field>
+            <mat-error *ngIf="form.controls['date_debut'].hasError('required') &&
+            form.controls['date_debut'].touched"
+                      class="mat-text-warn">Ce champs est requis</mat-error>
           </div>
           <div class="report-item">
             <mat-form-field>
-              <input 
+              <input formControlName="date_fin"
                      matInput [matDatepicker]="LastDatepicker" placeholder="Date Fin" (click)="LastDatepicker.open()">
               <mat-datepicker-toggle matSuffix [for]="LastDatepicker"></mat-datepicker-toggle>
               <mat-datepicker #LastDatepicker></mat-datepicker>
             </mat-form-field>
+            <mat-error *ngIf="form.controls['date_fin'].hasError('required') &&
+            form.controls['date_fin'].touched"
+                      class="mat-text-warn">Ce champs est requis</mat-error>
+              <mat-error *ngIf="form.controls['date_fin'].hasError('dateError') &&
+                      form.controls['date_fin'].touched"
+                class="mat-text-warn">la date de fin ne peut être inférieur à la date de début</mat-error>          
           </div>
-          <!-- <div class="report-item">
-            <mat-form-field>
-              <mat-select placeholder="{{ 'GROUP BY' | translate }}" [formControl]="form.controls['groupBy']"
-                          [compareWith]="compareWithFn" multiple>
-                <mat-option *ngFor="let groupBy of groupsBy" [value]="groupBy">
-                  {{ groupBy.field | translate }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div> -->
-  
-          <!-- <div class="report-item last-item">
-            <mat-form-field>
-              <mat-select placeholder="{{ 'OPERATION TYPE' | translate }}" [compareWith]="compareWithFn"
-                          [formControl]="form.controls['fields']['controls']['operationType']" multiple>
-                <mat-option *ngFor="let operationType of operationTypes" [value]="operationType">
-                  {{ operationType.field | translate }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div> -->
-          <div class="accordion-content">
+          <div class="accordion-content" *ngIf="showFilters">
             <mat-accordion>
               <mat-expansion-panel (closed)="false">
                 <mat-expansion-panel-header>
@@ -52,54 +40,53 @@
                     Filtres
                   </mat-panel-title>
                 </mat-expansion-panel-header>
-  
+                <p style="text-align: center;"><b>Filtrez votre rapport selon les trois options</b></p>
+                <br>
                 <div class="report-item-2">
-                  <!-- <app-organizations-autocomplete [organizationFormControl]="form.controls['fields']['controls']['organization']"
-                                                  [placeholder]="'ORGANIZATION'"
-                                                  (onOrganizationSelected)="onOrganizationSelected($event)">
-                  </app-organizations-autocomplete>
-                  <mat-error
-                    *ngIf="form.controls['fields']['controls']['organization'].hasError('invalidLinkedEntity') && form.controls['fields']['controls']['organization'].touched"
-                    class="mat-text-warn">
-                    {{ 'YOU MUST SELECT A VALUE FROM THE LIST' | translate }}
-                  </mat-error> -->
+                    <mat-select placeholder="Filtrer par"
+                    [formControl]="form.controls['filtre_par']">
+                        <mat-option  *ngFor="let fbv of filter_by_values" [value]="fbv"
+                                    [matTooltip]="fbv">
+                          {{fbv}} </mat-option>
+                    </mat-select>
                 </div>
   
                 <div class="report-item-2">
-                  <!-- <app-agencies-autocomplete [agencyFormControl]="form.controls['fields']['controls']['agency']"
-                                             [placeholder]="'AGENCY'"
-                                             (onAgencySelected)="onAgencySelected($event)">
-                  </app-agencies-autocomplete>
-                  <mat-error
-                    *ngIf="form.controls['fields']['controls']['agency'].hasError('invalidLinkedEntity') && form.controls['fields']['controls']['agency'].touched"
-                    class="mat-text-warn">
-                    {{ 'YOU MUST SELECT A VALUE FROM THE LIST' | translate }}
-                  </mat-error> -->
+                  <div *ngIf="form.value.filtre_par === 'Console'">
+                      <mat-select placeholder="Console"
+                      [formControl]="form.controls['filtre_console']">
+                          <mat-option  *ngFor="let console of consoles" [value]="console._id"
+                                      [matTooltip]="console.name">
+                            {{console.name}} </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form.controls['filtre_console'].hasError('required') &&
+                        form.controls['filtre_console'].touched"
+                                  class="mat-text-warn">Ce champs est requis</mat-error>
+                  </div>
+                  <div *ngIf="form.value.filtre_par === 'Poste'">
+                      <mat-select placeholder="Poste"
+                      [formControl]="form.controls['filtre_poste']">
+                          <mat-option  *ngFor="let poste of postes" [value]="poste.poste._id"
+                                      [matTooltip]="poste.poste.name">
+                            {{poste.poste.name}} </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form.controls['filtre_poste'].hasError('required') &&
+                        form.controls['filtre_poste'].touched"
+                                  class="mat-text-warn">Ce champs est requis</mat-error>
+                  </div>
+                  <div *ngIf="form.value.filtre_par === 'Utilisateur'">
+                      <mat-select placeholder="Utilisateur"
+                      [formControl]="form.controls['filtre_user']">
+                          <mat-option  *ngFor="let user of users" [value]="user._id"
+                                      [matTooltip]="user.username">
+                            {{user.lastname + ' ' + user.firstname + ' ' + user.username}} </mat-option>
+                      </mat-select>
+                      <mat-error *ngIf="form.controls['filtre_user'].hasError('required') &&
+                        form.controls['filtre_user'].touched"
+                                  class="mat-text-warn">Ce champs est requis</mat-error>
+                  </div>
                 </div>
-  
-                <div class="report-item-2">
-                  <!-- <app-call-center-autocomplete [callCenterFormControl]="form.controls['fields']['controls']['callCenter']"
-                                                [placeholder]="'CALL CENTER'"
-                                                (onCallCenterSelected)="onCallCenterSelected($event)">
-                  </app-call-center-autocomplete>
-                  <mat-error
-                    *ngIf="form.controls['fields']['controls']['callCenter'].hasError('invalidLinkedEntity') && form.controls['fields']['controls']['callCenter'].touched"
-                    class="mat-text-warn">
-                    {{ 'YOU MUST SELECT A VALUE FROM THE LIST' | translate }}
-                  </mat-error> -->
-                </div>
-  
-                <div class="report-item-2">
-                  <!-- <app-users-clk-autocomplete
-                    [userClkFormControl]="form.controls['fields']['controls']['userOperatorPartner']"
-                    [placeholder]="'CLK OPERATOR'" (onUserSelected)="onUserOperatorPartnerSelected($event)" >
-                  </app-users-clk-autocomplete>
-                  <mat-error
-                    *ngIf="form.controls['fields']['controls']['userOperatorPartner'].hasError('invalidLinkedEntity') && form.controls['fields']['controls']['userOperatorPartner'].touched"
-                    class="mat-text-warn">
-                    {{ 'YOU MUST SELECT A VALUE FROM THE LIST' | translate }}
-                  </mat-error> -->
-                </div>
+
               </mat-expansion-panel>
             </mat-accordion>
           </div>
@@ -108,9 +95,9 @@
             <button type="button" mat-raised-button [disabled]="loading" color="warn">
               Annuler<mat-icon>cancel</mat-icon>
             </button>
-            <button style="background-color:crimson; color: white;" mat-raised-button (click)="onSubmit()" >
-              <mat-progress-spinner mode="indeterminate" class="loading-circle" [diameter]="25" [strokeWidth]="2"
-                                    *ngIf="loading" >
+            <button [disabled]="loading || !form.valid" style="background-color:crimson; color: white;" mat-raised-button type="submit" >
+              <mat-progress-spinner mode="indeterminate" class="loading-circle" [diameter]="25"
+               [strokeWidth]="2" *ngIf="loading" >
               </mat-progress-spinner>
               Valider <mat-icon>search</mat-icon>
             </button>

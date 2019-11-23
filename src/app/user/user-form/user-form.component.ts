@@ -14,7 +14,9 @@ import { Router } from '@angular/router';
 export class UserFormComponent implements OnInit {
   form: FormGroup;
   @Input('formstate') formstate: any;
-  roles = ['ADMIN', 'AGENT'];
+  roles = [
+    // 'ADMIN', 
+    'AGENT'];
   loading = false;
   constructor(private fb: FormBuilder, private userValidators: UserValidators, 
     private router: Router,

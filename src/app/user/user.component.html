@@ -4,13 +4,13 @@
     </mat-card-content>
   </mat-card>
   
-  <mat-card>
+  <!-- <mat-card>
     <mat-card-content>
       <mat-form-field style="width: 100%" class="mb-1">
         <input matInput placeholder="Filtrer la liste par nom" required (keyup)='updateFilter($event)'>
       </mat-form-field>
     </mat-card-content>
-  </mat-card>
+  </mat-card> -->
   
   <ngx-datatable
   class='material'
@@ -43,7 +43,7 @@
         <strong>Date de création</strong>
       </ng-template>
       <ng-template let-row="row" ngx-datatable-cell-template>
-        {{row.created_at | date: 'dd/MM/yyyy'}}
+        {{row.created_at | date: 'dd/MM/yyyy HH:MM:SS'}}
       </ng-template>
     </ngx-datatable-column>
     <ngx-datatable-column name="ACTIONS" [sortable]="false" >

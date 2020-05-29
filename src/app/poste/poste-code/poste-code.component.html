@@ -1,0 +1,22 @@
+<mat-card>
+    <mat-card-title>
+      <div class="mat-card-title-content">
+        <mat-icon [routerLink]="['/poste']">arrow_back</mat-icon>
+        <span class="organization-modification-title">Poste</span>
+        <span class="theme-color organization-name">Activation</span>
+      </div>
+    </mat-card-title>
+    <div class="poste-block-content">
+      <h2 style="color: #3f51b5 !important;" text-center><b>DETAILS DE L'ACTIVATION EN COURS</b></h2>
+      <p>Nombre de poste maximal : <b style="color: #3f51b5 !important;">{{posteactivation.nbre}}</b></p>
+      <p>Date d'activation : <b >{{posteactivation.created_at | date: 'dd/MM/yyyy HH:MM:SS'}}</b></p>
+      <br>
+      <h2 style="color: #3f51b5 !important;" text-center><b>CHANGEMENT D'ACTIVATION POSTE</b></h2>
+      <p text-center>Vous devez entrer le nouveau code activation pour augmenter
+         le nombre de poste maximal que vous pouvez créér <b>(Assurez-vous d'être connecté à Internet)</b>.</p>
+      <app-poste-code-form [state]="'activation'" (onActivationSumitted)="onActivationSumitted($event)"></app-poste-code-form>
+    </div>
+</mat-card>
+  
+  
+  

@@ -46,6 +46,15 @@
                 form.controls['role'].touched" class="mat-text-warn">
                   Ce champs est requis.</small>
               </div>
+              <div class="pb-1" *ngIf="user.role === 'ADMIN'">
+                <mat-form-field style="width: 100%">
+                  <input disabled matInput type="text" placeholder="Nom de votre société"
+                   [formControl]="form.controls['society']">
+                </mat-form-field>
+                <small *ngIf="form.controls['society'].hasError('required') &&
+                form.controls['society'].touched" class="mat-text-warn">
+                  Ce champs est requis.</small>
+              </div>
            </div>
         </mat-card-content>
         <mat-card-actions  >

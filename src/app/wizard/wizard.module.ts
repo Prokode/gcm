@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
   MatIconModule, MatCardModule, MatInputModule, MatCheckboxModule, MatButtonModule,
-  MatSelectModule, MatTooltipModule
+  MatSelectModule, MatTooltipModule, MatDialogModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -16,6 +16,7 @@ import { WizardService } from './wizard.service';
 import { AccountComponent } from './account/account.component';
 import { AccountValidators } from './account/account.validators';
 import { InformationValidators } from './information/information.validators';
+import { TermesDialogComponent } from './termes-dialog/termes-dialog.component';
 
 @NgModule({
   imports: [
@@ -32,20 +33,24 @@ import { InformationValidators } from './information/information.validators';
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
    ],
   declarations: [
       WizardComponent,
       InformationComponent,
       AccountComponent,
-      ActivationComponent
+      ActivationComponent,
+      TermesDialogComponent
   ],
   providers: [
     WizardService,
     AccountValidators,
     InformationValidators    
   ],
-  entryComponents: [],
+  entryComponents: [
+    TermesDialogComponent
+  ],
   exports: [
     ActivationComponent
   ]

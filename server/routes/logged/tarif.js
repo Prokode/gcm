@@ -59,6 +59,13 @@ router.get('/list', function (req, res, next) {
             });
 
             Promise.all(promiseArr).then(function(resultsArray) {
+                consoles.forEach(
+                    (conso) => {
+                        conso.tarifs = conso.tarifs.sort(function(a, b) {
+                            return a.cost -  b.cost;
+                        });
+                    }
+                );
                 res.send(consoles);
             }).catch(function(err){
                 error.status = 500;
@@ -102,6 +109,7 @@ router.post('/create', tarifReqValidators.validate('create'), function (req, res
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['console_id', 'cost', 'hour', 'minute']);
@@ -137,6 +145,7 @@ router.put('/update', tarifReqValidators.validate('update'), function (req, res,
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['console_id', 'cost', 'hour', 'minute', '_id']);
@@ -181,6 +190,7 @@ router.put('/delate', tarifReqValidators.validate('delate'), function (req, res,
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['_id']);
@@ -223,6 +233,7 @@ router.get('/time/check',  tarifReqValidators.validate('checkTime'),  function(r
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
         const query = _.pick(req.query, ['console_id', 'hour', 'minute']);
 

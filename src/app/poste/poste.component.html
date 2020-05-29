@@ -2,20 +2,7 @@
   <div class="poste-block-content">
     <h2 style="color: #3f51b5 !important;" text-center><b>ACTIVATION POSTE</b></h2>
     <p text-center>Vous devez entrer votre code activation pour activer cette partie.</p>
-    <form [formGroup]="form" (ngSubmit)="submitPosteActivation()">
-      <div fxLayout="column" fxLayoutAlign="space-around">
-        <div class="pb-1">
-          <mat-form-field style="width: 100%">
-            <input matInput placeholder="Code d'activation poste"
-             [formControl]="form.controls['code']">
-          </mat-form-field>
-          <!-- <small *ngIf="reactivationForm.controls['activationCode'].hasError('required') && 
-          reactivationForm.controls['activationCode'].touched" class="mat-text-warn">
-            Ce champs est requis.</small> -->
-        </div>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Activer</button>
-      </div>
-    </form>
+    <app-poste-code-form [state]="'activation'" (onActivationSumitted)="onActivationSumitted($event)"  ></app-poste-code-form>
   </div>
 </div>
 
@@ -26,16 +13,18 @@
 </mat-card>
 
 <mat-card>
-  <mat-card-content>
+  <mat-card-content style="text-align: right;">
     <mat-form-field style="width: 100%" class="mb-1">
       <input matInput placeholder="Filtrer la liste par numéro du poste ou numéro arduino pin" required (keyup)='updateFilter($event)'>
     </mat-form-field>
+    <a [routerLink]="['code']" type="button" mat-raised-button  color="primary">Changer de code</a>
   </mat-card-content>
 </mat-card>
 
 <ngx-datatable
 class='material'
 [columnMode]="'force'"
+[rowClass]="getRowClass"
 [headerHeight]="50"
 [footerHeight]="50"
 [rowHeight]="'auto'"
@@ -99,13 +88,13 @@ class='material'
               >
         <mat-icon>remove_red_eye</mat-icon>
       </button>
-      <!-- <button mat-icon-button
+      <button mat-icon-button
               mat-button-sm color="warn"
               class="mr-1"
-              matTooltip="SUPPRIMER"
-              (click)="onConsoleDelate(row)">
+              [matTooltip]="row.poste.wasDisable ? 'ACTIVER' :  'DESACTIVER'"
+              (click)="onPosteDisable(row)">
         <mat-icon>delete</mat-icon>
-      </button> -->
+      </button>
     </ng-template>
   </ngx-datatable-column>
 </ngx-datatable>

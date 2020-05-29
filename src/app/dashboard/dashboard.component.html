@@ -1,128 +1,108 @@
 <div fxLayout="row wrap">
+    <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+        <mat-card *ngIf="currentUser.role === 'ADMIN' || currentUser.role === 'ROOT'"  class="card-widget mat-purple">
+          <div mat-card-widget>
+            <!-- <div mat-card-float-icon>
+              <mat-icon>phone</mat-icon>
+            </div> -->
+            <div class="pl-0">
+              <h2 mat-card-widget-title>
+                <b>Postes</b>
+              </h2>
+              <p>Gérer vos postes ici</p>
+            </div>
+            <div style="text-align: right; margin-top: 30px; width: 100%;">
+              <a routerLink="/poste"  type="button" mat-raised-button class="mat-purple">
+                Aller
+              </a>
+            </div>
+          </div>
+        </mat-card>
+    </div>
+
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
     <mat-card class="card-widget mat-teal">
       <div mat-card-widget>
-        <div mat-card-float-icon>
+        <!-- <div mat-card-float-icon>
           <mat-icon>local_offer</mat-icon>
+        </div> -->
+        <div>
+          <h2 mat-card-widget-title>
+            <b>
+              Vente
+            </b>
+          </h2>
+          <p>Effectuer vos ventes ici</p>
         </div>
-        <div class="pl-0">
-          <h2 mat-card-widget-title>103</h2>
-          <p>Campaigns</p>
-        </div>
-      </div>
-    </mat-card>
-  </div>
-  <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
-    <mat-card class="card-widget mat-purple">
-      <div mat-card-widget>
-        <div mat-card-float-icon>
-          <mat-icon>phone</mat-icon>
-        </div>
-        <div class="pl-0">
-          <h2 mat-card-widget-title>230</h2>
-          <p>Customers</p>
+        <div style="text-align: right; margin-top: 30px; width: 100%;">
+          <a routerLink="/vente" type="button" mat-raised-button class="mat-teal">
+            Aller
+          </a>
         </div>
       </div>
     </mat-card>
   </div>
-  <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
-    <mat-card class="card-widget mat-red">
-      <div mat-card-widget>
-        <div mat-card-float-icon>
-          <mat-icon>notifications</mat-icon>
-        </div>
-        <div class="pl-0">
-          <h2 mat-card-widget-title>323</h2>
-          <p>Queries</p>
-        </div>
-      </div>
-    </mat-card>
-  </div>
+
   <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
     <mat-card class="card-widget mat-indigo">
       <div mat-card-widget>
-        <div mat-card-float-icon>
+        <!-- <div mat-card-float-icon>
           <mat-icon>email</mat-icon>
-        </div>
+        </div> -->
         <div class="pl-0">
-          <h2 mat-card-widget-title>870</h2>
-          <p>Opens</p>
+          <h2 mat-card-widget-title>
+            <b>Rapports</b>
+          </h2>
+          <p>
+            Les rapports des ventes ici
+          </p>
         </div>
+
+        <div style="text-align: right; margin-top: 30px; width: 100%;">
+            <a routerLink="/raport" type="button" mat-raised-button class="mat-indigo">
+              Aller
+            </a>
+          </div>
+
       </div>
     </mat-card>
   </div>
+
+
+  <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
+    <mat-card *ngIf="currentUser.role === 'ADMIN' || currentUser.role === 'ROOT'" class="card-widget mat-red">
+      <div mat-card-widget>
+        <!-- <div mat-card-float-icon>
+          <mat-icon>notifications</mat-icon>
+        </div> -->
+        <div class="pl-0">
+          <h2 mat-card-widget-title>
+            <b>Tarifs</b>
+          </h2>
+          <p>Gérer vos tarifs ici</p>
+        </div>
+        <div style="text-align: right; margin-top: 30px; width: 100%;">
+            <a routerLink="/tarif" type="button" mat-raised-button class="mat-red">
+              Aller
+            </a>
+          </div>
+      </div>
+    </mat-card>
+  </div>
+
 </div>
 
 <div fxLayout="row wrap">
-	<div fxFlex.gt-sm="33.33%" fxFlex="100">
+	<div fxFlex.gt-sm="50%" fxFlex="100">
 		<mat-card>
       <mat-card-subtitle fxLayout="row" fxLayoutAlign="start center">
-        Revenue &nbsp; <span class="font-weight-bold mat-text-primary">+458,90</span>
+        Revenue de la semaine &nbsp; <span class="font-weight-bold mat-text-primary">{{weekTotal}}</span>
         <span fxFlex></span>
-        <button mat-icon-button mat-button-sm [matMenuTriggerFor]="card1" aria-label="Open card menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
       </mat-card-subtitle>
-      <mat-menu #card1="matMenu" x-position="before">
-        <button mat-menu-item>
-          <mat-icon>settings</mat-icon>
-          Settings
-        </button>
-        <button mat-menu-item>
-          <mat-icon>more</mat-icon>
-          View More
-        </button>
-        <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          Disable notifications
-        </button>
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          Remove Panel
-        </button>
-      </mat-menu>
 			<mat-card-content>
         <canvas height="200" baseChart class="chart"
-          [datasets]="barChartData"
-          [labels]="barChartLabels"
-          [options]="barChartOptions"
-          [colors]="chartColors"
-          [legend]="barChartLegend"
-          [chartType]="barChartType"></canvas>
-      </mat-card-content>
-		</mat-card>
-	</div>
-	<div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50" fxFlex="100">
-		<mat-card>
-      <mat-card-subtitle fxLayout="row" fxLayoutAlign="start center">
-        Yearly Sales &nbsp; <span class="font-weight-bold mat-text-warn">-46,68</span>
-        <span fxFlex></span>
-        <button mat-icon-button mat-button-sm [matMenuTriggerFor]="card2" aria-label="Open card menu">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-      </mat-card-subtitle>
-      <mat-menu #card2="matMenu" x-position="before">
-        <button mat-menu-item>
-          <mat-icon>settings</mat-icon>
-          Settings
-        </button>
-        <button mat-menu-item>
-          <mat-icon>more</mat-icon>
-          View More
-        </button>
-        <button mat-menu-item>
-          <mat-icon>notifications_off</mat-icon>
-          Disable notifications
-        </button>
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          Remove Panel
-        </button>
-      </mat-menu>
-			<mat-card-content>
-        <canvas height="200" baseChart class="chart"
-          [datasets]="ComboChartData"
-          [labels]="comboChartLabels"
+          [datasets]="weekReportData"
+          [labels]="weekReportLabels"
           [options]="ComboChartOptions"
           [colors]="chartColors"
           [legend]="comboChartLegend"
@@ -130,6 +110,25 @@
       </mat-card-content>
 		</mat-card>
 	</div>
+	<div fxFlex.gt-sm="50%" fxFlex.gt-xs="50" fxFlex="100">
+		<mat-card>
+      <mat-card-subtitle fxLayout="row" fxLayoutAlign="start center">
+        Revenue du mois &nbsp; <span class="font-weight-bold mat-text-primary">{{monthTotal}}</span>
+        <span fxFlex></span>
+      </mat-card-subtitle>
+      
+			<mat-card-content>
+        <canvas height="200" baseChart class="chart"
+        [datasets]="monthReportData"
+        [labels]="monthReportLabels"
+        [options]="ComboChartOptions"
+        [colors]="chartColors"
+        [legend]="comboChartLegend"
+        [chartType]="barChartType"></canvas>
+      </mat-card-content>
+		</mat-card>
+  </div>
+  <!--
 	<div fxFlex.gt-sm="33.33%" fxFlex.gt-xs="50" fxFlex="100">
 		<mat-card>
       <mat-card-subtitle fxLayout="row" fxLayoutAlign="start center">
@@ -166,10 +165,10 @@
           [chartType]="bubbleChartType"></canvas>
       </mat-card-content>
 		</mat-card>
-	</div>
+	</div> -->
 </div>
 
-<div fxLayout="row wrap">
+<!-- <div fxLayout="row wrap">
   <div fxFlex.gt-sm="66.66%" fxFlex="100">
     <ngx-datatable
       class="material"
@@ -211,8 +210,8 @@
       </mat-list>
     </mat-card>
   </div>
-</div>
-
+</div>  -->
+<!-- 
 <div fxLayout="row wrap">
   <div fxFlex.gt-md="50" fxFlex="100">
     <mat-card>
@@ -371,4 +370,4 @@
       </mat-card-content>
     </mat-card>
   </div>
-</div>
+</div> -->

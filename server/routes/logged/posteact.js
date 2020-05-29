@@ -39,22 +39,31 @@ router.post('/', posteactReqValidators.validate('post'), function (req, res, nex
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['nbre']);
 
-        const posteact = new Posteact({nbre: body.nbre});
-
-        posteact.save(function(err) {
+        Posteact.remove({}, {multi: true}, function (err, numRemoved) {
             if (err) {
-                error.status = 500;
-                error.message = err;
-                next(error);
+              error.status = 500;
+              error.message = err;
+              next(error);
+              return;
             }
-            res.send({
-                message: 'success'
+            const posteact = new Posteact({nbre: body.nbre});
+            posteact.save(function(err) {
+                if (err) {
+                    error.status = 500;
+                    error.message = err;
+                    next(error);
+                    return;
+                }
+                res.send({
+                    message: 'success'
+                });
             });
-        });
+        });    
 
     } catch(err) {
         error.status = 500;

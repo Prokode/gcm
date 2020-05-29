@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 
 import * as screenfull from 'screenfull';
 import { AuthService } from '../../shared/auth/auth.service';
 import { UserService } from '../../shared/user/user.service';
 import { Router } from '@angular/router';
+import { StandByService } from '../../stand-by/stand-by.service';
+import { AppService } from '../../app.service';
+import { InformationService } from '../../information/information.service';
 
 @Component({
   selector: 'app-header',
@@ -13,10 +16,22 @@ export class HeaderComponent {
 
   @Output() toggleSidenav = new EventEmitter<void>();
   @Output() toggleNotificationSidenav = new EventEmitter<void>();
-
+  @Input() society: any = null;
+  
   constructor(private authService: AuthService,
     private router: Router,
-     private userService: UserService) {
+    private appService: AppService,
+    private standByService: StandByService,
+
+    private userService: UserService) {
+      // this.getUserSociety();
+      this.appService.userInfoChange.asObservable().subscribe(
+        (res) => {
+          if (res) {
+            this.getUserSociety();
+          }
+        }
+      )
   }
 
   fullScreenToggle(): void {
@@ -26,13 +41,22 @@ export class HeaderComponent {
   }
 
   logout() {
-    this.authService.signOutUser().subscribe(
-      (res) => {
-        if (res.message === 'success') {
-          this.userService.currentUser.next(null);
-          window.localStorage.clear();
-          this.router.navigate(['/session/signin']);
-        }
+    this.userService.logOutSubject.next(true);
+  }
+
+  placeInStandBy() {
+    this.standByService.standBySubject.next(true);
+  }
+
+  nightModeToggle(e:any) {
+    console.log(e);
+    this.appService.nightModeToggleSubject.next(e.checked);
+  }
+
+  getUserSociety() {
+    this.appService.getSociety().subscribe(
+      (res: any) => {
+        this.society = res.society;
       }
     )
   }

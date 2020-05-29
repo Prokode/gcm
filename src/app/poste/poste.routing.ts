@@ -7,6 +7,7 @@ import { PosteNameResolver } from './poste-name.resolver';
 import { PosteEditComponent } from './poste-edit/poste-edit.component';
 import { PosteDetailResolver } from './poste-detail.resolver';
 import { PosteShowComponent } from './poste-show/poste-show.component';
+import { PosteCodeComponent } from './poste-code/poste-code.component';
 
 export const PosteRoutes: Routes = [
   {
@@ -30,6 +31,11 @@ export const PosteRoutes: Routes = [
       path: ':id/show',
       component: PosteShowComponent,
       resolve: {consoles: ConsoleListResolver, poste: PosteDetailResolver} 
+    },
+    {
+      path: 'code',
+      component: PosteCodeComponent,
+      resolve: {posteact: PosteactResolver } 
     },
   ]
   }

@@ -24,6 +24,8 @@ import { PosteValidators } from './poste.validators';
 import { PosteDetailResolver } from './poste-detail.resolver';
 import { PosteShowComponent } from './poste-show/poste-show.component';
 import { PosteListResolver } from './poste-list.resolver';
+import { PosteCodeFormComponent } from './poste-code-form/poste-code-form.component';
+import { PosteCodeComponent } from './poste-code/poste-code.component';
 
 @NgModule({
   imports: [
@@ -48,7 +50,9 @@ import { PosteListResolver } from './poste-list.resolver';
       PosteFormComponent,
       PosteCreateComponent,
       PosteEditComponent,
-      PosteShowComponent
+      PosteShowComponent,
+      PosteCodeFormComponent,
+      PosteCodeComponent
   ],
   providers: [ 
     PosteService,

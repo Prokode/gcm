@@ -24,6 +24,23 @@ export class InformationService {
           });
         }
       );
-    }
+  }
+
+  
+
+  updateUser(data) {
+    return this.http.put(GlobalVariable.BASE_API_URL+'/logged/user/update', data)
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }  
 
 }   

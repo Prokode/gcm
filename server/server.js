@@ -1,7 +1,12 @@
 // express app
+const express = require('express');
 const app = require('./app_inits').app;
+
+
 // http server
 const server = require('./app_inits').server;
+
+
 // midellewares
 const ErrorHandler = require('./middlewares/error-handler');
 const bodyParser = require('body-parser');
@@ -13,6 +18,8 @@ const AppIdentity = require('./middlewares/appIdentity');
 var loggedOut = require('./routes/loggedOut');
 var auth = require('./routes/auth');
 var logged = require('./routes/logged');
+var web = require('./routes/web');
+
 
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -31,6 +38,13 @@ require('./middlewares/passport');
 // body-parser
 app.use(bodyParser.json());
 
+// static folder for web app
+app.use('/asset', express.static(__dirname +'/public'));
+
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
+});
+
 // routes 
 // logged_out_routes
 app.use('/logged-out', [AppIdentity], loggedOut);
@@ -40,6 +54,8 @@ app.use('/auth', [AppIdentity], auth);
 
 // logged routes
 app.use('/logged', [AppIdentity, passport.authenticate('jwt', {session: false})], logged);
+
+app.use('/web', [AppIdentity], web);
 
 // Error handler middlewares
 app.use(ErrorHandler);

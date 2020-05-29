@@ -48,7 +48,7 @@ export class HttpInterceptorService implements HttpInterceptor {
 
       const token: string = this.userService.getToken();
       // console.log(token);
-      const authReq = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + token).set('X-APP-ID', GlobalVariable.APP_ID)});
+      const authReq = req.clone({headers: req.headers.set('Authorization', 'Bearer ' + token).set('X-App-Id', GlobalVariable.APP_ID)});
       // console.log(authReq);
       return next.handle(authReq).catch(
         (err: any, caught: Observable<any>) => {
@@ -79,7 +79,7 @@ export class HttpInterceptorService implements HttpInterceptor {
       });
     } else {
       const appReq = req.clone({
-       headers: req.headers.set('X-APP-ID', GlobalVariable.APP_ID)
+       headers: req.headers.set('X-App-Id', GlobalVariable.APP_ID)
       });
       return next.handle(appReq).catch(
         (err: any, caught: Observable<any>) => {
@@ -97,7 +97,6 @@ export class HttpInterceptorService implements HttpInterceptor {
           this.requestMessageTreat(event.body.message);
         }
       }, (err: any) => {
-          // console.log(err);
           if (err instanceof HttpErrorResponse) {
             return Observable.throw(err);
           }

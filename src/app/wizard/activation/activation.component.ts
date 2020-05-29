@@ -62,7 +62,8 @@ export class ActivationComponent implements OnInit {
                   this.form.disable();
                   this.onActivationSuccess.emit({
                     id: response.id,
-                    history: response.history
+                    history: response.history,
+                    rp: response.rp
                   });
                 }, (err) => {
                   console.log(err);

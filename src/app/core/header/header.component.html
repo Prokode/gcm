@@ -3,8 +3,11 @@
     <mat-icon>menu</mat-icon>
   </button>
   <div class="branding">
-    <!-- <div class="logo"></div> -->
-    <h1 style="color: white !important; font-size: 1.7em;">GCM-DOT COM</h1>
+    <img style="height: 50px !important;" src="./assets/images/logo.JPG" alt="">
+    <!-- <h1 style="color: white !important; font-size: 1.7em;">GCM-DOTCOM</h1> -->
+    <h1 style="color: white !important; font-size: 1.7em; text-align: center;  margin-left: 7px;
+     margin-top: 7px;">{{society}}</h1>
+
   </div>
   <div class="search-bar" fxFlex>
     <!-- <form class="search-form" [ngStyle.xs]="{display: 'none'}">
@@ -12,17 +15,22 @@
       <input type="text" placeholder="Search" autofocus="true" />
     </form> -->
   </div>
-  <button (click)="fullScreenToggle()" mat-icon-button>
+  <!-- <button (click)="fullScreenToggle()" mat-icon-button>
     <mat-icon>fullscreen</mat-icon>
-  </button>
+  </button> -->
   <!-- <button (click)="toggleNotificationSidenav.emit()" mat-icon-button class="ml-xs overflow-visible">
     <mat-icon>notifications</mat-icon>
     <span class="notification-label">5</span>
   </button> -->
+  <!-- <mat-slide-toggle (change)="nightModeToggle($event)">Mode nuit</mat-slide-toggle> -->
   <button [matMenuTriggerFor]="user" mat-icon-button class="ml-xs">
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #user="matMenu" x-position="before">
+    <button (click)="placeInStandBy()" mat-menu-item>
+      <mat-icon>lock</mat-icon>
+      Mette en veille
+    </button>
     <button (click)="logout()" mat-menu-item>
       <mat-icon>power_settings_new</mat-icon>
       Déconnexion

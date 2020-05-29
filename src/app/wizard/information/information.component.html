@@ -52,6 +52,7 @@
                            class="mat-text-warn">Ce champs est requis</mat-error>
             </mat-form-field>
           </div>
+
           <div class="pb-1">
             <span><span style="color: red;">{{countryCode}}</span></span>
             <mat-form-field style="width: 90%">
@@ -64,7 +65,17 @@
             <small *ngIf="form.controls['phone'].hasError('phoneUnique') &&
             form.controls['phone'].touched" class="mat-text-warn">
               Ce numéro est déjà utilisé par un autre utilisateur</small>
+          </div>
 
+          <div class="pb-1">
+            <mat-form-field style="width: 90%">
+              <input matInput placeholder="Nom de votre société" type="text"
+               [formControl]="form.controls['society']">
+            </mat-form-field>
+            <br>
+            <small *ngIf="form.controls['society'].hasError('required') &&
+            form.controls['society'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
           </div>
           <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button>
         </div>

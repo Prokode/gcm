@@ -58,7 +58,16 @@ import { SnackMessageComponent } from './shared/snack-messages/snack-message/sna
 import { HttpInterceptorService } from './shared/auth/http-interceptor.service';
 import { ActivationDetailLoaderModule } from './shared/activation/activation-loader.module';
 import { ActivationGuard } from './shared/activation/activation-guard.service';
-
+import { StandByComponent } from './stand-by/stand-by.component';
+import { StandByModule } from './stand-by/stand-by.module';
+import { LocalnDetailLoaderModule } from './shared/local/local.module';
+import { LocalGuard } from './shared/local/local-guard.service';
+import { ActivationService } from './shared/activation/activation.service';
+import { LocalService } from './shared/local/local.service';
+import { AppService } from './app.service';
+import { UserResolver } from './shared/user/user.resolver';
+import { SocietyResolver } from './shared/user/society.resolver';
+import { AboutComponent } from './about/about.component';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -85,9 +94,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AccordionLinkDirective,
     AccordionDirective,
     SnackMessageComponent,
+    AboutComponent,
   ],
   imports: [
-    ActivationDetailLoaderModule,
+    // ActivationDetailLoaderModule,
+    // LocalnDetailLoaderModule,
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(AppRoutes),
@@ -118,7 +129,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AgmCoreModule.forRoot({apiKey: 'YOURAPIKEY'}),
     PerfectScrollbarModule,
     SharedModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    StandByModule
   ],
   providers: [
     UserService,
@@ -133,13 +145,18 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       multi: true,
     },
     ActivationGuard,
+    LocalGuard,
     SnackMessageService,
     AuthService,
-    AuthGuard
+    AuthGuard,
+    ActivationService,
+    LocalService,
+    AppService,
+    UserResolver,
+    SocietyResolver
   ],
   entryComponents: [
     SnackMessageComponent
-
   ],
   bootstrap: [AppComponent]
 })

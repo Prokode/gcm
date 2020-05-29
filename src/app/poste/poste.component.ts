@@ -83,62 +83,10 @@ export class PosteComponent implements OnInit {
     )
   }
 
-  submitPosteActivation() {
-    this.form.disable();
-    this.activationService.getActivation().subscribe(
-      (res) => {
-        if (res.token) {
-          this.posteService.postOnlinePosteActivation({
-            code: this.form.getRawValue().code,
-            token: res.token
-          }).subscribe(
-            (res) => {
-              if (res.message === 'success') {
-                this.posteService.postLocalPosteActivation(res).subscribe(
-                  (res) => {
-                    if (res.message === 'success') {
-                      this.snackMessageService.newMessage.next(
-                        new SnackMessage('success',
-                         'L\'activation des postes a été effectuée avec succès.'));
-                        this.checkForPosteActivation();
-                    } else {
-                      this.form.enable();
-                      this.snackMessageService.newMessage.next(
-                        new SnackMessage('danger',
-                         'Une erreur s\'est produite lors de l\'opération, réesseyez.'));
-                    }
-                  }, (err) => {
-                    this.form.enable();
-                    this.snackMessageService.newMessage.next(
-                      new SnackMessage('danger', 'Une erreur s\'est produite lors de l\'opération, réesseyez.'));
-                  }
-                )
-              } else if (res.message === 'Code_is_used') {
-                this.form.enable();
-                this.snackMessageService.newMessage.next(
-                  new SnackMessage('danger', 'Le code entré a été déjà utilisé'));
-              }  else if (res.message === 'Code_is_incorrect') {
-                this.form.enable();
-                this.snackMessageService.newMessage.next(
-                  new SnackMessage('danger', 'Le code entré est incorrect'));
-              }  else if (res.message === 'Activation_error') {
-                this.form.enable();
-                this.snackMessageService.newMessage.next(
-                  new SnackMessage('danger', 'Une erreur de l\'activation du produit'));
-              } 
-            }, (err) => {
-              this.form.enable();
-              this.snackMessageService.newMessage.next(
-                new SnackMessage('danger', 'Une erreur s\'est produite lors de l\'opération, réesseyez.'));
-            }
-          )
-        }
-      }, (err) => {
-        this.form.enable();
-        this.snackMessageService.newMessage.next(
-          new SnackMessage('danger', 'Une erreur s\'est produite lors de l\'opération, réesseyez.'));
-      }
-    );
+  onActivationSumitted(e) {
+    if (e) {
+      this.checkForPosteActivation();
+    } 
   }
 
 
@@ -151,6 +99,27 @@ export class PosteComponent implements OnInit {
     });
     // update the rows
     // this.postes = temp;
+  }
+
+  onPosteDisable(row) {
+    if (confirm("Confrimez")) {
+      this.posteService.disablePoste(row.poste).subscribe(
+        (res) => {
+          this.snackMessageService.newMessage.next(
+            new SnackMessage('success', 'Le poste est désactivé avec succès'));
+          this.getPostes();  
+        }, (err) => {
+          this.snackMessageService.newMessage.next(
+            new SnackMessage('danger', 'Une erreur s\'est produite lors de l\'opération, réesseyez.'));
+        }
+      );
+    }
+  }
+
+  getRowClass(row) {
+    return {
+      'poste-disabled': row.poste.wasDisable
+    };
   }
 
 }

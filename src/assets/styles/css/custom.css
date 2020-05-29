@@ -1273,10 +1273,7 @@ input[type="number"]:hover,
 input[type="number"]:focus {
   -moz-appearance: number-input;
 }
-.app-header {
-  background-color: #1C9C1C !important;
-  color: white !important;
-}
+
 .presentation-title {
     color: white;
     font-size: 3em;
@@ -1295,4 +1292,118 @@ input[type="number"]:focus {
     height: auto;
     box-sizing: border-box;
     margin: 0 auto;
+}
+
+/* Materials icons */
+
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../../fonts/iconfont/MaterialIcons_Regular.eot'); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url('../../fonts/iconfont/MaterialIcons_Regular.woff2') format('woff2'),
+       url('../../fonts/iconfont/MaterialIcons_Regular.woff') format('woff'),
+       url('../../fonts/iconfont/MaterialIcons_Regular.ttf') format('truetype');
+}
+
+
+.material-icons {
+ font-family: 'Material Icons';
+ font-weight: normal;
+ font-style: normal;
+ font-size: 24px;  /* Preferred icon size */
+ display: inline-block;
+ line-height: 1;
+ text-transform: none;
+ letter-spacing: normal;
+ word-wrap: normal;
+ white-space: nowrap;
+ direction: ltr;
+
+ /* Support for all WebKit browsers. */
+ -webkit-font-smoothing: antialiased;
+ /* Support for Safari and Chrome. */
+ text-rendering: optimizeLegibility;
+
+ /* Support for Firefox. */
+ -moz-osx-font-smoothing: grayscale;
+
+ /* Support for IE. */
+ font-feature-settings: 'liga';
+}
+
+
+.television {
+  height: 120px !important;
+  border: 3px black solid;
+  border-radius: 5px;
+}  
+
+.television-container {
+  width: auto;
+  padding: 1px;
+  margin-bottom: 3px;
+}
+
+.television-footer-vertical {
+  width: 10px;
+  height: 15px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background-color: black;
+}
+
+.television-footer-horizotal {
+  width: 140px;
+  height: 5px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background-color: black;
+  border-radius: 25px;
+}
+
+.console {
+  width: 80% !important;
+  height: 40px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  border-radius: 6%;
+  text-align: center;
+  color: white;
+  padding-top: 8px;
+  margin-bottom: 4px;
+}
+
+.console-red {
+  background-color: #f44336 !important;
+}
+
+.console-green {
+  background-color: #3fa044 !important;
+}
+
+.poste-block {
+  margin-bottom: 20px;
+}
+
+.end_signal {
+  animation: blinker 1s linear infinite;
+  border: 2px red solid;
+}
+
+@keyframes blinker {
+50% {
+  opacity: 0;
+}
+}
+.poste-img {
+  width: 100% !important;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.night-mode {
+  background-color: rgb(36, 35, 35) !important;
 }

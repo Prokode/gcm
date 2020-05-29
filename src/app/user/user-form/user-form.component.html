@@ -1,3 +1,4 @@
+
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-card-content>
     <div fxLayout="column" fxLayoutAlign="space-around">
@@ -54,7 +55,7 @@
             form.controls['passwordConfirm'].touched" class="mat-text-warn">
           les 2 mots de passe ne sont pas identiques</small>
       </div>
-      <div class="pb-1">
+      <!-- <div class="pb-1">
           <mat-form-field style="width: 100%">
               <mat-select placeholder="Droit"
                           [formControl]="form.controls['role']">
@@ -66,7 +67,7 @@
                form.controls['role'].touched" class="mat-text-warn">
               Ce champs est requis</mat-error>
           </mat-form-field>
-      </div>
+      </div> -->
     </div>
   </mat-card-content>  
   <mat-card-actions  *ngIf="formstate === 'create' || formstate === 'edit'">

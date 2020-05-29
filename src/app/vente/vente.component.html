@@ -1,50 +1,133 @@
 <mat-card>
   <mat-card-content class="page-title">
     VENTE
+    <div style="width: 50%; float: right;" class="mb-1">
+      <input matInput placeholder="Rechercher un poste" required (keyup)='updateFilter($event)'>
+    </div>
   </mat-card-content>
 </mat-card>
 
 <mat-card>
   <mat-card-content>
+    
     <div fxLayout="row wrap">
         <!-- <div fxFlex.gt-sm="5" fxFlex.gt-xs="100" fxFlex="5"></div> -->
-        <div class="poste-block" *ngFor="let poste of postes" fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="25">
-            <h2 style="text-align: center;"><b>{{poste.poste.name}}</b></h2>
-            <img class="poste-img" src="./assets/images/tele.png" alt="">
-            <div class="console">
+        <div  class="poste-block" *ngFor="let poste of postes" fxFlex.gt-sm="25" fxFlex.gt-xs="100" fxFlex="25">
+          <mat-card>
+            <mat-card-subtitle fxLayout="row" fxLayoutAlign="start center">
+              <p style="font-size: 1em; font-weight: bold;">
+                <b>{{poste.poste.name}}</b>
+              </p>
+              <span fxFlex></span>
+              <button mat-icon-button mat-button-sm [matMenuTriggerFor]="card1" aria-label="Open card menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </mat-card-subtitle>
+            <mat-menu class="_mat_menu" #card1="matMenu" x-position="before" >
+              <form [formGroup]="form"
+               *ngIf="poste.time && poste.tarif" mat-menu-item >
+                <mat-form-field style="width: 100% !important;"> 
+                  <mat-select *ngIf="(currentUser.role === 'ADMIN' || currentUser.role === 'ROOT')" style="width: 100% !important;" formControlName="min" mat-raised-button placeholder="Retrancher">
+                    <mat-option *ngFor="let min of minutes_to_remove" [value]="min"
+                                [matTooltip]="min" (click)="onRemoveMinute(poste, min)" >
+                      {{min}} min</mat-option>
+                  </mat-select>
+                  <mat-select *ngIf="(currentUser.role === 'AGENT')" style="width: 100% !important;" formControlName="min" mat-raised-button placeholder="Retrancher">
+                    <mat-option *ngFor="let min of agent_minutes_to_remove" [value]="min"
+                                [matTooltip]="min" (click)="onRemoveMinute(poste, min)" >
+                      {{min}} min</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field style="width: 100% !important;"> 
+                  <mat-select style="width: 100% !important;" formControlName="min"
+                   mat-raised-button placeholder="Transferer l'heure vers">
+                    <mat-option *ngFor="let post of getPostesToTransfert(poste)" [value]="post"
+                                [matTooltip]="post.poste.name" (click)="tranfertTime(poste, post)" >
+                      {{post.poste.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </form>
+            </mat-menu>
+            <mat-card-content>  
+          <div class="television-container">
+                <div class="television">
+                  <div fxLayout="row wrap" style="margin-top: 35px;">
+                      <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" 
+                      style="text-align: center; padding-top: 5px;">
+                        <h1 style="color: #f44336; " >
+                          <b *ngIf="!poste.time && !poste.tarif && !poste.isOn">READY !</b>
+                          <b *ngIf="poste.isOn && !poste.time">ALLUME</b>
+                          <b *ngIf="!poste.time && poste.tarif">{{poste.tarif.hour + ' : ' + poste.tarif.minute + ' : ' + '00' }} </b>
+                          <b  *ngIf="poste.time && poste.tarif">{{poste.time}}</b>
+                        </h1>
+                      </div>
+                  </div>  
+                </div>
+                <div class="television-footer-vertical"></div>
+                <div class="television-footer-horizotal"></div>
+            </div>
+            <div [ngClass]="{'console-red': ((!poste.time && !poste.tarif) || (!poste.time && poste.tarif)),
+             'console-green': ((poste.time && poste.tarif)  || poste.isOn) }" 
+              class="console" >
               <b>{{poste.console.name}}</b>
             </div>
             <div fxLayout="row wrap">
-                <div fxFlex.gt-sm="70" fxFlex.gt-xs="100" fxFlex="70" style="text-align: center; padding-top: 5px;">
+                <!-- <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100" 
+                style="text-align: center; padding-top: 5px;">
                   <h1  style="color:brown; ">
                     <b  *ngIf="!poste.time && !poste.tarif">{{'00 : 00 : 00'}} </b>
                     <b *ngIf="!poste.time && poste.tarif">{{poste.tarif.hour + ' : ' + poste.tarif.minute + ' : ' + '00' }} </b>
                     <b  *ngIf="poste.time && poste.tarif">{{poste.time}}</b>
                   </h1>
-                </div>
-                <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
-                  <a *ngIf="!poste.time && !poste.tarif" type="button" mat-raised-button class=""
-                   (click)="openVenteDialog(poste, 'create')" color="accent">
+                </div> -->
+                <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                  <span fxFlex="10"></span>
+                  <a fxFlex="40" *ngIf="!poste.time && !poste.tarif && !poste.isOn" 
+                    type="button" mat-raised-button class="gri-button"
+                    (click)="openVenteDialog(poste, 'create')">
                       Vendre
                   </a>
-                  <a *ngIf="!poste.time && poste.tarif" type="button" mat-raised-button
-                   class="" (click)="startTime(poste)" color="accent">
+                  <a fxFlex="40" *ngIf="!poste.time && !poste.tarif && poste.isOn && (currentUser.role === 'ADMIN' || currentUser.role === 'ROOT')" type="button" mat-raised-button class=""
+                  (click)="simplePosteOff(poste)" color="warn">
+                     Arrêter
+                  </a>
+                  <a fxFlex="40" *ngIf="!poste.time && !poste.tarif && !poste.isOn  && (currentUser.role === 'ADMIN' || currentUser.role === 'ROOT')" type="button" mat-raised-button class=""
+                   (click)="simplePosteOn(poste)" color="indigo">
+                      Allumer
+                  </a>
+                  <a fxFlex="40" *ngIf="!poste.time && poste.tarif" type="button" mat-raised-button
+                   class="gri-button" (click)="startTime(poste)" >
                     Commencer
                   </a>
-                  <a style="margin-top: 6px;" *ngIf="!poste.time && poste.tarif" type="button" mat-raised-button
+                  <a fxFlex="40" *ngIf="!poste.time && poste.tarif" type="button" mat-raised-button
                    class="" (click)="abortTime(poste)" color="warn">
                     Annuler
                   </a>
-                  <a *ngIf="poste.time && poste.tarif" type="button" mat-raised-button class=""
-                   (click)="openVenteDialog(poste, 'add')" color="accent">
+                  <a fxFlex="40" *ngIf="poste.time && poste.tarif" type="button" mat-raised-button
+                   (click)="openVenteDialog(poste, 'add')" class="gri-button">
                       Ajouter
                   </a>
-                  <a style="margin-top: 6px;" *ngIf="poste.time && poste.tarif" type="button"
+                  <a fxFlex="40" *ngIf="poste.time && poste.tarif" type="button"
                    mat-raised-button class="" (click)="stopTime(poste)" color="warn">
                       Arrêter
                   </a>
+                  
                 </div>
+                <br>
+                <!-- <div  fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+                  <span fxFlex="10"></span>
+                  <div fxFlex="80" >
+                    
+                  </div>
+                  
+                   <a fxFlex="80" *ngIf="poste.time && poste.tarif" type="button" mat-raised-button class=""
+                   (click)="openVenteDialog(poste, 'add')" color="">
+                     Retrancher 1 min
+                  </a> 
+                </div> --> 
             </div>
+            </mat-card-content>
+            </mat-card>
         </div>
         <!-- <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
             <img class="poste-img" src="./assets/images/tele.png" alt="">

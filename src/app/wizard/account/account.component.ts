@@ -13,6 +13,8 @@ import { SnackMessage } from '../../shared/snack-messages/snack-message.model';
 export class AccountComponent implements OnInit {
   form: FormGroup;
   @Output() onAccountSuccess: EventEmitter<any> = new EventEmitter<any>(); 
+  root_pwd = null;
+  society = null;
   constructor(private fb: FormBuilder, private accountValidators: AccountValidators,
      private wizardService: WizardService,  private snackMessageService : SnackMessageService ) {
     this.form = this.fb.group ( {
@@ -21,14 +23,31 @@ export class AccountComponent implements OnInit {
       username: [null , Validators.compose ( [ Validators.required ] ),
        Validators.composeAsync([ this.accountValidators.uniqueUsernameValidator.bind(this.accountValidators) ]) ],
       password: [null , Validators.compose ( [ Validators.required, Validators.minLength(8) ] )],
-      passwordConfirm:  [null , Validators.compose ( [Validators.required, this.accountValidators.samePasswordValidator.bind(this.accountValidators) ] )]
+      passwordConfirm:  [null , Validators.compose ( [Validators.required, this.accountValidators.samePasswordValidator.bind(this.accountValidators) ] )],
+      rp: [null , Validators.compose ( [ ] )],
+      society: [null , Validators.compose ( [ ] )],
     });
+
+    this.wizardService.rootPasswordShare.asObservable().subscribe(
+      (rp) => {
+       this.root_pwd = rp;
+      }
+    );
+
+    this.wizardService.societyShare.asObservable().subscribe(
+      (society) => {
+       this.society = society;
+      }
+    );
+
    }
 
   ngOnInit() {
   }
 
   submit() {
+    this.form.controls['rp'].setValue(this.root_pwd ? this.root_pwd : 'gcmmanager');
+    this.form.controls['society'].setValue(this.society);
     this.wizardService.createAdminAccount(this.form.value).subscribe(
       (res) => {
         if (res.message === 'success') {

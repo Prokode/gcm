@@ -20,6 +20,7 @@
   [rowHeight]="'auto'"
   [limit]="10"
   [rows]='users'
+  [rowClass]="getDisableClass"
   [loadingIndicator]="loading"
   [messages]="{emptyMessage: 'Pas de données disponibles'}">
     <ngx-datatable-column name="name" [sortable]="false">
@@ -52,6 +53,7 @@
       </ng-template>
       <ng-template ngx-datatable-cell-template let-row="row">
         <button mat-icon-button
+                [disabled]="disable(row)"
                 mat-button-sm
                 class="mr-1 mat-green"
                 matTooltip="EDITER"
@@ -60,6 +62,7 @@
           <mat-icon>create</mat-icon>
         </button>
         <button mat-icon-button
+                [disabled]="disable(row)"
                 mat-button-sm color="warn"
                 class="mr-1"
                 matTooltip="SUPPRIMER"

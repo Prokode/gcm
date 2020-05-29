@@ -8,6 +8,8 @@ import {Subject} from 'rxjs/Subject';
 @Injectable()
 export class WizardService {
   public activationIdShare = new Subject<any>();
+  public rootPasswordShare = new Subject<any>();
+  public societyShare = new Subject<any>();
   constructor(private http: HttpClient) {
   }
 
@@ -55,7 +57,8 @@ export class WizardService {
         }
       );
   }
-    checkForUniqueUsername(value) {
+  
+  checkForUniqueUsername(value) {
       return this.http.get(GlobalVariable.BASE_API_URL + '/logged-out/user/username/check', {
         params: {username: value}
       })
@@ -92,6 +95,37 @@ export class WizardService {
 
     confirmUserRecovered(data) {
       return this.http.post(GlobalVariable.BASE_ONLINE_API_URL+'/confirmUserRecovered.php', data)
+      .map(
+        (response: any) => {  return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+    }
+
+    getLocalDateTime() {
+      /* We use http://worldclockapi.com/ api to get user correctly date */
+      return this.http.get('http://worldclockapi.com/api/json/utc/now')
+        .map(
+          (response: HttpResponse<any>) => {
+            return response;
+          }
+        ).catch(
+          (error: HttpErrorResponse) => {
+            return Observable.throw({
+              error: error
+            });
+          }
+        );
+    }
+
+    postLocalDateTime(data) {
+      return this.http.post(GlobalVariable.BASE_API_URL + '/logged-out/local/currentDateTime', data)
       .map(
         (response: any) => {  return response; }
       ).catch(

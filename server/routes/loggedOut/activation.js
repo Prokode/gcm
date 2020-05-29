@@ -19,6 +19,7 @@ router.get('/', function (req, res, next) {
       if(err) {
         error.status = 500;
         next(error);
+        return;
       }
       if (!activations.length) {
         res.send({
@@ -31,16 +32,16 @@ router.get('/', function (req, res, next) {
           if (tokenCheck) {
             const macAddress = nodeMachineId.machineIdSync({original: true});
             const activation = jwt.decode(token, {json: true});
-              if (activation.activation.mac === macAddress) {
+              // if (activation.activation.mac === macAddress) {
                 res.send({
                   message: 'activated',
                   token: token
                 });
-              } else {
-                res.send({
-                  message: 'unactivated'
-                });
-              }
+              // } else {
+              //   res.send({
+              //     message: 'unactivated'
+              //   });
+              // }
           }
         } catch (e) {
           if (e.name === 'TokenExpiredError') {
@@ -67,6 +68,7 @@ router.post('/create', activationReqValidators.validate('create'),  function (re
       error.status = 400;
       error.message = errors.array();
       next(error);
+      return;
     }
 
     const body = _.pick(req.body, ['token']);
@@ -76,14 +78,15 @@ router.post('/create', activationReqValidators.validate('create'),  function (re
           error.status = 500;
           error.message = err;
           next(error);
+          return;
         }
-        // console.log(numRemoved);
         const activation = new Activation({token: body.token});
         activation.save(function(err) {
           if (err) {
             error.status = 500;
             error.message = err;
             next(error);
+            return;
           }
           res.send({
             message : 'success'

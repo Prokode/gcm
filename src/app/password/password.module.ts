@@ -10,6 +10,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { PasswordRoutes } from './password.routing';
 import { PasswordComponent } from './password.component';
+import { PasswordService } from './password.service';
+import { UserService } from '../shared/user/user.service';
 
 @NgModule({
   imports: [
@@ -33,6 +35,8 @@ import { PasswordComponent } from './password.component';
      PasswordComponent
   ],
   providers: [ 
+    PasswordService,
+    UserService
   ],
   entryComponents: []
 })

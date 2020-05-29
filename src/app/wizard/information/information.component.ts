@@ -32,7 +32,8 @@ export class InformationComponent implements OnInit {
       country:  [this.countries[0], Validators.compose ( [ Validators.required ])],
       phone:  [null , Validators.compose ([ Validators.required ]),
        Validators.composeAsync([ 
-         this.informationValidators.uniquePhoneValidator.bind(this.informationValidators) ]) ]
+         this.informationValidators.uniquePhoneValidator.bind(this.informationValidators) ]) ],
+      society: [null , Validators.compose ( [ Validators.required ] )],   
     });
 
     this.recoverForm = this.fb.group ({
@@ -55,11 +56,10 @@ export class InformationComponent implements OnInit {
 
     this.wizardService.activationIdShare.asObservable().subscribe(
       (ids) => {
-        console.log(ids);
         this.activationId = ids.id;
         this.historyId = ids.history;
       }
-    )
+    );
   }
 
   ngOnInit() {
@@ -78,6 +78,7 @@ export class InformationComponent implements OnInit {
       address: form.address,
       country: form.country.lib,
       phone: form.phone,
+      society: form.society,
       activationId: this.activationId,
       countryCode: this.countryCode,
       historyId: this.historyId
@@ -92,7 +93,7 @@ export class InformationComponent implements OnInit {
             this.form.disable();
             this.snackMessageService.newMessage.next(
               new SnackMessage('success', 'Vos informations ont été bien enrégistrées'));
-            this.onInformationSuccess.emit(true);
+            this.onInformationSuccess.emit(data.society);
           }
         },
         (err) => {

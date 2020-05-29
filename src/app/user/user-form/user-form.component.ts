@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 export class UserFormComponent implements OnInit {
   form: FormGroup;
   @Input('formstate') formstate: any;
+  @Input('user') user: any;
   roles = [
     // 'ADMIN', 
     'AGENT'];
@@ -22,17 +23,23 @@ export class UserFormComponent implements OnInit {
     private router: Router,
     private userLoggedService: UserLoggedService, private snackMessageService: SnackMessageService ) {
     this.form = this.fb.group ( {
+      _id:  [null , Validators.compose ( [] )],
       lastname: [null , Validators.compose ( [ Validators.required ] )],
       firstname: [null , Validators.compose ( [ Validators.required ] )],
       username: [null , Validators.compose ( [ Validators.required ] ),
        Validators.composeAsync([ this.userValidators.uniqueUsernameValidator.bind(this.userValidators) ]) ],
       password: [null , Validators.compose ( [ Validators.required, Validators.minLength(8) ] )],
       passwordConfirm:  [null , Validators.compose ( [Validators.required, this.userValidators.samePasswordValidator.bind(this.userValidators) ] )],
-      role: [null , Validators.compose ( [ Validators.required ] )]
+      role: ['AGENT', Validators.compose ( [ Validators.required ] )]
     });
+
    }
 
   ngOnInit() {
+    if (this.user) {
+      this.form.patchValue(this.user);
+      this.form.disable();
+    }
   }
 
   submit() {
@@ -45,7 +52,7 @@ export class UserFormComponent implements OnInit {
             this.loading = false;
             this.snackMessageService.newMessage.next(
               new SnackMessage('success',
-               'L\'utilisateur a été bien crééé.'));
+               'L\'utilisateur a été crééé avec succès.'));
               this.router.navigate(['/user'])
           } else {
             this.loading = false;

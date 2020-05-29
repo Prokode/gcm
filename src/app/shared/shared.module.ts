@@ -5,6 +5,8 @@ import {CommonModule} from '@angular/common';
 // import {PhotoBlockComponent} from './components/photo-block/photo-block.component';
 import { MatButtonModule } from '@angular/material';
 
+import { UserResolver } from './user/user.resolver';
+import { SocietyResolver } from './user/society.resolver';
 
 @NgModule({
   imports: [
@@ -18,11 +20,13 @@ import { MatButtonModule } from '@angular/material';
     // PhotoBlockComponent,
    ],
   entryComponents: [
-  ],
+   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA
   ],
   providers: [
-  ]
+    // UserResolver,
+    // SocietyResolver
+   ]
 })
 export class SharedModule { }

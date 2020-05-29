@@ -5,10 +5,14 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <script>
+    System.set('electron', System.newModule(require('electron')));
+</script> -->
   <title>GC Manager</title>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link href="assets/styles/css/roboto_mat_icon.css" rel="stylesheet">
-  <style type="text/css">
+  <link rel="icon" type="image/x-icon" href="assets/images/logo.ico">
+  <script type="text/javascript" src="assets/_scripts/jquery-2.0.2.min.js"></script>
+  <script type="text/javascript" src="assets/_scripts/main.js"></script>
+  <!-- <style type="text/css">
     .loading::before,
     .loading::after {
       position: fixed;
@@ -40,11 +44,18 @@
     @keyframes animation {
       to { opacity: 0.2; }
     }
-  </style>
+  </style> -->
 </head>
 <body>
   <app-root>
-    <div class="loading"></div>
+    <!-- <div class="loading"></div> -->
+    <div id="loading">
+      <div id="loading-center">
+        <div id="loading-center-absolute">
+          <div id="object"></div>
+        </div>
+      </div>
+    </div>
   </app-root>
 </body>
 </html>

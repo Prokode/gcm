@@ -27,21 +27,25 @@ const MENUITEMS: Menu[] = [
     name: 'Accueil',
     type: 'link',
     icon: 'home',
-    role: ['ADMIN', 'AGENT']
+    role: ['ADMIN', 'AGENT', 'ROOT']
   },
   {
-    state: 'vente',
+    state: '',
     name: 'Vente',
-    type: 'link',
+    type: 'sub',
     icon: 'desktop_windows',
-    role: ['ADMIN', 'AGENT']
+    children: [
+      {state: '/vente', name: 'Créér'},
+      {state: '/vente/current', name: 'Vente en cours'},
+    ],
+    role: ['ADMIN', 'AGENT', 'ROOT']
   },
   {
     state: 'user',
     name: 'Utilisateur',
     type: 'link',
     icon: 'portrait',
-    role: ['ADMIN']
+    role: ['ADMIN', 'ROOT']
   },
   {
     state: '',
@@ -49,11 +53,12 @@ const MENUITEMS: Menu[] = [
     type: 'sub',
     icon: 'settings_input_composite',
     children: [
-      {state: 'poste', name: 'Postes'},
-      {state: 'console', name: 'Consoles'},
-      {state: 'tarif', name: 'Tarifs'}
+      {state: '/poste', name: 'Postes'},
+      {state: '/console', name: 'Consoles'},
+      {state: '/tarif', name: 'Tarifs'},
+      {state: '/licence', name: 'Licence'}
     ],
-    role: ['ADMIN']
+    role: ['ADMIN', 'ROOT']
   },
   // {
   //   state: 'poste',
@@ -76,13 +81,12 @@ const MENUITEMS: Menu[] = [
   //   icon: 'games',
   //   role: ['ADMIN']
   // },
-
   {
     state: 'raport',
-    name: 'Raport',
+    name: 'Rapports',
     type: 'link',
     icon: 'reorder',
-    role: ['ADMIN', 'AGENT']
+    role: ['ADMIN', 'AGENT', 'ROOT']
   },
   {
     state: '',
@@ -90,10 +94,10 @@ const MENUITEMS: Menu[] = [
     type: 'sub',
     icon: 'settings',
     children: [
-      {state: 'password', name: 'Sécurité'},
-      {state: 'information', name: 'Profile'},
+      {state: '/password', name: 'Sécurité'},
+      {state: '/information', name: 'Profile'},
     ],
-    role: ['ADMIN', 'AGENT']
+    role: ['ADMIN', 'AGENT', 'ROOT']
   },
 ];
 

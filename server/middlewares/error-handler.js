@@ -24,15 +24,9 @@ const errorHandler = function(err, req, res, next) {
                     break;
             }
         }
-        res.status(body.status).send({
-            message: body.message,
-            errors: err.errors ? err.errors : null
-        });
+        res.status(err.status).send(err);
     } else {
-        res.status(500).send({
-            message: err.stack,
-            errors: err.errors ? err.errors : null
-        });
+        res.status(500).send(err);
     }
 };
 

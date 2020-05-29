@@ -7,7 +7,45 @@
     </div>
   </mat-card-title>
 </mat-card>
-
+<mat-card>
+ <h4 style="text-align: center;"><b>Périodes</b></h4>
+ <p style="text-align: center;">{{(query.date_debut | date : 'dd/MM/yyyy') + ' - ' + (query.date_fin | date : 'dd/MM/yyyy')}}</p>
+</mat-card>
+<mat-card>
+  <div class="accordion-content">
+    <mat-accordion>
+      <mat-expansion-panel (closed)="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Statistiques
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <br>
+        <div style="width: 100%; padding-bottom: 10px;">
+          <div style="width: 49%; display: inline-block; ">
+            <h4><b>Statistiques Consoles</b></h4>
+            <table class="table table-bordered">
+              <tr *ngFor="let console of stats.consoles">
+                <td> <b>{{console.console.name}} </b> </td>
+                <td>{{console.total + ' Fcfa'}}</td>
+              </tr>
+            </table>
+          </div>
+          <div style="width: 49%; display: inline-block; ">
+            <h4><b>Statistiques Postes</b></h4>
+            <table class="table table-bordered">
+              <tr *ngFor="let poste of stats.postes">
+                <td><b>{{poste.poste.name}}</b></td>
+                <td>{{poste.total + ' Fcfa'}}</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <br>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</mat-card>
 <mat-card>
   <mat-card-content style="text-align: right;">
     Gain Total: <span style="background-color: rgb(248, 18, 18); color: white;
@@ -69,7 +107,7 @@ class='material'
       <strong>Date</strong>
     </ng-template>
     <ng-template let-row="row" ngx-datatable-cell-template>
-      {{row.created_at | date: 'dd/MM/yyyy HH:MM:SS'}}
+      {{row.created_at | date : 'dd/MM/yyyy HH:mm:ss'}}
     </ng-template>
   </ngx-datatable-column>
 </ngx-datatable>

@@ -1,23 +1,25 @@
 <div class="vente-dialog-popup">
     <mat-card>
         <mat-card-header >
-            <h1 style="text-align: center;"><b>{{poste.poste.name}}</b></h1>
+            <h1 style="text-align: center;"><b>{{current_poste.poste.name}}</b></h1>
         </mat-card-header>
         <mat-card-content>
-          <h3><b>Nom de la console :</b> {{poste.console.name}}</h3>
+          <h3><b>Nom de la console :</b> {{current_poste.console.name}}</h3>
           <hr>
+          <form [formGroup]="form" (ngSubmit)="submit()">
           <mat-form-field style="width: 100%; margin-top: 5px;">
-              <mat-select [(ngModel)]="tarif" placeholder="Tarifs">
-                <mat-option  *ngFor="let tar of poste.tarifs" [value]="tar"
+              <mat-select [formControl]="form.controls['tarif']" placeholder="Tarifs">
+                <mat-option  *ngFor="let tar of current_poste.tarifs" [value]="tar"
                              [matTooltip]="">
                   {{tar.hour + 'H ' + tar.minute + 'min' + ' Coût : ' + tar.cost}} </mat-option>
               </mat-select>
           </mat-form-field>
           <div style="text-align: right;">
-            <a type="button" (click)="submit()" [disabled]="!tarif" mat-raised-button class="" color="accent">
+            <a type="submit" (click)="submit()" [disabled]="!form.valid" mat-raised-button class="" color="accent">
               Valider
             </a>
           </div>
+        </form>
         </mat-card-content>
     </mat-card>
 </div>

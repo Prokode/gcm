@@ -6,6 +6,9 @@
 
 #histoy
 /.history
+/GCM-win32-x64
+/installer
+/gcm
 
 #release app directory
 /release

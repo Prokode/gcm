@@ -12,6 +12,9 @@ const Console = require('../../shared/db/models/Console');
 const Poste = require('../../shared/db/models/Poste');
 const Posteact = require('../../shared/db/models/Posteact');
 
+var getPosteNumber = (poste) => {
+    return Number((poste.name.split(" "))[1]);
+}
 /*
 Console promises
 */
@@ -74,7 +77,9 @@ router.get('/list', function (req, res, next) {
         });
 
         Promise.all(promiseArr).then(function(resultsArray) {
-            res.send(postes.reverse());
+            res.send(postes.sort(function(a, b) {
+                    return getPosteNumber(b.poste) - getPosteNumber(a.poste);
+                }));
         }).catch(function(err) {
             error.status = 500;
             next(error);
@@ -98,6 +103,7 @@ router.get('/show', posteReqValidators.validate('show'), function (req, res, nex
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         Poste.findOne({_id: req.query.id}, function(err, poste) {
@@ -125,6 +131,7 @@ router.post('/create', posteReqValidators.validate('create'), function (req, res
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['name', 'console_id', 'arduino_pin']);
@@ -160,6 +167,7 @@ router.put('/update', posteReqValidators.validate('update'), function (req, res,
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['console_id', 'arduino_pin', '_id']);
@@ -202,6 +210,7 @@ router.put('/delate', posteReqValidators.validate('delate'), function (req, res,
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const checkDB = globals.dbTableExist('consoles');
@@ -265,18 +274,70 @@ router.put('/delate', posteReqValidators.validate('delate'), function (req, res,
     }      
 });
 
+
+router.put('/disable', posteReqValidators.validate('disable'), function (req, res, next) {
+    let error = new Error();
+    try {
+        const errors = validationResult(req); 
+        if (!errors.isEmpty()) {
+            error.status = 400;
+            error.message = errors.array();
+            next(error);
+            return;
+        }
+
+        const body = _.pick(req.body, ['_id']);
+        
+        let where = {
+            _id: body._id
+          };
+           
+
+        Poste.findOne({_id: body._id}, function(err, poste) {
+            if (err) {
+                error.status = 500;
+                error.message = err;
+                next(error);
+            }
+
+            let set = {
+                wasDisable: !poste.wasDisable 
+            }
+
+            Poste.update(where, {$set: set}, {}, function(err, num, poste) {
+                if (err) {
+                    error.status = 500;
+                    err.message = err;
+                    next(error);
+                }
+                res.send({
+                    message: 'success'
+                });
+            });     
+        });  
+
+        
+
+    } catch(err) {
+        error.status = 500;
+        error.message = err;
+        next(error);
+    }      
+});
+
 router.get('/list/tarifs', function (req, res, next) {
     let error = new Error();
     
     try {
-        Poste.find({}).sort({ created_at: 1 }).exec(function(err, postesData) {
+        Poste.find({wasDisable: false}).sort({ created_at: 1 }).exec(function(err, postesData) {
             if (err) {
                 error.status = 500;
                 next(error);
+                return;
             }
     
         var postes = [];
-
+        
         let consolesPromiseArr = postesData.map(function (posteData) {
             // return the promise to array
             return getConsolesPromise(posteData).then(
@@ -324,7 +385,16 @@ router.get('/list/tarifs', function (req, res, next) {
             });
 
             Promise.all(tarifsPromiseArr).then(function(resultsArray) {
-
+                posteTarifs.sort(function(a, b) {
+                    return getPosteNumber(a.poste) - getPosteNumber(b.poste);
+                });
+                posteTarifs.forEach(
+                    (poste) => {
+                        poste.tarifs = poste.tarifs.sort(function(a, b) {
+                            return a.cost - b.cost;
+                        });
+                    }
+                );
                 res.send(posteTarifs);
 
             }).catch(function(err) {
@@ -360,6 +430,7 @@ router.get('/name/resolve', function(req, res, next) {
             if (err) {
                 error.status = 500;
                 next(error);
+                return;
             }
             const newPosteName = 'POSTE ' + (postes.length ? (postes.length + 1) : 1);
             res.send(
@@ -383,6 +454,7 @@ router.get('/arduino/pin/validate', posteReqValidators.validate('arduino_pin_val
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.query, ['arduino_pin']);
@@ -391,6 +463,7 @@ router.get('/arduino/pin/validate', posteReqValidators.validate('arduino_pin_val
             if (err) {
                 error.status = 500;
                 next(error);
+                return;
             }
             let pin_is_valid = true;
             let used_pin_poste_id = null;
@@ -425,6 +498,7 @@ router.get('/check/limitation', function(req, res, next) {
             if (err) {
                 error.status = 500;
                 next(error);
+                return;
             }
             
             const posteact = posteacts[0];

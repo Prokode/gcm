@@ -5,6 +5,7 @@ var modelName = "vente";
 const Tarif = {
     hour: { type: String },
     minute: { type: String },
+    second: { type: String, default: '00' },
     cost: { type: String },
     _id: { type: String }
 };
@@ -28,7 +29,6 @@ const Console = {
 
 // console.log(Poste);
 require('../db');
-
 
 var schema = {
     unid: {

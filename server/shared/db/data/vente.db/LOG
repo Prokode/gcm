@@ -1,6 +1,0 @@
-2019/11/23-23:03:30.036 c7c Recovering log #92
-2019/11/23-23:03:30.036 c7c Level-0 table #94: started
-2019/11/23-23:03:30.253 c7c Level-0 table #94: 544 bytes OK
-2019/11/23-23:03:30.461 c7c Delete type=0 #92
-2019/11/23-23:03:30.464 c7c Delete type=3 #91
-2019/11/23-23:03:30.535 7b4 Moved #32 to level-1 530 bytes OK: files[ 3 1 0 0 0 0 0 ]

@@ -9,7 +9,12 @@ const Validators = {
               query('date_debut', 'Date début must exist').exists(),
               query('date_fin', 'Date fin must exist').exists()
             ];   
-            break;                 
+            break;    
+        case 'dashboard':
+            validators = [ 
+              query('type', 'Type must exist').exists()
+            ];   
+            break;                   
       }
       return validators;
     }

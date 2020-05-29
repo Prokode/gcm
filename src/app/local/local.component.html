@@ -1,0 +1,17 @@
+<div class="wizard-content">
+  <div class="local"> 
+      <h3>OUUUPPSS UNE ERREUR...</h3>
+      <p>
+        La date et l'heure programmé sur votre machine sont incorrectes. Corrigez le problème en allant dans les paramètres de votre PC.
+        <br>
+        Après la reconfiguration de la date et de l'heure, cliquez sur le bouton ci-dessous.
+      </p>
+      <br>
+      <a [disabled]="loading" (click)="dateAndTimeTest()" type="button" mat-raised-button class="" color="accent">
+        Retester la date et l'heure
+      </a>
+      <h1 style="color: white; font-size: 3em;">
+        {{countTime}}
+      </h1>
+  </div>
+</div>

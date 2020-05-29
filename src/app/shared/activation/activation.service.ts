@@ -21,7 +21,6 @@ export class ActivationService {
   }
 
   isExpired(): boolean {
-    console.log(this.activationDatail);
     if (this.activationDatail) {
       return this.activationDatail.message === 'activation exprired' ? true : false;
     } else {
@@ -50,7 +49,6 @@ export class ActivationService {
         }
       ).catch(
         (error: HttpErrorResponse) => {
-          console.log(error);
           return Observable.throw({
             code: error.status,
             content: JSON.parse(error.error).message
@@ -67,7 +65,22 @@ export class ActivationService {
         }
       ).catch(
         (error: HttpErrorResponse) => {
-          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: error.error
+          });
+        }
+      );
+  }
+
+  postReActivation(data) {
+    return this.http.post(GlobalVariable.BASE_ONLINE_API_URL+'/reactivation.php', data)
+    .map(
+        (response: any) => {
+          return response;
+        }
+      ).catch(
+        (error: HttpErrorResponse) => {
           return Observable.throw({
             code: error.status,
             content: error.error
@@ -84,7 +97,6 @@ export class ActivationService {
         }
       ).catch(
         (error: HttpErrorResponse) => {
-          console.log(error);
           return Observable.throw({
             code: error.status,
             content: error.error
@@ -101,7 +113,6 @@ export class ActivationService {
         }
       ).catch(
         (error: HttpErrorResponse) => {
-          console.log(error);
           return Observable.throw({
             code: error.status,
             content: error.error

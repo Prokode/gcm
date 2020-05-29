@@ -1,0 +1,11 @@
+<form [formGroup]="form" (ngSubmit)="submitPosteActivation()">
+    <div fxLayout="column" fxLayoutAlign="space-around">
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Code d'activation poste"
+           [formControl]="form.controls['code']">
+        </mat-form-field>
+      </div>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button>
+    </div>
+  </form>

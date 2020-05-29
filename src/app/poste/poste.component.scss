@@ -30,3 +30,8 @@
   -o-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+::ng-deep .poste-disabled {
+  background-color: rgba(60, 179, 113, .3) !important;
+  border-left: solid 5px rgba(60, 179, 113, 1);
+}

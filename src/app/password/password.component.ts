@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { PasswordService } from './password.service';
+import { SnackMessageService } from '../shared/snack-messages/snack-message.service';
+import { SnackMessage } from '../shared/snack-messages/snack-message.model';
+import { UserService } from '../shared/user/user.service';
 
 @Component({
   selector: 'app-password',
@@ -9,7 +13,10 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 export class PasswordComponent implements OnInit {
   form: FormGroup;
   onModificate = false;
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, 
+    private passwordService: PasswordService,
+    private userService: UserService,
+    private snackMessageService: SnackMessageService) {
     this.form = this.fb.group ( {
       oldPassword: [null , Validators.compose ( [ Validators.required] )],
       password: [null , Validators.compose ( [ Validators.required, Validators.minLength(8) ] )],
@@ -45,7 +52,27 @@ export class PasswordComponent implements OnInit {
   }
 
   submit() {
-    
+    this.form.disable();
+    this.passwordService.changePassword(this.form.value).subscribe(
+      (res) => {
+        if (res.message === 'success') {
+          this.form.enable();
+          this.form.reset();
+          this.snackMessageService.newMessage.next(
+            new SnackMessage('success',
+             'Le mot de passe a été réinitialisé avec succès, vous allez être déconnecté.'));
+          this.userService.logOutSubject.next(true);
+        } else if (res.message === 'wrong_password') {
+          this.form.enable();
+          this.snackMessageService.newMessage.next(
+            new SnackMessage('danger', 'Le mot de passe en cours est incorrect.'));
+        }
+      }, (err) => {
+        this.form.enable();
+          this.snackMessageService.newMessage.next(
+            new SnackMessage('danger', 'Une erreur s\'est produite réesseyez s\'il vous plaît.'));
+      }
+    )
   }
 
 }

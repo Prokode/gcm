@@ -12,6 +12,7 @@ import { ReActivationRoutes } from './re-activation.routing';
 // import { ActivationComponent } from '../wizard/activation/activation.component';
 import { WizardService } from '../wizard/wizard.service';
 import { WizardModule } from '../wizard/wizard.module';
+import { ActivationComponent } from '../wizard/activation/activation.component';
 
 @NgModule({
   imports: [
@@ -27,11 +28,11 @@ import { WizardModule } from '../wizard/wizard.module';
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatTooltipModule,
-    WizardModule
+    MatTooltipModule
    ],
   declarations: [
-    ReActivationComponent
+    ReActivationComponent,
+    ActivationComponent
   ],
   providers: [ 
       WizardService

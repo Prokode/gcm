@@ -9,7 +9,9 @@ import { UserLoggedService } from './user-logged.service';
 export class UserComponent implements OnInit {
   users: any = [];
   loading = false;
-  constructor(private userLoggedService: UserLoggedService ) { }
+  constructor(private userLoggedService: UserLoggedService ) {
+    
+   }
 
   ngOnInit() {
     this.getUsers();
@@ -26,6 +28,22 @@ export class UserComponent implements OnInit {
         
       }
     );
+  }
+
+  getDisableClass(row) {
+    return {
+      'disable': row.wasDisable
+    };
+  }
+
+  disable(row) {
+    const currentUser: any = JSON.parse(window.localStorage.getItem('gcmUser'));
+    if (currentUser.role === 'ROOT') {
+      return false;
+    } else {
+      return row.role === 'ADMIN'
+    }
+    
   }
 
 }

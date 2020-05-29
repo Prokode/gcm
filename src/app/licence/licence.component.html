@@ -1,0 +1,35 @@
+<mat-card>
+  <mat-card-content class="page-title">
+    LICENCE
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <div class="licence-block">
+        <h2 style="color: #3f51b5 !important;" text-center><b>DETAILS DE LA LICENCE EN COURS</b></h2>
+        <p>Jour de création :  <b>{{licence.created_at | date: 'dd/MM/yyyy HH:MM:SS'}}</b></p>
+        <p>Expire le : <b style="color:firebrick;">{{formatToDate(licence.details.activation.end) | date: 'dd/MM/yyyy'}}</b></p>
+        <p>Le code d'activation : <b style="color:firebrick;">{{licence.details.activation.code}}</b></p>
+        <p>Nombre de jours avant échéance de la licence : <b style="color:firebrick;">{{licence_time_rest}}</b></p>
+        <br>
+      <hr>
+      <br>
+      <h2 style="color: #3f51b5 !important;" text-center><b>ENTRER UN CODE DE LICENCE</b></h2>
+      <p>Enfin de faire prolonger votre licence, entrez votre nouveau code de Licence</p>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div fxLayout="column" fxLayoutAlign="space-around">
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Code de la licence"
+               [formControl]="form.controls['code']">
+            </mat-form-field>
+          </div>
+          <p style="color: red;" *ngIf="form.disabled">Un instant...</p>
+          <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid || loading">Valider</button>
+        </div>
+      </form>
+      <br>
+  </div>
+  </mat-card-content>
+</mat-card>    

@@ -1,22 +1,16 @@
-.poste-img {
-    width: 100% !important;
-    margin: 0 auto;
-    box-sizing: border-box;
+::ng-deep .mat-menu-item {
+    height: 120px !important;
 }
 
-.console {
-    width: 80% !important;
-    height: 40px;
-    margin: 0 auto;
-    box-sizing: border-box;
-    background-color: #4caf50;
-    border-radius: 6%;
-    text-align: center;
-    color: white;
-    padding-top: 8px;
-    margin-bottom: 4px;
+.mat-menu-item > mat-form-field {
+    display: block !important;
+    height: 60px !important;
 }
 
-.poste-block {
-    margin-bottom: 20px;
+::ng-deep body .mat-card .mat-card-subtitle {
+    margin-bottom: -20px !important;
+}
+
+.gri-button {
+    background-color: #E1E2E1 !important;
 }

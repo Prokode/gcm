@@ -6,6 +6,7 @@ import { ForgotComponent } from './forgot/forgot.component';
 import { LockscreenComponent } from './lockscreen/lockscreen.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
+import { SocietyResolver } from '../shared/user/society.resolver';
 
 export const SessionRoutes: Routes = [
   {
@@ -24,7 +25,8 @@ export const SessionRoutes: Routes = [
       component: LockscreenComponent
     }, {
       path: 'signin',
-      component: SigninComponent
+      component: SigninComponent,
+      resolve: { society: SocietyResolver },
     }, {
       path: 'signup',
       component: SignupComponent

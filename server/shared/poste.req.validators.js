@@ -38,7 +38,12 @@ const Validators = {
             validators = [ 
                 query('arduino_pin', 'Arduio pin must exist').exists(),
             ];   
-            break;             
+            break;      
+        case 'disable':
+            validators = [
+                body('_id', 'Id must exist').exists(),
+            ];   
+            break;            
       }
       return validators;
     }

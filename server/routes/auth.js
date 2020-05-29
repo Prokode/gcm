@@ -20,6 +20,7 @@ router.post('/signin', authReqValidators.validate('signin'), function (req, res,
 
         if (!errors.isEmpty()) {
           res.status(400).json({ errors: errors.array() });
+          return;
         }
 
         // const body = _.pick(req.body, ['username', 'password']);
@@ -30,6 +31,7 @@ router.post('/signin', authReqValidators.validate('signin'), function (req, res,
                 error.status  = err.status ? err.status : 500;
                 error.message = err.message ? err.message : null;
                 next(error);
+                return;
             } else {
                     req.login(user, {session: false}, function(err) {
                     if (err) {
@@ -50,6 +52,7 @@ router.post('/signin', authReqValidators.validate('signin'), function (req, res,
                         if(err) {
                             error.status = 500;
                             next(error);
+                            return;
                         } else {
                             res.send({token: auth.token, role: user.role});   
                         }
@@ -76,6 +79,7 @@ router.put('/signout', authReqValidators.validate('signout'), function (req, res
 
         if (!errors.isEmpty()) {
           res.status(400).json({ errors: errors.array() });
+          return;
         }
 
         const body = _.pick(req.body, ['token']);
@@ -93,6 +97,7 @@ router.put('/signout', authReqValidators.validate('signout'), function (req, res
             error.status = 500;
             err.message = err;
             next(error);
+            return;
         }
         res.send({
             message: 'success'

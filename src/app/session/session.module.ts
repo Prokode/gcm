@@ -14,6 +14,7 @@ import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
 import { AuthService } from '../shared/auth/auth.service';
 import { UserService } from '../shared/user/user.service';
+import { SocietyResolver } from '../shared/user/society.resolver';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { UserService } from '../shared/user/user.service';
   ],
   providers: [
     AuthService,
-    UserService
+    UserService,
+    SocietyResolver
   ]
 })
 

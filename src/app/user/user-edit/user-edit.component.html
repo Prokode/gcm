@@ -1,3 +1,22 @@
-<p>
-  user-edit works!
-</p>
+<mat-card>
+  <mat-card-title>
+    <div class="mat-card-title-content">
+      <mat-icon [routerLink]="['/user']">arrow_back</mat-icon>
+      <span class="organization-modification-title">Editer</span>
+      <span class="theme-color organization-name">Utilisateur</span>
+    </div>
+  </mat-card-title>
+  <mat-card>
+    <mat-card-content *ngIf="user" style="text-align: right;">
+      <a *ngIf="!user.wasDisable" type="button" mat-raised-button (click)="disableUser()" color="primary">Désactiver</a>
+      <a *ngIf="user.wasDisable" type="button" mat-raised-button (click)="activateUser()" color="primary">Activer</a>
+      <a type="button" mat-raised-button (click)="reInitPassword()" color="accent">Réinitialiser le mot de passe</a>
+    </mat-card-content>
+    <mat-card-content *ngIf="new_password" style="text-align: left;">
+      <p>
+        Le nouveau mot de passe de l'utilisateur est : <b style="color: red;">{{new_password}}</b>
+      </p>
+    </mat-card-content>
+  </mat-card>
+  <app-user-form [formstate]="'edit'" [user]="user"></app-user-form>
+</mat-card>

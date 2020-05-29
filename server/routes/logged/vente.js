@@ -6,9 +6,9 @@ var uniqid = require('uniqid');
 const { validationResult } = require('express-validator');
 const venteReqValidators = require('../../shared/vente.req.validators');
 
-const Vente = require('../../shared/db/models/Vente');
-const Poste = require('../../shared/db/models/Poste');
-const Console = require('../../shared/db/models/Console');
+let Vente = require('../../shared/db/models/Vente');
+let Poste = require('../../shared/db/models/Poste');
+let Console = require('../../shared/db/models/Console');
 
 var io = require('../../app_inits').io;
 
@@ -16,12 +16,12 @@ var Stopwatch = require('timer-stopwatch');
 var msToTime = require('pretty-ms');
 const jwt = require('jsonwebtoken');
 var five = require("johnny-five");
-// https://github.com/rwaldron/johnny-five/wiki/Getting-Started#trouble-shooting
+// https://github.com/rwaldron/johnny-five/wiki/Getting-Started#trouble-shooting {port: 'COM9'}
 var board = new five.Board();
 board.on("ready", function() {
     console.log("board ready");
 });
-
+// var board;
 
 function NewVenteObj(temps, vente) {
     var timerOptions = {
@@ -36,6 +36,7 @@ function NewVenteObj(temps, vente) {
     this.showValueTime = function() { return this.countDown.ms ;}
     this.stopTime = function() { this.countDown.stop(); }
     this.timeChange = function() { return this.countDown; }
+    this.resetTime = function(val) { this.countDown.reset(val); }
 }
 
 /*
@@ -51,6 +52,7 @@ router.post('/create', venteReqValidators.validate('create'), function (req, res
                 error.status = 400;
                 error.message = errors.array();
                 next(error);
+                return;
             }
 
             const body = _.pick(req.body, ['poste', 'tarif']);
@@ -60,6 +62,7 @@ router.post('/create', venteReqValidators.validate('create'), function (req, res
                     error.status = 500;
                     error.message = err;
                     next(error);
+                    return;
                 }
 
                 const venteObj = new Vente({
@@ -73,11 +76,13 @@ router.post('/create', venteReqValidators.validate('create'), function (req, res
                     tarif: {
                         hour: body.tarif.hour,
                         minute: body.tarif.minute,
+                        second: '00',
                         cost: body.tarif.cost,
                         _id: body.tarif._id
                     },
                     user_id: req.user.user_id,
-                    remaining_time: { hour: body.tarif.hour, minute: body.tarif.minute } 
+                    remaining_time: { hour: body.tarif.hour, minute: body.tarif.minute },
+                    created_at: new Date()
                 });
     
                 venteObj.save(function(err) {
@@ -108,16 +113,33 @@ router.get('/list', function (req, res, next) {
             complete: false
         }, globals.jwtSecret);
 
-        const findOptions = user.role === 'ADMIN' ? {} : {user_id: req.user.user_id};
+        const date_debut = new Date();
+        const date_fin = new Date();
 
-        Vente.find(findOptions).sort({ created_at: -1 }).exec(function(err, ventesData) {
-            if (err) {
+        date_debut.setHours(0);
+        date_debut.setMinutes(0);
+        date_debut.setSeconds(0);
+
+        date_fin.setHours(23);
+        date_fin.setMinutes(59);
+        date_fin.setSeconds(59);
+            
+        const findOptions = user.role === 'ADMIN' ? {
+            created_at: { $lte: new Date(date_fin), $gte: new Date(date_debut)}
+        } : {
+            created_at: { $lte: new Date(date_fin), $gte: new Date(date_debut)},
+            user_id: req.user.user_id
+        };
+
+        Vente.find(findOptions).sort({ created_at: -1 }).exec((err, ventes) => {
+            if(err) {
                 error.status = 500;
                 next(error);
+                return;
             }
             res.send({
                 message: 'success',
-                ventes: ventesData
+                ventes: ventes
             });
         });
   
@@ -134,9 +156,15 @@ io.on('connection', function (socket) {
     console.log('on connection');
     var games = [];
     socket.on('start_chrono',function(venteObj) {
-        const time_to_count_down = (parseInt(venteObj.tarif.hour) * 60 * 60 * 1000 ) +  (parseInt(venteObj.tarif.minute) * 60 * 1000 ); 
+        const time_to_count_down = (parseInt(venteObj.tarif.hour) * 60 * 60 * 1000 ) +
+         (parseInt(venteObj.tarif.minute) * 60 * 1000 ) + (parseInt(venteObj.tarif.second) * 1000 ); 
+
+        var current_game_id = null;
         const gameFiltered = games.filter(
-            (game) => {
+            (game, id) => {
+                if (game.vente.poste._id === venteObj.poste._id) {
+                    current_game_id = id;
+                }
                 return game.vente.poste._id === venteObj.poste._id;
             }
         );
@@ -144,12 +172,19 @@ io.on('connection', function (socket) {
         if (gameFiltered.length) {
             newVente = gameFiltered[0];
             var new_time_to_count_down =  parseInt(newVente.showValueTime()) + time_to_count_down;
-            newVente.timeChange().reset(new_time_to_count_down); 
+            newVente.resetTime(new_time_to_count_down); 
+            games[current_game_id] = newVente;
         } else {
             newVente = new NewVenteObj(time_to_count_down, venteObj);
             games.push(newVente);
         }
-        newVente.timeChange().onTime(function(){ 
+        
+        // console.log('--------');
+        // games.forEach(g => {
+        //     console.log(g.vente.poste.name + '---' +  msToTime(g.showValueTime()));
+        // });
+
+        newVente.timeChange().onTime(function() { 
             // console.log(newVente.vente.poste.name);
             // console.log(msToTime(newVente.showValueTime()));
             newVente.ident++;
@@ -176,18 +211,25 @@ io.on('connection', function (socket) {
 
                 }
             }
-            socket.emit('clock_refresh', {
+            io.emit('broadcast', {
+                message: 'clock_refresh',
                 poste: newVente.vente.poste,
                 tarif: newVente.vente.tarif,
-                time: msToTime(newVente.showValueTime())
-            })
+                time: msToTime(newVente.showValueTime()),
+                timems: newVente.showValueTime(),
+                vente: newVente.vente
+            });
         });
 
-        newVente.timeChange().onDone(function(){
+        newVente.timeChange().onDone(function() {
             newVente.tele.off();
-            socket.emit('clock_end', {
+            io.emit('broadcast', {
+                message: 'clock_end',
                 poste: newVente.vente.poste
-            })
+            });
+            // socket.dispatch('clock_end', {
+            //     poste: newVente.vente.poste
+            // })
         });
         newVente.tele.on();
         newVente.startTime();  
@@ -217,14 +259,31 @@ io.on('connection', function (socket) {
             Vente.update(where, {$set: set}, {}, function(err, num, vente) {
                 if (vente.wasStop) {
                     gameFiltered[0].tele.off();
-                    socket.emit('clock_end', {
+                    io.emit('broadcast', {
+                        message: 'clock_end',
                         poste: poste
                     });
+                    // socket.dispatch('clock_end', {
+                    //     poste: poste
+                    // });
                 }   
             });   
            
         }
     });
+
+    socket.on('simple_on',function(poste) {
+        let tele = new five.Led(Number(poste.arduino_pin));
+        tele.on();
+        socket.emit('simple_on_success', poste);
+    });
+
+    socket.on('simple_off',function(poste) {
+        let tele = new five.Led(Number(poste.arduino_pin));
+        tele.off();
+        socket.emit('simple_off_success', poste);
+    });
+
 });    
 
 module.exports =  router;

@@ -6,20 +6,20 @@ require('../db');
 
 var schema = {
     console_id: {
-        type: String,
-        unique: true
+        type: String
     },
     cost: {
-        type: String,
-        unique: true
+        type: String
     },
     hour: {
-        type: String,
-        unique: true
+        type: String
     },
     minute: {
+        type: String
+    },
+    second: {
         type: String,
-        unique: true
+        default: '00'
     },
     user_id: {
         type: String

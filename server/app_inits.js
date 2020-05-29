@@ -13,7 +13,6 @@ process.__defineGetter__("stdin", function() {
 });
 
 const express = require('express');
-
 // express app
 //  npm rebuild serialport --update-binary
 const app = express();

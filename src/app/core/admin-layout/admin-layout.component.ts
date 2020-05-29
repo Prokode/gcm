@@ -1,11 +1,16 @@
 import { Component, ElementRef, NgZone, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
 import { TranslateService } from '@ngx-translate/core';
 
 import { PerfectScrollbarConfigInterface, PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
+import {Observable} from 'rxjs/Observable';
+import { StandByService } from '../../stand-by/stand-by.service';
+import { AuthService } from '../../shared/auth/auth.service';
+import { UserService } from '../../shared/user/user.service';
+import { AppService } from '../../app.service';
 
 const SMALL_WIDTH_BREAKPOINT = 960;
 
@@ -31,15 +36,67 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   @ViewChild('sidemenu') sidemenu;
   @ViewChild(PerfectScrollbarDirective) directiveScroll: PerfectScrollbarDirective;
 
-  public config: PerfectScrollbarConfigInterface = {};
 
+
+  public config: PerfectScrollbarConfigInterface = {};
+  logoutTimeout: number = 3; // in minutes
+  subscription: any;
+  showRefreshSession : Boolean = false;
+  standByType = 'verfiy_password';
+  night_mode = false;
+  user: any;
+  society: any;
   constructor(
+    private standByService: StandByService,
     private _element: ElementRef,
     private router: Router,
-    zone: NgZone) {
+    private authService: AuthService,
+    private userService: UserService,
+    zone: NgZone,
+    private route: ActivatedRoute,  
+    private appService: AppService ) {
+
     this.mediaMatcher.addListener(mql => zone.run(() => {
       this.mediaMatcher = mql;
     }));
+    this.initTimer(this.logoutTimeout);
+    
+    this.standByService.standBySubject.asObservable().subscribe(
+      (res) => {
+        this.showRefreshSession = res;
+      }
+    );
+
+    this.userService.logOutSubject.asObservable().subscribe(
+      (res) => {
+        console.log(res);
+        if (res) {
+          this.logout();
+        }
+      }
+    ); 
+
+    this.appService.nightModeToggleSubject.asObservable().subscribe(
+      (res) => {
+        this.night_mode = res;
+      }
+    );
+
+    this.appService.userInfoChange.asObservable().subscribe(
+      (res) => {
+        if (res) {
+          this.getUse();
+        }
+      }
+    );
+
+    this.appService.userInfoChange.asObservable().subscribe(
+      (res) => {
+        if (res) {
+          this.getUserSociety();
+        }
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -51,10 +108,43 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       this.url = event.url;
       this.runOnRouteChange();
     });
+
+    this.route.data.subscribe(
+      (data: any) => {
+        this.user = data['user'];
+        this.society = data['society'].society;
+      }
+    );
   }
 
   ngOnDestroy(): void  {
     this._router.unsubscribe();
+  }
+
+  @HostListener('mouseover', ['$event']) onDocummentClick(e: KeyboardEvent) {
+    e.preventDefault();
+    this.clearTimer();
+    this.initTimer(this.logoutTimeout);
+  }
+  clearTimer () {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+  initTimer (endTime: number) {
+    const interval = 1000;
+    const duration = endTime * 60;
+
+    this.subscription = Observable.timer(0, interval)
+      .take(duration)
+      .subscribe(value => {},
+        err => { console.log(err); },
+        () => {
+          if (!this.showRefreshSession) {
+            this.standByType = 'verfiy_password';
+            this.showRefreshSession = true;
+          }
+        });
   }
 
   runOnRouteChange(): void {
@@ -100,4 +190,33 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       }, 350);
     }
   }
+
+  logout() {
+    this.authService.signOutUser().subscribe(
+      (res) => {
+        if (res.message === 'success') {
+          this.userService.currentUser.next(null);
+          window.localStorage.clear();
+          this.router.navigate(['/session/signin']);
+        }
+      }
+    );
+  }
+
+  getUse() {
+    this.appService.showUser().subscribe(
+      (res) => {
+        this.user = res;
+      }
+    );
+  }
+
+  getUserSociety() {
+    this.appService.getSociety().subscribe(
+      (res: any) => {
+        this.society = res.society;
+      }
+    )
+  }
+  
 }

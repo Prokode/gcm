@@ -10,7 +10,7 @@ export const InformationRoutes: Routes = [
       component: InformationComponent,
       resolve: {
         user: UserInformationResolver
-    } 
+      } 
     }
   ]
   }

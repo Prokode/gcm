@@ -22,6 +22,7 @@ router.get('/show', consoleReqValidators.validate('show'), function (req, res, n
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
         
         Console.findOne({_id:  req.query.id}, function(err, console) {
@@ -70,6 +71,7 @@ router.post('/create', consoleReqValidators.validate('create'), function (req, r
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['name']);
@@ -104,6 +106,7 @@ router.put('/update', consoleReqValidators.validate('update'), function (req, re
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['name', '_id']);
@@ -123,6 +126,7 @@ router.put('/update', consoleReqValidators.validate('update'), function (req, re
                 error.status = 500;
                 err.message = err;
                 next(error);
+                return;
             }
             res.send({
                 message: 'success',
@@ -145,6 +149,7 @@ router.put('/delate', consoleReqValidators.validate('delate'), function (req, re
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         const body = _.pick(req.body, ['console_id']);
@@ -199,6 +204,7 @@ router.get('/name/check',  consoleReqValidators.validate('checkName'),  function
             error.status = 400;
             error.message = errors.array();
             next(error);
+            return;
         }
 
         Console.find({}, function (err, consoles) {

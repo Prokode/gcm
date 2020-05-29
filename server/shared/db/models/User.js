@@ -24,6 +24,10 @@ var schema = {
     role: {
         type: String
     },
+    society: {
+        type: String,
+        default: null
+    },
     wasDisable: {
         type: Boolean,
         default: false
@@ -41,8 +45,9 @@ var schema = {
 var options = { };
 
 var User = new LinvoDB(modelName, schema, options);
+
 /****************************/ 
-User.on('save', function(user) { user.password = pwdhash.generate(user.password); });
+// User.on('save', function(user) { console.log('save'); user.password = pwdhash.generate(user.password); });
 /***************************/
 User.on('updated', function(user) { user.updated_at = new Date(); });
 

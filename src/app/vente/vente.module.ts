@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
   MatIconModule, MatCardModule, MatInputModule, MatCheckboxModule, MatButtonModule,
-  MatSelectModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule
+  MatSelectModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -18,6 +18,9 @@ import { VenteService } from './vente.service';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { VenteListComponent } from './vente-list/vente-list.component';
 import { VenteListResolver } from './vente-list.resolvver';
+import { StandByService } from '../stand-by/stand-by.service';
+import { ConfirmPasswordComponent } from './confirm-password/confirm-password.component';
+import { VenteCurrentComponent } from './vente-current/vente-current.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
 
@@ -40,21 +43,26 @@ const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
     NgxDatatableModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    MatMenuModule,
     SocketIoModule.forRoot(config)
    ],
   declarations: [
      VenteComponent,
      VenteDialogComponent,
-     VenteListComponent
+     VenteListComponent,
+     ConfirmPasswordComponent,
+     VenteCurrentComponent,
   ],
   providers: [ 
     PosteService,
     PostesTarifsResolver,
     VenteService,
-    VenteListResolver
+    VenteListResolver,
+    StandByService
   ],
   entryComponents: [
-      VenteDialogComponent
+      VenteDialogComponent,
+      ConfirmPasswordComponent
   ]
 })
 

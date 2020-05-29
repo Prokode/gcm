@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import { Component,  OnInit } from '@angular/core';
 import { DashboardService } from './dashboard.service';
+// declare let moment: any;
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   card1;
   card2;
   card3;
@@ -132,12 +133,21 @@ export class DashboardComponent {
     borderWidth: 1,
     type: 'line',
     fill: false
-  }, {
-    data: [5, 4, 4, 2, 6, 2, 5],
-    label: 'Series B',
-    borderWidth: 1,
-    type: 'bar',
-  }];
+  },
+  // {
+  //   data: [5, 4, 4, 2, 6, 2, 5],
+  //   label: 'Series B',
+  //   borderWidth: 1,
+  //   type: 'bar',
+  // }
+  ];
+  weekReportData: Array <any> = [];
+  weekReportLabels: Array <any> = [];
+  weekTotal = 0;
+  monthReportData: Array <any> = [];
+  monthReportLabels: Array <any> = [];
+  monthTotal = 0;
+
   ComboChartOptions: any = Object.assign({
     animation: false,
     scales: {
@@ -177,8 +187,9 @@ export class DashboardComponent {
     photo: 'assets/images/face4.jpg',
     subject: 'Brunch this weekend?',
   }, ];
-
+  currentUser: any = null;
   constructor(private dashboardService: DashboardService) {
+    this.currentUser = JSON.parse(window.localStorage.getItem('gcmUser'));
     /*
       this.dashboardService.testApi().subscribe(
         (res) => {
@@ -188,7 +199,13 @@ export class DashboardComponent {
         }
       );
     */
-    this.fetch((data) => { this.rows = data; });
+    this.fetch((data) => { this.rows = data; });      
+    
+  }
+
+  ngOnInit() { 
+    this.getWeekReport();
+    this.getMonthReport();
   }
 
   // project table
@@ -200,4 +217,51 @@ export class DashboardComponent {
     };
     req.send();
   }
+
+  getWeekReport() {
+    var params = {
+      type: 'week'
+    }
+    this.dashboardService.getDashboardReport(params).subscribe(
+      (res: any) => {
+        this.weekReportData.push(
+          {
+            data: res.totaux,
+            label: 'Semaine en cours',
+            borderWidth: 1,
+            type: 'line',
+            fill: false
+          }
+        );
+        this.weekReportLabels = res.days;
+        this.weekTotal = res.total;
+      }, (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  getMonthReport() {
+    var params = {
+      type: 'month'
+    }
+    this.dashboardService.getDashboardReport(params).subscribe(
+      (res: any) => {
+        this.monthReportData.push(
+          {
+            data: res.totaux,
+            label: 'Mois en cours',
+            borderWidth: 1,
+            type: 'line',
+            fill: false
+          }
+        );
+        this.monthReportLabels = res.days;
+        this.monthTotal = res.total;
+      }, (err) => {
+        console.log(err);
+      }
+    );
+  }
+
 }

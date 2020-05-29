@@ -11,13 +11,16 @@ export class RaportResultComponent implements OnInit {
   ventes: any = [];
   totalVente: number = 0;
   globals = GlobalVariable;
-  
+  query: any;
+  stats: any = [];
   constructor(private router: Router) { }
 
   ngOnInit() {
     const reportData = JSON.parse(window.localStorage.getItem('report'));
     if (reportData) {
       this.ventes = reportData.ventes;
+      this.query = reportData.query;
+      this.stats = reportData.stats;
       this.getVentesTotal();
     } else {
       this.router.navigate(['/raport']);

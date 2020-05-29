@@ -1,10 +1,10 @@
 <mat-card>
     <mat-card-title>
       <div class="mat-card-title-content">
-        <mat-icon [routerLink]="['/users']">arrow_back</mat-icon>
+        <mat-icon [routerLink]="['/user']">arrow_back</mat-icon>
         <span class="organization-modification-title">Création</span>
         <span class="theme-color organization-name">Utilisateur</span>
       </div>
     </mat-card-title>
-    <app-user-form [formstate]="'create'"></app-user-form>
+    <app-user-form [formstate]="'create'" ></app-user-form>
 </mat-card>

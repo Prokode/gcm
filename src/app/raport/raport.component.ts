@@ -47,7 +47,7 @@ export class RaportComponent implements OnInit {
         this.users = data['users'].users;
       }
     );
-    if (currentUser.role !== 'ADMIN') {
+    if (currentUser.role !== 'ADMIN' && currentUser.role !== 'ROOT') {
         this.showFilters = false;
         this.form.controls['date_debut'].setValue(new Date());
         this.form.controls['date_fin'].setValue(new Date());

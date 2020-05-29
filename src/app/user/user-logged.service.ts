@@ -41,4 +41,66 @@ export class UserLoggedService {
       );
   }  
 
+  getUser(id) {
+    return this.http.get(GlobalVariable.BASE_API_URL+'/logged/user/show', {
+      params: { id: id }
+    })
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+  
+  disableUser(data) {
+    return this.http.post(GlobalVariable.BASE_API_URL+'/logged/user/disable', data)
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+
+  activateUser(data) {
+    return this.http.post(GlobalVariable.BASE_API_URL+'/logged/user/activate', data)
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+
+  reInitPassword(data) {
+    return this.http.post(GlobalVariable.BASE_API_URL+'/logged/user/password/reinit', data)
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+ 
 }   

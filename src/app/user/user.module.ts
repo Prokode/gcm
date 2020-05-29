@@ -19,6 +19,7 @@ import { UserLoggedService } from './user-logged.service';
 import { UserFormComponent } from './user-form/user-form.component';
 import { UserListResolver } from './user-list.resolver';
 import { UserEditComponent } from './user-edit/user-edit.component';
+import { UserDetailResolver } from './user-detail.resolver';
 
 
 
@@ -53,7 +54,8 @@ import { UserEditComponent } from './user-edit/user-edit.component';
   providers: [ 
       UserValidators,
       UserLoggedService,
-      UserListResolver
+      UserListResolver,
+      UserDetailResolver
    ],
   entryComponents: [
   ]

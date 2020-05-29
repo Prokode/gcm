@@ -161,5 +161,20 @@ export class PosteService {
           }
         );
     }
+
+    disablePoste(data) {
+      return this.http.put(GlobalVariable.BASE_API_URL+'/logged/poste/disable', data)
+      .map(
+          (response: any) => { return response; }
+        ).catch(
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            return Observable.throw({
+              code: error.status,
+              content: JSON.parse(error.error).message
+            });
+          }
+        );
+    }
  
 }

@@ -12,6 +12,8 @@ import { AuthService } from '../../shared/auth/auth.service';
 import { UserService } from '../../shared/user/user.service';
 import { AppService } from '../../app.service';
 
+
+
 const SMALL_WIDTH_BREAKPOINT = 960;
 
 @Component({
@@ -46,6 +48,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   night_mode = false;
   user: any;
   society: any;
+
+  
+
   constructor(
     private standByService: StandByService,
     private _element: ElementRef,
@@ -85,18 +90,14 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     this.appService.userInfoChange.asObservable().subscribe(
       (res) => {
         if (res) {
-          this.getUse();
-        }
-      }
-    );
-
-    this.appService.userInfoChange.asObservable().subscribe(
-      (res) => {
-        if (res) {
+          this.getUser();
           this.getUserSociety();
         }
       }
     );
+
+    
+    
   }
 
   ngOnInit(): void {
@@ -160,9 +161,9 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   isOver(): boolean {
-    if (this.url === '/apps/messages' ||
-      this.url === '/apps/calendar' ||
-      this.url === '/apps/media' ||
+    if (this.url === '/vente' ||
+      this.url === '/vente/current' ||
+      this.url === '/vente/list' ||
       this.url === '/maps/leaflet' ||
       this.url === '/taskboard') {
       return true;
@@ -203,7 +204,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     );
   }
 
-  getUse() {
+  getUser() {
     this.appService.showUser().subscribe(
       (res) => {
         this.user = res;

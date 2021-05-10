@@ -7,8 +7,8 @@ export const GlobalVariable = Object.freeze({
     */
     /******* dev ***********/
     BASE_API_URL: 'http://localhost:8080',
-    // BASE_ONLINE_API_URL: 'http://localhost:80/gcm',
-    BASE_ONLINE_API_URL: 'http://gcm.atwebpages.com',
+    BASE_ONLINE_API_URL: 'http://localhost:80/gcm',
+    // BASE_ONLINE_API_URL: 'http://gcm.atwebpages.com',
     HOPITAL_MEDIA_URL: 'https://dev.api.emedicalrdv.com/ADMIN/hospitals/',
     APP_ID: 'GCM_IOT_APP',
     FormatMoney: function(money) {

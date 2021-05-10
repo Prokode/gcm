@@ -10,13 +10,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { WizardRoutes } from './wizard.routing';
 import { WizardComponent } from './wizard.component';
 import { ArchwizardModule } from 'ng2-archwizard';
-import { ActivationComponent } from './activation/activation.component';
+
 import { InformationComponent } from './information/information.component';
 import { WizardService } from './wizard.service';
 import { AccountComponent } from './account/account.component';
 import { AccountValidators } from './account/account.validators';
 import { InformationValidators } from './information/information.validators';
 import { TermesDialogComponent } from './termes-dialog/termes-dialog.component';
+import { ActivationComponent } from './activation/activation.component';
 
 @NgModule({
   imports: [
@@ -40,8 +41,8 @@ import { TermesDialogComponent } from './termes-dialog/termes-dialog.component';
       WizardComponent,
       InformationComponent,
       AccountComponent,
-      ActivationComponent,
-      TermesDialogComponent
+      TermesDialogComponent,
+      ActivationComponent
   ],
   providers: [
     WizardService,

@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { MatIconModule, MatCardModule, MatInputModule, MatCheckboxModule, MatButtonModule } from '@angular/material';
+import { MatIconModule, MatCardModule, MatInputModule, 
+  MatCheckboxModule, MatButtonModule, MatProgressSpinnerModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -15,6 +16,9 @@ import { SignupComponent } from './signup/signup.component';
 import { AuthService } from '../shared/auth/auth.service';
 import { UserService } from '../shared/user/user.service';
 import { SocietyResolver } from '../shared/user/society.resolver';
+import {
+  VenteService
+} from '../vente/vente.service';
 
 @NgModule({
   imports: [
@@ -25,6 +29,7 @@ import { SocietyResolver } from '../shared/user/society.resolver';
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule
@@ -40,7 +45,8 @@ import { SocietyResolver } from '../shared/user/society.resolver';
   providers: [
     AuthService,
     UserService,
-    SocietyResolver
+    SocietyResolver,
+    VenteService
   ]
 })
 

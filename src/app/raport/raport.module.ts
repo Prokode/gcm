@@ -6,7 +6,9 @@ import {
   MatSelectModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatTableModule,
+  MatGridListModule
 } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -43,7 +45,10 @@ import { RaportResultComponent } from './raport-result/raport-result.component';
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTableModule,
+    MatGridListModule
+
    ],
   declarations: [
      RaportComponent,

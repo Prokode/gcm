@@ -17,6 +17,7 @@ import { ActivationComponent } from '../wizard/activation/activation.component';
 @NgModule({
   imports: [
     CommonModule,
+    WizardModule,
     RouterModule.forChild(ReActivationRoutes),
     MatButtonModule,
     MatIconModule,
@@ -28,11 +29,11 @@ import { ActivationComponent } from '../wizard/activation/activation.component';
     FormsModule,
     ReactiveFormsModule,
     MatSelectModule,
-    MatTooltipModule
+    MatTooltipModule,
+    
    ],
   declarations: [
-    ReActivationComponent,
-    ActivationComponent
+    ReActivationComponent
   ],
   providers: [ 
       WizardService

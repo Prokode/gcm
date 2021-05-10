@@ -7,7 +7,7 @@ import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class VenteService {
-  // public activationIdShare = new Subject<any>();
+ public venteNotFinishedSubject = new Subject<any>();
   constructor(private http: HttpClient) {
   }
 
@@ -40,4 +40,34 @@ export class VenteService {
         }
       );
   }  
+
+  getVenteNotFinished() {
+    return this.http.get(GlobalVariable.BASE_API_URL+'/logged/vente/not_finished')
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }  
+
+  stopVente(data) {
+    return this.http.put(GlobalVariable.BASE_API_URL+'/logged/vente/stop_vente', data)
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+    }
 }

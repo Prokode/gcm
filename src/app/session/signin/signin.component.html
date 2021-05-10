@@ -12,7 +12,9 @@
             </div>
             <div>
               <p *ngIf="showErrorMsg" style="color: red; text-align: center;">
-                Les paramètres de connexion sont incorrectes.
+               {{
+                errorMsg
+               }}
               </p>
             </div>
             <div fxLayout="column" fxLayoutAlign="space-around">
@@ -37,6 +39,13 @@
               </div> -->
               <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">
                 Connexion
+                <mat-progress-spinner
+                  style="color: white !important;"
+                  mode="indeterminate"
+                  class="white loading-circle"
+                  *ngIf="loading"
+                  [diameter]="25" [strokeWidth]="2">
+                </mat-progress-spinner>
               </button>
             </div>
             <!-- <div class="pt-1 pb-1 text-xs-center">

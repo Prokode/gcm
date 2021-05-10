@@ -17,31 +17,75 @@
       <mat-expansion-panel (closed)="false">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Statistiques
+            <b>Statistiques</b>
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <br>
-        <div style="width: 100%; padding-bottom: 10px;">
+        <ng-template matExpansionPanelContent>
+          <div fxLayout="row" fxLayoutWrap="wrap" style="height: 100%; overflow: scroll;" fxLayoutAlign=" stretch" class="mb-1">
+            <div fxFlex="50" >
+              <h4 style="text-align: center;"><b>Statistiques Consoles</b></h4>
+              <ngx-datatable
+              class='material'
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="10"
+              [rows]='stats.consoles'
+              [loadingIndicator]="loading"
+              [messages]="{emptyMessage: 'Pas de données disponibles'}">
+                <ngx-datatable-column name="console" [sortable]="false">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    {{value.name}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="total" [sortable]="false">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    {{value}}
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+            </div>
+            <div fxFlex="50">
+              <h4 style="text-align: center;"><b>Statistiques Postes</b></h4>
+              <ngx-datatable
+              class='material'
+              [columnMode]="'force'"
+              [headerHeight]="50"
+              [footerHeight]="50"
+              [rowHeight]="'auto'"
+              [limit]="10"
+              [rows]='stats.postes'
+              [loadingIndicator]="loading"
+              [messages]="{emptyMessage: 'Pas de données disponibles'}">
+                <ngx-datatable-column name="poste" [sortable]="false">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    {{value.name}}
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="total" [sortable]="false">
+                  <ng-template let-value="value" ngx-datatable-cell-template>
+                    {{value}}
+                  </ng-template>
+                </ngx-datatable-column>
+              </ngx-datatable>
+          </div>
+        </div>
+        <!-- <div style="width: 100%; height: 100%; overflow: scroll; padding-bottom: 10px;">
           <div style="width: 49%; display: inline-block; ">
-            <h4><b>Statistiques Consoles</b></h4>
-            <table class="table table-bordered">
-              <tr *ngFor="let console of stats.consoles">
-                <td> <b>{{console.console.name}} </b> </td>
-                <td>{{console.total + ' Fcfa'}}</td>
-              </tr>
-            </table>
+            
           </div>
           <div style="width: 49%; display: inline-block; ">
-            <h4><b>Statistiques Postes</b></h4>
+            
             <table class="table table-bordered">
               <tr *ngFor="let poste of stats.postes">
                 <td><b>{{poste.poste.name}}</b></td>
                 <td>{{poste.total + ' Fcfa'}}</td>
               </tr>
-            </table>
+            </table> 
           </div>
-        </div>
-        <br>
+        </div>-->
+        </ng-template>
       </mat-expansion-panel>
     </mat-accordion>
   </div>
@@ -90,7 +134,7 @@ class='material'
         <strong >Coût</strong>
       </ng-template>
       <ng-template let-row="row" ngx-datatable-cell-template>
-        {{globals.FormatMoney(row.tarif.cost)}}
+        {{globals.FormatMoney(row.tarif.cost) + ' F'}}
       </ng-template>
     </ngx-datatable-column>
     <ngx-datatable-column name="wasStop" [sortable]="false">

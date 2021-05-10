@@ -31,7 +31,7 @@ export class ActivationService {
         return new Promise((resolve, reject) => {
             this.getActivation().subscribe(
               (response: any) => {
-                resolve();
+                resolve({});
               }, (error: HttpErrorResponse) => {
                 console.log(error);
                 alert('SERVER CONNEXION ERROR');

@@ -85,7 +85,7 @@ const MENUITEMS: Menu[] = [
     state: 'raport',
     name: 'Rapports',
     type: 'link',
-    icon: 'reorder',
+    icon: 'description',
     role: ['ADMIN', 'AGENT', 'ROOT']
   },
   {

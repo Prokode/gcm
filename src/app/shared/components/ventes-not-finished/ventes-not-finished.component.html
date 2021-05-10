@@ -1,0 +1,107 @@
+<div class="vente-content">
+  <mat-card>
+    <mat-card-content>
+      <h4> Les ventes non termnées </h4>
+      <p>Vous avez des ventes qui n'ont pas pu être terminées dû à un arrêt du logiciel.</p>
+      <br>
+      <button 
+        style="position: relative; right: 5px;"
+        type="button" mat-raised-button color="warn"
+        [disabled]="onProcess"
+        matTooltip="Annuler tout"
+        (click)="cancelAllTime()">
+        <mat-icon>delete</mat-icon>
+        Annuler tout
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <ngx-datatable
+  class='material'
+  [rowHeight]="'auto'"
+  [columnMode]="'force'"
+  [headerHeight]="50"
+  [footerHeight]="50"
+  [rows]='ventesNotFinished'
+  [loadingIndicator]="loading"
+  [messages]="{emptyMessage: 'Pas de données disponibles'}">
+    <ngx-datatable-column name="poste" [sortable]="false">
+      <ng-template ngx-datatable-header-template>
+        <strong >Poste</strong>
+      </ng-template>
+      <ng-template let-value="value" ngx-datatable-cell-template>
+        {{value.name}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Heure" [sortable]="false">
+      <ng-template ngx-datatable-header-template>
+        <strong >Heure</strong>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.tarif.hour + ' : ' + row.tarif.minute}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="Coût" [sortable]="false">
+        <ng-template ngx-datatable-header-template>
+          <strong >Coût</strong>
+        </ng-template>
+        <ng-template let-row="row" ngx-datatable-cell-template>
+          {{globals.FormatMoney(row.tarif.cost)}}
+        </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="remaining_time" [sortable]="false">
+      <ng-template ngx-datatable-header-template>
+        <strong >Temps restant</strong>
+      </ng-template>
+      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+        {{row.remaining_time.hour + " : " + row.remaining_time.minute + 
+        " : " + row.remaining_time.second}}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="created_at" [sortable]="false">
+      <ng-template ngx-datatable-header-template>
+        <strong>Date</strong>
+      </ng-template>
+      <ng-template let-row="row" ngx-datatable-cell-template>
+        {{row.created_at | date : 'dd/MM/yyyy HH:mm:ss' }}
+      </ng-template>
+    </ngx-datatable-column>
+    <ngx-datatable-column name="ACTIONS" [sortable]="false" >
+      <ng-template ngx-datatable-header-template>
+        <strong>{{ 'ACTIONS' }}</strong>
+      </ng-template>
+      <ng-template ngx-datatable-cell-template let-row="row">
+        <button 
+              type="button" mat-raised-button color="primary"
+              [disabled]="onProcess"
+              matTooltip="Démarrer"
+              (click)="beginTime(row)">
+          <mat-icon>cached</mat-icon>
+          Démarrer
+        </button>
+        <button 
+                type="button" mat-raised-button color="warn"
+                [disabled]="onProcess"
+                matTooltip="Annuler"
+                (click)="cancelTime(row)">
+          <mat-icon>delete</mat-icon>
+          Annuler
+        </button>
+      </ng-template>
+    </ngx-datatable-column>
+  </ngx-datatable>
+  <mat-card>
+    <mat-card-content>
+      <button 
+        style="position: relative !important; left: 1px; top: 1px;"
+        type="button" mat-raised-button color="warn"
+        [disabled]="onProcess"
+        matTooltip="Fermer"
+        (click)="close()">
+        <mat-icon>close</mat-icon>
+        Fermer
+      </button>
+    </mat-card-content>
+  </mat-card>
+  
+</div>  

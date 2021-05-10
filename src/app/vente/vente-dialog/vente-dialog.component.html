@@ -11,7 +11,7 @@
               <mat-select [formControl]="form.controls['tarif']" placeholder="Tarifs">
                 <mat-option  *ngFor="let tar of current_poste.tarifs" [value]="tar"
                              [matTooltip]="">
-                  {{tar.hour + 'H ' + tar.minute + 'min' + ' Coût : ' + tar.cost}} </mat-option>
+                  {{'Coût : ' + tar.cost + 'F : ' + tar.hour + 'H ' + tar.minute + 'min'}} </mat-option>
               </mat-select>
           </mat-form-field>
           <div style="text-align: right;">

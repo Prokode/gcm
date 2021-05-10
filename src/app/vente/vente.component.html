@@ -58,7 +58,7 @@
                           <b *ngIf="!poste.time && !poste.tarif && !poste.isOn">READY !</b>
                           <b *ngIf="poste.isOn && !poste.time">ALLUME</b>
                           <b *ngIf="!poste.time && poste.tarif">{{poste.tarif.hour + ' : ' + poste.tarif.minute + ' : ' + '00' }} </b>
-                          <b  *ngIf="poste.time && poste.tarif">{{poste.time}}</b>
+                          <b [ngClass]="{'end_signal': getEndSignal(poste)}" *ngIf="poste.time && poste.tarif">{{poste.time}}</b>
                         </h1>
                       </div>
                   </div>  
@@ -91,10 +91,11 @@
                   (click)="simplePosteOff(poste)" color="warn">
                      Arrêter
                   </a>
-                  <a fxFlex="40" *ngIf="!poste.time && !poste.tarif && !poste.isOn  && (currentUser.role === 'ADMIN' || currentUser.role === 'ROOT')" type="button" mat-raised-button class=""
+                  <button fxFlex="40" [disabled]="!(currentUser.role === 'ADMIN' || currentUser.role === 'ROOT')"
+                   *ngIf="!poste.time && !poste.tarif && !poste.isOn " type="button" mat-raised-button class=""
                    (click)="simplePosteOn(poste)" color="indigo">
                       Allumer
-                  </a>
+                  </button>
                   <a fxFlex="40" *ngIf="!poste.time && poste.tarif" type="button" mat-raised-button
                    class="gri-button" (click)="startTime(poste)" >
                     Commencer
@@ -114,27 +115,10 @@
                   
                 </div>
                 <br>
-                <!-- <div  fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
-                  <span fxFlex="10"></span>
-                  <div fxFlex="80" >
-                    
-                  </div>
-                  
-                   <a fxFlex="80" *ngIf="poste.time && poste.tarif" type="button" mat-raised-button class=""
-                   (click)="openVenteDialog(poste, 'add')" color="">
-                     Retrancher 1 min
-                  </a> 
-                </div> --> 
             </div>
             </mat-card-content>
             </mat-card>
         </div>
-        <!-- <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
-            <img class="poste-img" src="./assets/images/tele.png" alt="">
-        </div>
-        <div fxFlex.gt-sm="30" fxFlex.gt-xs="100" fxFlex="30">
-            <img class="poste-img" src="./assets/images/tele.png" alt="">
-        </div> -->
     </div>
   </mat-card-content> 
 </mat-card>

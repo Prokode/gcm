@@ -12,6 +12,9 @@ import { VenteComponent } from './vente.component';
 import { PosteService } from '../poste/poste.service';
 import { VenteRoutes } from './vente.routing';
 import { PostesTarifsResolver } from './postes-tarifs.resolver';
+import {
+  PostesStatesResolver
+} from './postes-states.resolver';
 import { VenteDialogComponent } from './vente-dialog/vente-dialog.component';
 import { VenteService } from './vente.service';
 
@@ -58,7 +61,8 @@ const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
     PostesTarifsResolver,
     VenteService,
     VenteListResolver,
-    StandByService
+    StandByService,
+    PostesStatesResolver
   ],
   entryComponents: [
       VenteDialogComponent,

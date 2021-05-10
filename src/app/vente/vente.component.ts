@@ -8,6 +8,8 @@ import { StandByService } from '../stand-by/stand-by.service';
 import { ConfirmPasswordComponent } from './confirm-password/confirm-password.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { VentesNotFinishedComponent } from '../shared/components/ventes-not-finished/ventes-not-finished.component';
+
 @Component({
   selector: 'app-vente',
   templateUrl: './vente.component.html',
@@ -37,11 +39,31 @@ export class VenteComponent implements OnInit {
   };
   currentUser: any;
   minutes_to_remove = [null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  agent_minutes_to_remove = [null, 3, 5];
+  agent_minutes_to_remove = [null, 1, 3, 5];
   vente_en_cours: any = null;
   minToRemove  = null;
   form: FormGroup;
   temp: any = [];
+
+  ventesDialogRef: MatDialogRef<VentesNotFinishedComponent> | null;
+  ventesDialogConfig = {
+    disableClose: true,
+    panelClass: 'custom-overlay-pane-class',
+    hasBackdrop: true,
+    backdropClass: '',
+    width: '90%',
+    height: '',
+    position: {
+      top: '',
+      bottom: '',
+      left: '',
+      right: ''
+    },
+    data: {
+      ventesNotFinished: null
+    }
+  };
+
   constructor(private route: ActivatedRoute,
     private venteService: VenteService,
     private socket: Socket,
@@ -119,6 +141,31 @@ export class VenteComponent implements OnInit {
         });
       }
     );
+
+    let ventesNotFinished = window.localStorage.getItem('ventesNotFinished');
+    if (ventesNotFinished) {
+      let ventesNotFinishedParsed = JSON.parse(ventesNotFinished);
+      console.log(ventesNotFinishedParsed);
+      if (ventesNotFinishedParsed.length > 0) {
+        this.ventesDialogConfig.data.ventesNotFinished = ventesNotFinishedParsed;
+        this.ventesDialogRef = this.dialog.open(VentesNotFinishedComponent, this.ventesDialogConfig);
+        this.ventesDialogRef.afterClosed().subscribe((result: any) => {
+          console.log(result);
+        });
+      }
+    }
+
+    this.venteService.venteNotFinishedSubject.asObservable().subscribe(
+      (res) => {
+        if (res) {
+          console.log(res);
+          res.tarif.hour = Number(res.remaining_time.hour);
+          res.tarif.minute = Number(res.remaining_time.minute);
+          res.tarif.second = Number(res.remaining_time.second);
+          this.socket.emit("start_chrono", res);
+        }
+      }
+    )
 
   }
 
@@ -242,7 +289,7 @@ export class VenteComponent implements OnInit {
           let m = Math.trunc((Number(poste.timems) - (h * 1000 * 60 * 60)) / (1000 * 60));
           let s = Math.trunc((Number(poste.timems) - ((h * 1000 * 60 * 60) + (m * 1000 * 60))) / 1000);
           poste.vente.tarif.hour = h;
-          poste.vente.tarif.minute = m;
+          poste.vente.tarif.minute = m > 1 ? (m - 1) : m;
           poste.vente.tarif.second = s;
           poste.vente.poste = posteToTranfertTo.poste;
           this.form.reset();
@@ -261,7 +308,7 @@ export class VenteComponent implements OnInit {
         let m = Math.trunc((Number(poste.timems) - (h * 1000 * 60 * 60)) / (1000 * 60));
         let s = Math.trunc((Number(poste.timems) - ((h * 1000 * 60 * 60) + (m * 1000 * 60))) / 1000);
         poste.vente.tarif.hour = h;
-        poste.vente.tarif.minute = m;
+        poste.vente.tarif.minute = m > 1 ? (m - 1) : m;
         poste.vente.tarif.second = s;
         poste.vente.poste = posteToTranfertTo.poste;
         this.form.reset();
@@ -293,6 +340,14 @@ export class VenteComponent implements OnInit {
       });
       // update the rows
       this.postes = temp;
+    }
+  }
+
+  getEndSignal(poste) {
+    if(!poste.timems) {
+      return false;
+    } else if (poste.timems <= (2 * 60 * 1000)) {
+      return true;
     }
   }
   

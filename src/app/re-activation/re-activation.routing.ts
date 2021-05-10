@@ -4,7 +4,7 @@ export const ReActivationRoutes: Routes = [
   {
     path: '',
     children: [{
-      path: '',
+      path: 'home',
       component: ReActivationComponent
     }
   ]

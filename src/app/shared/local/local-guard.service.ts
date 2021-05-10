@@ -8,7 +8,9 @@ import {Observable} from 'rxjs/Observable';
 
 export class LocalGuard implements CanActivate, CanActivateChild {
 
- constructor(private router: Router, private  localService: LocalService) {}
+ constructor(private router: Router, private  localService: LocalService) {
+    window.localStorage.clear();
+ }
 
  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean>|boolean {
    console.log('can local activate');

@@ -29,6 +29,7 @@ import {
   MatSlideToggleModule,
   MatSelectModule,
   MatProgressBarModule, 
+  MatTableModule, MatTooltipModule, MatDialogModule,
   MatSnackBarModule} from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {BidiModule} from '@angular/cdk/bidi';
@@ -80,6 +81,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   minScrollbarLength: 20
 };
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -130,7 +133,12 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     PerfectScrollbarModule,
     SharedModule,
     MatSnackBarModule,
-    StandByModule
+    MatTableModule,
+    StandByModule,
+    MatTooltipModule, 
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
     UserService,

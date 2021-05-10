@@ -30,8 +30,9 @@
             </mat-form-field>
         </div>
         <div class="pb-1">
+          
             <mat-form-field style="width: 100%">
-              <input matInput placeholder="Numéro pin android"
+              <input matInput placeholder="Numéro pin arduino"
                [formControl]="form.controls['arduino_pin']" type="number" >
             </mat-form-field>
             <mat-error *ngIf="form.controls['arduino_pin'].hasError('required') &&

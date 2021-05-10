@@ -147,6 +147,21 @@ export class PosteService {
         );
     }
 
+    getPostesStates() {
+      return this.http.get(GlobalVariable.BASE_API_URL+'/logged/poste/list/states')
+      .map(
+          (response: any) => {  return response; }
+        ).catch(
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            return Observable.throw({
+              code: error.status,
+              content: JSON.parse(error.error).message
+            });
+          }
+        );
+    }
+
     getPostesTarifs() {
       return this.http.get(GlobalVariable.BASE_API_URL+'/logged/poste/list/tarifs')
       .map(

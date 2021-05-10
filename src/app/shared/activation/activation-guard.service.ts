@@ -7,7 +7,9 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class ActivationGuard implements CanActivate, CanActivateChild {
 
- constructor(private router: Router, private activationService: ActivationService) {}
+ constructor(private router: Router, private activationService: ActivationService) {
+  window.localStorage.clear();
+ }
 
  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):  Observable<boolean>| boolean {
    console.log('can activation activate');
@@ -18,7 +20,7 @@ export class ActivationGuard implements CanActivate, CanActivateChild {
         if (res.message === 'activated') {
           return true;
         } else if (res.message === 'activation exprired') {
-          this.router.navigate(['/', 'reactivation']);
+          this.router.navigate(['/', 'reactivation', 'home']);
           return false;
         } else {
           this.router.navigate(['/', 'wizard']);

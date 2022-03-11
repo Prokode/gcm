@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PosteShowComponent implements OnInit {
   consoles: any = [];
+  boards: any = [];
   poste:  any = null;
 
   constructor(private route: ActivatedRoute) { }
@@ -16,6 +17,7 @@ export class PosteShowComponent implements OnInit {
     this.route.data.subscribe(
       (data: any) => {
         this.consoles = data['consoles'];
+        this.boards = data['boards'];
         this.poste = data['poste'];
       }
     );

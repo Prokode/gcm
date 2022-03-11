@@ -16,6 +16,7 @@
             </div>
             <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button> -->
         </div>
+
         <div class="pb-1">
             <mat-form-field style="width: 100%">
                 <mat-select placeholder="Console"
@@ -29,6 +30,21 @@
                            class="mat-text-warn">Ce champs est requis</mat-error>
             </mat-form-field>
         </div>
+
+        <div class="pb-1">
+          <mat-form-field style="width: 100%">
+              <mat-select placeholder="Carte"
+                          [formControl]="form.controls['board_id']">
+                <mat-option  *ngFor="let board of boards" [value]="board._id"
+                             [matTooltip]="board.name">
+                  {{board.name}} </mat-option>
+              </mat-select>
+              <mat-error *ngIf="form.controls['board_id'].hasError('required') &&
+               form.controls['board_id'].touched"
+                         class="mat-text-warn">Ce champs est requis</mat-error>
+          </mat-form-field>
+        </div>
+
         <div class="pb-1">
           
             <mat-form-field style="width: 100%">

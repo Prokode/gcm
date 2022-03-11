@@ -1,5 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
+
 const globals = require('../../shared/globals');
 const router = express.Router();
 var uniqid = require('uniqid');
@@ -9,6 +10,7 @@ const venteReqValidators = require('../../shared/vente.req.validators');
 let Vente = require('../../shared/db/models/Vente');
 let Poste = require('../../shared/db/models/Poste');
 let Console = require('../../shared/db/models/Console');
+const Board = require('../../shared/db/models/Board');
 
 var io = require('../../app_inits').io;
 
@@ -16,23 +18,96 @@ var Stopwatch = require('timer-stopwatch');
 var msToTime = require('pretty-ms');
 const jwt = require('jsonwebtoken');
 var five = require("johnny-five");
+
+const {
+    EtherPortClient
+} = require('etherport-client');
+
+
 // https://github.com/rwaldron/johnny-five/wiki/Getting-Started#trouble-shooting {port: 'COM9'}
-var board;
-try {
-    board = new five.Board();
-    board.on("ready", function() {
-        console.log("board ready");
-    });
-} catch(e) {
-    console.log(e);
-}
+var fiveBoards;
+var boardConnected = false;
+
+Board.find({}).sort({ created_at: -1 }).exec(function (err, boards) {
+    if (err) {
+        error.status = 500;
+        next(error);
+    }
+    if (boards.length > 0) {
+        var ports = boards.map(
+            (board) => {
+                return { 
+                    id:  board._id,
+                    port: board.operation_mode === 'ip' ? new EtherPortClient({
+                                    host: board.ip,
+                                    port: 3030
+                    }) : `COM${board.com}`,
+                    repl: false}
+            }
+        );
+
+        // Create 2 board instances with IDs "A" & "B"
+        fiveBoards = new five.Boards(ports)
+            .on("ready", function() {
+            console.log("Boards are ready");
+            })
+            .on("fail", function(event) {
+                console.log("%s sent a 'fail' message: %s", event.class, event.message);
+            })
+            .on("close", function(event) {
+                console.log("%s Close: %s", event.class, event.message);
+            })
+            .on("error", function(event) {
+                console.log("%s Error: %s", event.class, event.message);
+            });
+
+    }
+});
+
+// do {
+
+//     try {
+
+//         board = new five.Board({port: new EtherPortClient({
+//             host: '192.168.43.35',
+//             port: 3030
+//           }),
+//           repl: false
+//         });
+
+//         board.on("ready", function () {
+//             console.log("board ready");
+//             boardConnected = true;
+//         });
+
+//         board.on("fail", function(event) {
+//             console.log("%s sent a 'fail' message: %s", event.class, event.message);
+//             boardConnected = false;
+//         });
+
+//         boardConnected = true;
+
+//     } catch(e) {
+//         console.log('Board exception error');
+//         console.log(e);
+//         boardConnected = false;
+//     }
+
+
+// } while( !boardConnected );
+
 // var board;
 function NewVenteObj(temps, vente) {
     var timerOptions = {
         refreshRateMS: 1000,    // How often the clock should be updated 
         almostDoneMS: 0,  // When counting down - this event will fire with this many milliseconds remaining on the clock 
     }
-    this.tele = new five.Led(Number(vente.poste.arduino_pin));
+    // new five.Led(Number(vente.poste.arduino_pin));
+    
+    this.tele = new five.Led({
+        board: fiveBoards.byId(vente.poste.board_id),
+        pin: Number(vente.poste.arduino_pin),
+    });
     this.ident = 0;
     this.vente = vente;
     this.countDown = new Stopwatch(temps, timerOptions);//new Timer({direction:'up',startValue:'00:00:00',showHours: true});
@@ -52,6 +127,7 @@ router.post('/create', venteReqValidators.validate('create'), function (req, res
     try {
         
             const errors = validationResult(req); 
+            
             if (!errors.isEmpty()) {
                 error.status = 400;
                 error.message = errors.array();
@@ -74,6 +150,7 @@ router.post('/create', venteReqValidators.validate('create'), function (req, res
                     poste: {
                         name: body.poste.name,
                         arduino_pin: body.poste.arduino_pin,
+                        board_id: body.poste.board_id,
                         _id: body.poste._id
                     },
                     console: consoleData[0], 
@@ -178,17 +255,21 @@ router.get('/not_finished', function (req, res, next) {
         const findOptions = {
             created_at: { $lte: new Date(date_fin), $gte: new Date(date_debut)}
         };
+
         // : {
         //     created_at: { $lte: new Date(date_fin), $gte: new Date(date_debut)},
         //     user_id: req.user.user_id
         // };
+        // ).sort({ created_at: -1 }).exec(
 
-        Vente.find(findOptions).sort({ created_at: -1 }).exec((err, ventes) => {
+        Vente.find(findOptions, (err, ventes) => {
             if(err) {
                 error.status = 500;
                 next(error);
                 return;
             }
+
+            ventes.reverse();
 
             var i = 0;
             while(i <= (ventes.length - 1)) {
@@ -373,15 +454,23 @@ io.on('connection', function (socket) {
     });
 
     socket.on('simple_on',function(poste) {
-        let tele = new five.Led(Number(poste.arduino_pin));
+        // let tele = new five.Led(Number(poste.arduino_pin));
+        let tele = new five.Led({
+            board: fiveBoards.byId(poste.board_id),
+            pin: Number(poste.arduino_pin),
+        });
         tele.on();
         socket.emit('simple_on_success', poste);
     });
 
     socket.on('simple_off',function(poste) {
-        let tele = new five.Led(Number(poste.arduino_pin));
+        let tele = new five.Led({
+            board: fiveBoards.byId(poste.board_id),
+            pin: Number(poste.arduino_pin),
+        });
         tele.off();
         socket.emit('simple_off_success', poste);
+
     });
 
 });    

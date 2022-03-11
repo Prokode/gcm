@@ -1,0 +1,58 @@
+<mat-card>
+  <mat-card-content class="page-title">
+    Sauvegarder configuration
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-content>
+    <div class="licence-block">
+        <!-- <h2 style="color: #3f51b5 !important;" text-center><b>DETAILS DE LA LICENCE EN COURS</b></h2> -->
+        <p> Cette page vous permet de sauvegarder votre configuration. Cette configuration comporte vos postes, consoles, tarifs.
+          Votre configuration sera sauvegardée sur nos serveurs sécurisés et vous pourriez le charger lors d'une possible réinstallation
+        du logiciel, ce qui vous permettra d'avoir votre configuration habituelle prêt à l'emploie.</p>
+        <br>
+        <p>
+          Vous devriez fournir votre mot de passe avant la sauvegarde de vos configurations.
+        </p>
+      <hr>
+      <br>
+      <h2 style="color: #3f51b5 !important;" text-center><b>Sécurité</b></h2>
+      <p>Votre mot de passe</p>
+      <form [formGroup]="form"  >
+        <div fxLayout="column" fxLayoutAlign="space-around">
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+              <input matInput placeholder="Mot de passe"
+               [formControl]="form.controls['password']" type="password">
+            </mat-form-field>
+            <small *ngIf="form.controls['password'].hasError('required') &&
+              form.controls['password'].touched" class="mat-text-warn">
+                Ce champ est requis.</small>
+          </div>
+          <p style="color: red;" *ngIf="form.disabled">Un instant...</p>
+          <p style="color: red;" *ngIf="error !== null">
+            {{error}}
+          </p>
+          <div *ngIf="progress > 0" class="row about-tp mt-1 md-5">
+            <div class="col">
+              <mat-progress-bar mode="determinate" value="{{progress}}"></mat-progress-bar>
+            </div>
+          </div>
+          <p style="color: green;" *ngIf="successMsg !== null">
+            {{successMsg}}
+          </p>
+          <br>
+          <div fxFlex.gt-sm="100" fxFlex.gt-xs="100" fxFlex="100">
+            <div fxFlex="10" ></div>
+            <button (click)="saveConfig()" fxFlex="80" mat-raised-button color="primary" 
+            type="button" [disabled]="!form.valid || loading">Sauvegarder</button>
+            <!-- <button (click)="chargeConfig()" fxFlex="50" mat-raised-button color="warn" 
+            type="button" [disabled]="!form.valid || loading">Charger</button> -->
+          </div>
+        </div>
+      </form>
+      <br>
+  </div>
+  </mat-card-content>
+</mat-card>    

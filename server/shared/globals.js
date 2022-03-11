@@ -5,6 +5,8 @@ const fs = require('fs');
 const globalData = {
     jwtSecret: 'GniQ2JathEh',
     APP_ID: 'GCM_IOT_APP',
+    BASE_ONLINE_API_URL: 'http://localhost/gcm',
+    // BASE_ONLINE_API_URL: 'http://gcm.atwebpages.com',
     DB_PATH: path.join(__dirname, '/db/data'),
     ACTIVATION_KEY:'@&GCMANAGER*/!2019=@',
     randomNumber: function() {

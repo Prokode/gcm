@@ -139,4 +139,19 @@ export class WizardService {
       );
     }
 
+    restoreConfigs(data) {
+      return this.http.post(GlobalVariable.BASE_API_URL + '/logged-out/configs/restore', data)
+      .map(
+        (response: any) => {  return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+    }
+
 }

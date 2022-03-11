@@ -14,6 +14,7 @@ const Validators = {
                 body('name', 'Name must exist').exists(),
                 body('console_id', 'Console Id must exist').exists(),
                 body('arduino_pin', 'Arduino Pin must exist').exists(),
+                body('board_id', 'Arduino Pin must exist').exists(),
             ];   
             break;
         case 'show':
@@ -26,6 +27,7 @@ const Validators = {
                 body('name', 'Name must exist').exists(),
                 body('console_id', 'Console Id must exist').exists(),
                 body('arduino_pin', 'Arduino Pin must exist').exists(),
+                body('board_id', 'Arduino Pin must exist').exists(),
                 body('_id', 'Id must exist').exists(),
             ];   
             break;

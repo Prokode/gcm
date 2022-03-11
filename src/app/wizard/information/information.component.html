@@ -1,12 +1,12 @@
 <h1 class="presentation-title">Informations utilisateur</h1>
 <div class="presentation-description">
   <p style="text-align: center; color: white;">
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Doloribus fugit provident debitis consectetur id. Repudiandae,
-    nisi quia voluptates aliquid animi perspiciatis vitae dolores non nobis porro dolorem, eveniet ad illo!
+    Entrez les informations du propriétaire de la salle de jeux. Si vous avez déjà eu à créer ce compte cliquez sur 
+    j'ai déjà un compte. Le numéro de téléphone que vous allez entrer, vous servira à consulter vos ventes directement en ligne n'importe ou dans le monde.
   </p>
   <p *ngIf="!recover" style="text-align: center; color: white;">
-    Vous avez déjà un compte utilisateur? 
-    <a (click)="toggleRecover()" style="text-decoration: underline; color: rgb(69, 69, 204)" >Cliquez-ici</a>
+    Vous avez déjà un compte utilisateur? Cliquez ici 
+    <a (click)="toggleRecover()" style="text-decoration: underline; color: rgb(69, 69, 204)" >J'ai déjà un compte</a>
   </p>
   <p *ngIf="recover" style="text-align: center; color: white;">
     Entrer votre numéro de téléphone utilisé lors de votre dernière inscription
@@ -133,8 +133,21 @@
             <hr>
             <li><b>Adresse : </b> {{ userRecovered.address }} </li>
           </ul>
-          <button mat-raised-button color="primary" type="submit" 
-          (click)="confirmUserRecovered()" >Je confirme</button>
+
+
+          <div *ngIf="userRecovered.configs != null">
+            <p >
+              Nous avons détecter une sauvegarde d'une ancienne configuration, si vous voulez restaurez cette configuration vous pouvez 
+              cliquer sur le bouton <b>Restaurer ma sauvegarde</b>
+            </p>
+            <button style="float: right;" mat-raised-button color="warn" type="button" 
+             (click)="restoreConfigs()" >Restaurer ma sauvegarde</button>
+             <br>
+          </div>
+         
+          
+          <button mat-raised-button color="primary" type="button" 
+          (click)="confirmUserRecovered()" >Je confirme mon identité</button>
         </div>  
       </div>
     </mat-card-content>

@@ -24,6 +24,7 @@
               <input matInput placeholder="Code de la licence"
                [formControl]="form.controls['code']">
             </mat-form-field>
+            
           </div>
           <p style="color: red;" *ngIf="form.disabled">Un instant...</p>
           <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid || loading">Valider</button>

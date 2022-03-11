@@ -72,6 +72,19 @@ server.listen(8080, function() {
   console.log('ready to accept request on localhost:8080/');
 });
 
+//Selle update cron JOB
+
+require('./sells_update_cron_job.js');
+
 // console.log(io);
+
+// Handle unhandled rejection
+process.on('unhandledRejection', (err, promise) => {
+  console.log(`Unhandled error: ${err.message}`);
+  // Close server & exit process
+  server.close(() => {
+      process.exit(1);
+  });
+});
 
 module.exports = app;

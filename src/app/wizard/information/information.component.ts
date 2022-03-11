@@ -23,6 +23,7 @@ export class InformationComponent implements OnInit {
   historyId: any = null;
   recover: boolean = false;
   userRecovered: any = null;
+  loadingConfigs: boolean = false;
   constructor(private fb: FormBuilder, private wizardService: WizardService,
               private snackMessageService : SnackMessageService, private informationValidators: InformationValidators ) {
     this.form = this.fb.group ( {
@@ -140,6 +141,21 @@ export class InformationComponent implements OnInit {
             new SnackMessage('success', 'Vos informations ont été bien enrégistrées'));
           this.onInformationSuccess.emit(true);
         }
+      },
+      (err) => {
+        this.snackMessageService.newMessage.next(
+          new SnackMessage('danger', 'Une erreur s\'est produite, réesseyez s\'il vous plaît.'));
+      }
+    );
+  }
+
+  restoreConfigs() {
+    this.wizardService.restoreConfigs(this.userRecovered.configs).subscribe(
+      (res) => {
+        if (res.message === 'success') {
+          this.snackMessageService.newMessage.next(
+            new SnackMessage('success', 'Votre configuration a été bien restaurée.'));
+        } 
       },
       (err) => {
         this.snackMessageService.newMessage.next(

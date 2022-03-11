@@ -9,6 +9,9 @@ var schema = {
         type: String,
         unique: true
     },
+    board_id: {
+        type: String
+    }, 
     arduino_pin: {
         type: String,
         unique: true

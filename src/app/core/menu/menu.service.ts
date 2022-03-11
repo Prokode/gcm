@@ -56,7 +56,9 @@ const MENUITEMS: Menu[] = [
       {state: '/poste', name: 'Postes'},
       {state: '/console', name: 'Consoles'},
       {state: '/tarif', name: 'Tarifs'},
-      {state: '/licence', name: 'Licence'}
+      {state: '/licence', name: 'Licence'},
+      {state: '/board', name: 'Cartes'},
+      {state: '/save-config', name: 'Sauvegarder configuration' }
     ],
     role: ['ADMIN', 'ROOT']
   },

@@ -12,7 +12,7 @@ export class PosteValidators {
   arduinoPinValidator(control: FormControl): Promise<any> | Observable<any> {
     if (control.parent) {
       return this.http.get(GlobalVariable.BASE_API_URL + '/logged/poste/arduino/pin/validate', {
-        params: {arduino_pin: control.value}
+        params: {arduino_pin: control.value, board_id: control.parent.value.board_id}
       }).map(
           (response: any) => {
             if (response) {

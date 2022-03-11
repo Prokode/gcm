@@ -1,0 +1,112 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <mat-card-content>
+    <div fxLayout="column" fxLayoutAlign="space-around">
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Nom de la carte"
+           [formControl]="form.controls['name']">
+        </mat-form-field>
+        <small *ngIf="form.controls['name'].hasError('required') &&
+        form.controls['name'].touched" class="mat-text-warn">
+          Ce champs est requis.</small>
+        <small *ngIf="form.controls['name'].hasError('minlength') &&
+        form.controls['name'].touched" class="mat-text-warn">
+          Ce champs doit être de 2 caractères minimum.</small>
+        <small *ngIf="form.controls['name'].hasError('nameUnique') &&
+        form.controls['name'].touched" class="mat-text-warn">
+          Ce nom est déjà utilisé.</small>
+      </div>
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+            <mat-select (change)="onOperationModeChange($event)"  placeholder="Mode d'opération"
+                        [formControl]="form.controls['operation_mode']">
+              <mat-option  *ngFor="let opm of operationModes" [value]="opm"
+                           [matTooltip]="opm">
+                {{opm.toUpperCase()}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['operation_mode'].hasError('required') &&
+             form.controls['operation_mode'].touched"
+                       class="mat-text-warn">Ce champs est requis</mat-error>
+        </mat-form-field>
+      </div>
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Numéro du COM(1, 2,......11..)"
+           [formControl]="form.controls['com']" type="number">
+        </mat-form-field>
+        <small *ngIf="form.controls['com'].hasError('required') &&
+        form.controls['com'].touched" class="mat-text-warn">
+          Ce champs est requis.</small>
+        <small *ngIf="form.controls['com'].hasError('comUnique') &&
+        form.controls['com'].touched" class="mat-text-warn">
+          Ce com est déjà utilisé.</small>
+      </div>
+
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+            <mat-select  placeholder="Com Baud Rate"
+                        [formControl]="form.controls['comBaudRate']">
+              <mat-option  *ngFor="let cbr of comBaudRates" [value]="cbr"
+                           [matTooltip]="cbr">
+                {{cbr}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.controls['comBaudRate'].hasError('required') &&
+             form.controls['comBaudRate'].touched"
+                       class="mat-text-warn">Ce champs est requis</mat-error>
+        </mat-form-field>
+      </div>
+
+
+      <div class="pb-1">
+        <mat-form-field style="width: 100%">
+          <input matInput placeholder="Ip attribué à la carte"
+           [formControl]="form.controls['ip']" type="text"
+           mask="999.999.999.999" [dropSpecialCharacters]="false">
+        </mat-form-field>
+        <small *ngIf="form.controls['ip'].hasError('required') &&
+        form.controls['ip'].touched" class="mat-text-warn">
+          Ce champs est requis.</small>
+        <small *ngIf="form.controls['ip'].hasError('ipUnique') &&
+        form.controls['ip'].touched" class="mat-text-warn">
+          Cet ip est déjà utilisé.</small>
+      </div>
+    </div>
+
+    <button
+          mat-raised-button color="primary" type="button" (click)="testBoard()"
+          [disabled]="!form.valid || loading" class="organization-submit">
+            <mat-icon>done</mat-icon> Tester disponibilité de la carte
+            <mat-progress-spinner
+              mode="indeterminate"
+              class="warn loading-circle"
+              *ngIf="loading"
+              [diameter]="25" [strokeWidth]="2">
+            </mat-progress-spinner>
+    </button>
+    
+  </mat-card-content>
+
+  <hr/>
+  <mat-card-actions  *ngIf="formstate === 'create' || formstate === 'edit'">
+    <div fxLayout="row wrap">
+      <div fxFlex.gt-sm="60" fxFlex.gt-xs="100" fxFlex="100"></div>
+      <div fxFlex.gt-sm="40" fxFlex.gt-xs="100" fxFlex="100">
+        <a  type="button" mat-raised-button class="" color="accent"
+            [routerLink]="['/console']">
+          <mat-icon>clear</mat-icon> Annuler
+        </a>
+        <button
+        mat-raised-button color="primary" type="submit"
+        [disabled]="!form.valid || loading" class="organization-submit">
+          <mat-icon>done</mat-icon> Valider
+          <mat-progress-spinner
+            mode="indeterminate"
+            class="warn loading-circle"
+            *ngIf="loading"
+            [diameter]="25" [strokeWidth]="2">
+          </mat-progress-spinner>
+        </button>
+      </div>
+    </div>
+  </mat-card-actions>
+</form>    

@@ -116,6 +116,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         this.society = data['society'].society;
       }
     );
+    
   }
 
   ngOnDestroy(): void  {
@@ -161,10 +162,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   }
 
   isOver(): boolean {
-    if (this.url === '/vente' ||
-      this.url === '/vente/current' ||
-      this.url === '/vente/list' ||
-      this.url === '/maps/leaflet' ||
+    if ( this.url === '/maps/leaflet' ||
       this.url === '/taskboard') {
       return true;
     } else {

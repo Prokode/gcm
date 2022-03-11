@@ -189,6 +189,7 @@ export class DashboardComponent implements OnInit {
   }, ];
   currentUser: any = null;
   constructor(private dashboardService: DashboardService) {
+    console.log('Dashboard entry');
     this.currentUser = JSON.parse(window.localStorage.getItem('gcmUser'));
     /*
       this.dashboardService.testApi().subscribe(

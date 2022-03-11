@@ -26,6 +26,8 @@ import { PosteShowComponent } from './poste-show/poste-show.component';
 import { PosteListResolver } from './poste-list.resolver';
 import { PosteCodeFormComponent } from './poste-code-form/poste-code-form.component';
 import { PosteCodeComponent } from './poste-code/poste-code.component';
+import { BoardListResolver } from '../board/board-list.resolver';
+import { BoardService } from '../board/board.service';
 
 @NgModule({
   imports: [
@@ -57,6 +59,8 @@ import { PosteCodeComponent } from './poste-code/poste-code.component';
   providers: [ 
     PosteService,
     ConsoleListResolver,
+    BoardService,
+    BoardListResolver,
     ConsoleService,
     PosteactResolver,
     PosteNameResolver,

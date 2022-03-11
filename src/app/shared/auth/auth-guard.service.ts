@@ -22,12 +22,12 @@ export class AuthGuard implements CanActivate, CanActivateChild {
 
  canActivateChild( childRoute: ActivatedRouteSnapshot,
                    state: RouterStateSnapshot): boolean {
-   console.log('can auth activate child');
-   if (!this.authService.isAuthenticated()) {
+    console.log('can auth activate child');
+    if (!this.authService.isAuthenticated()) {
        this.router.navigate(['/session/signin']);
        return false;
-   }
-   return true;
+    }
+    return true;
  }
 
 }

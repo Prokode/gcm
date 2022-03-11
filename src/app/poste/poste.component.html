@@ -32,7 +32,7 @@ class='material'
 [rows]='postes'
 [loadingIndicator]="loading"
 [messages]="{emptyMessage: 'Pas de données disponibles'}">
-  <ngx-datatable-column name="name" [sortable]="false">
+  <ngx-datatable-column name="poste" [sortable]="false">
     <ng-template ngx-datatable-header-template>
       <strong >Nom</strong>
     </ng-template>
@@ -47,6 +47,23 @@ class='material'
     <ng-template let-row="row" ngx-datatable-cell-template>
       <span *ngIf="row.console">{{row.console.name}}</span>
       <span style="color: red; font-weight: bold;" *ngIf="!row.console">Non configuré</span>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name=board [sortable]="false">
+    <ng-template ngx-datatable-header-template>
+      <strong >Carte</strong>
+    </ng-template>
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <span *ngIf="row.board">{{row.board.name}}</span>
+      <span style="color: red; font-weight: bold;" *ngIf="!row.console">Non configuré</span>
+    </ng-template>
+  </ngx-datatable-column>
+  <ngx-datatable-column name="poste" [sortable]="false">
+    <ng-template ngx-datatable-header-template>
+      <strong >Pin</strong>
+    </ng-template>
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      {{row.poste.arduino_pin}}
     </ng-template>
   </ngx-datatable-column>
   <!-- <ngx-datatable-column name="arduino_pin" [sortable]="false">

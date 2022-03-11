@@ -32,6 +32,11 @@ export const AppRoutes: Routes = [{
     canActivateChild: [ LocalGuard, ActivationGuard,  AuthGuard ]
   },
   {
+    path: 'board',
+    loadChildren: './board/board.module#BoardModule',
+    canActivateChild: [ LocalGuard, ActivationGuard,  AuthGuard ]
+  },
+  {
     path: 'tarif',
     loadChildren: './tarif/tarif.module#TarifModule',
     canActivateChild: [ LocalGuard, ActivationGuard,  AuthGuard ]
@@ -60,6 +65,11 @@ export const AppRoutes: Routes = [{
   {
     path: 'licence',
     loadChildren: './licence/licence.module#LicenceModule',
+    canActivateChild: [ LocalGuard, ActivationGuard,  AuthGuard ]
+  },
+  {
+    path: 'save-config',
+    loadChildren: './save-config/save-config.module#SaveConfigModule',
     canActivateChild: [ LocalGuard, ActivationGuard,  AuthGuard ]
   },
 ]

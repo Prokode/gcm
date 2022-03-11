@@ -1,0 +1,12 @@
+<mat-card>
+  <mat-card-title>
+    <div class="mat-card-title-content">
+      <mat-icon [routerLink]="['/board']">arrow_back</mat-icon>
+      <span class="organization-modification-title">Création</span>
+      <span class="theme-color organization-name">Carte</span>
+    </div>
+  </mat-card-title>
+  <app-board-form (onBoardFormSubmit)="onBoardFormSubmit($event)" [formstate]="'create'"></app-board-form>
+</mat-card>
+
+

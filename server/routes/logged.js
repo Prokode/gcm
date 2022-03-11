@@ -12,6 +12,8 @@ const raport = require('./logged/raport');
 const refresh = require('./logged/refresh');
 const licence = require('./logged/licence');
 const dashboard = require('./logged/dashboard');
+const configs = require('./logged/configs');
+const board = require('./logged/board');
 
 logged.use('/console', console);
 logged.use('/tarif', tarif);
@@ -23,5 +25,7 @@ logged.use('/raport', raport);
 logged.use('/refresh', refresh);
 logged.use('/licence', licence);
 logged.use('/dashboard', dashboard)
+logged.use('/configs', configs);
+logged.use('/board', board);
 
 module.exports = logged;

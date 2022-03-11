@@ -15,6 +15,7 @@ export class PosteFormComponent implements OnInit {
   form: FormGroup;
   @Input('formstate') formstate: any;
   @Input('consoles') consoles: any;
+  @Input('boards') boards: any;
   @Input('newPosteName') newPosteName: any;
 
   @Input('poste') poste: any;
@@ -26,6 +27,7 @@ export class PosteFormComponent implements OnInit {
     this.form = this.fb.group ({
       name: [null , Validators.compose ([Validators.required, Validators.minLength(2)])],
       console_id: [null , Validators.compose ([Validators.required])],
+      board_id: [null , Validators.compose ([Validators.required])],
       arduino_pin: [null , Validators.compose([Validators.required, this.arduinoPinValidator.bind(this)]),
        Validators.composeAsync([ this.posteValidators.arduinoPinValidator.bind(this.posteValidators) ])],
       _id: [null , Validators.compose ([])]

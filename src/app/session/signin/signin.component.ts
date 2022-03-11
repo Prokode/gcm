@@ -30,7 +30,7 @@ export class SigninComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe(
       (data: any) => {
-        this.society = data['society'].society;
+        this.society = data['society'].society !== null && data['society'].society !== undefined ? data['society'].society : 'Society_name_must_be_defined';
       }
     );
 

@@ -44,25 +44,38 @@ router.post('/', posteactReqValidators.validate('post'), function (req, res, nex
 
         const body = _.pick(req.body, ['nbre']);
 
-        Posteact.remove({}, {multi: true}, function (err, numRemoved) {
+        Posteact.find({}, function(err, posteact) {
             if (err) {
-              error.status = 500;
-              error.message = err;
-              next(error);
-              return;
+                error.status = 500;
+                error.message = err;
+                next(error);
             }
-            const posteact = new Posteact({nbre: body.nbre});
-            posteact.save(function(err) {
+
+            let newNbre = posteact.length > 0 ? Number(posteact[0].nbre) + Number(body.nbre) : Number(body.nbre);
+
+
+            Posteact.remove({}, {multi: true}, function (err, numRemoved) {
                 if (err) {
                     error.status = 500;
                     error.message = err;
                     next(error);
                     return;
                 }
-                res.send({
-                    message: 'success'
+                const posteact = new Posteact({nbre: newNbre});
+                posteact.save(function(err) {
+                    if (err) {
+                        error.status = 500;
+                        error.message = err;
+                        next(error);
+                        return;
+                    }
+                    res.send({
+                        message: 'success'
+                    });
                 });
-            });
+            });    
+
+
         });    
 
     } catch(err) {
@@ -71,102 +84,5 @@ router.post('/', posteactReqValidators.validate('post'), function (req, res, nex
         next(error);
     }      
 });
-
-
-
-// router.get('/list', function (req, res, next) {
-//     let error = new Error();
-//     try {
-//         Console.find({}).sort({ created_at: -1 }).exec(function (err, consoles) {
-//             if (err) {
-//                 error.status = 500;
-//                 next(error);
-//             }
-//             res.send(consoles);
-//         });
-//     } catch(err) {
-//         error.status = 500;
-//         error.message = err;
-//         next(error);
-//     }      
-// });
-
-
-
-
-// router.post('/create', consoleReqValidators.validate('create'), function (req, res, next) {
-//     let error = new Error();
-//     try {
-//         const errors = validationResult(req); 
-//         if (!errors.isEmpty()) {
-//             error.status = 400;
-//             error.message = errors.array();
-//             next(error);
-//         }
-
-//         const body = _.pick(req.body, ['name']);
-
-//         const consoleObj = new Console({name: body.name, user_id: req.user.user_id});
-
-//         consoleObj.save(function(err) {
-//             if (err) {
-//                 error.status = 500;
-//                 error.message = err;
-//                 next(error);
-//             }
-//             res.send({
-//                 message: 'success',
-//                 id: consoleObj._id
-//             });
-//         });
-
-//     } catch(err) {
-//         error.status = 500;
-//         error.message = err;
-//         next(error);
-//     }      
-// });
-
-
-// router.put('/update', consoleReqValidators.validate('update'), function (req, res, next) {
-//     let error = new Error();
-//     try {
-//         const errors = validationResult(req); 
-//         if (!errors.isEmpty()) {
-//             error.status = 400;
-//             error.message = errors.array();
-//             next(error);
-//         }
-
-//         const body = _.pick(req.body, ['name', '_id']);
-        
-//         let where = {
-//             _id: body._id
-//           };
-           
-//         let set = {
-//             name: body.name,
-//             updated_at: new Date(),
-//             user_id: req.user.user_id
-//           }
-
-//         Console.update(where, {$set: set}, {}, function(err, num, console) {
-//             if (err) {
-//                 error.status = 500;
-//                 err.message = err;
-//                 next(error);
-//             }
-//             res.send({
-//                 message: 'success',
-//                 id: console._id
-//             });
-//         });   
-
-//     } catch(err) {
-//         error.status = 500;
-//         error.message = err;
-//         next(error);
-//     }      
-// });
 
 module.exports =  router;

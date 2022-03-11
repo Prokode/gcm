@@ -8,6 +8,7 @@ import { PosteEditComponent } from './poste-edit/poste-edit.component';
 import { PosteDetailResolver } from './poste-detail.resolver';
 import { PosteShowComponent } from './poste-show/poste-show.component';
 import { PosteCodeComponent } from './poste-code/poste-code.component';
+import { BoardListResolver } from '../board/board-list.resolver';
 
 export const PosteRoutes: Routes = [
   {
@@ -20,17 +21,17 @@ export const PosteRoutes: Routes = [
     {
       path: 'create',
       component: PosteCreateComponent,
-      resolve: {consoles: ConsoleListResolver, posteName: PosteNameResolver} 
+      resolve: {consoles: ConsoleListResolver, boards: BoardListResolver, posteName: PosteNameResolver} 
     },
     {
       path: ':id/edit',
       component: PosteEditComponent,
-      resolve: {consoles: ConsoleListResolver, poste: PosteDetailResolver} 
+      resolve: {consoles: ConsoleListResolver, boards: BoardListResolver, poste: PosteDetailResolver} 
     },
     {
       path: ':id/show',
       component: PosteShowComponent,
-      resolve: {consoles: ConsoleListResolver, poste: PosteDetailResolver} 
+      resolve: {consoles: ConsoleListResolver, boards: BoardListResolver, poste: PosteDetailResolver} 
     },
     {
       path: 'code',

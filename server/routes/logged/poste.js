@@ -11,6 +11,7 @@ const Tarif = require('../../shared/db/models/Tarif');
 const Console = require('../../shared/db/models/Console');
 const Poste = require('../../shared/db/models/Poste');
 const Posteact = require('../../shared/db/models/Posteact');
+const Board = require('../../shared/db/models/Board');
 
 var getPosteNumber = (poste) => {
     return Number((poste.name.split(" "))[1]);
@@ -18,14 +19,23 @@ var getPosteNumber = (poste) => {
 /*
 Console promises
 */
-var getConsolesPromise = (posteData) => {
+var getConsolesBoardsPromise = (posteData) => {
     return new Promise(
         (resolve, reject) => {
-            Console.find({_id: posteData.console_id}, (err, consoleData) => {
+            Console.find({_id: posteData.console_id}, (err, console) => {
                 if (err) {
                     reject();
                 }
-                resolve(consoleData);
+                Board.find({_id: posteData.board_id}, (err, board) => {
+                    if (err) {
+                        reject();
+                    }
+                    resolve({
+                        console: console,
+                        board: board
+                    });
+                });
+                
             });
         }
     )
@@ -62,18 +72,22 @@ router.get('/list', function (req, res, next) {
 
         let promiseArr = postesData.map(function (posteData) {
             // return the promise to array
-            return getConsolesPromise(posteData).then(
+            return getConsolesBoardsPromise(posteData).then(
                 (data) => {
-                    postes.push({
-                        poste: posteData,
-                        console: data.length ? data[0] : null
-                    }); 
-                   return;  
+                    if (data) {
+                        postes.push({
+                            poste: posteData,
+                            console: data.console.length ? data.console[0] : null,
+                            board: data.board.length ? data.board[0] : null
+                        }); 
+                    }
+                    return;  
                 }, (error) => {
                     error.status = 500;
                     next(error);
                 }
             );
+
         });
 
         Promise.all(promiseArr).then(function(resultsArray) {
@@ -134,10 +148,14 @@ router.post('/create', posteReqValidators.validate('create'), function (req, res
             return;
         }
 
-        const body = _.pick(req.body, ['name', 'console_id', 'arduino_pin']);
+        const body = _.pick(req.body, ['name', 'console_id', 'arduino_pin', 'board_id']);
 
-        const posteObj = new Poste({name: body.name, 
-            console_id: body.console_id, arduino_pin: body.arduino_pin, user_id: req.user.user_id});
+        const posteObj = new Poste({
+            name: body.name, 
+            console_id: body.console_id,
+            arduino_pin: body.arduino_pin,
+            board_id: body.board_id,
+            user_id: req.user.user_id});
 
         posteObj.save(function(err) {
             if (err) {
@@ -170,7 +188,7 @@ router.put('/update', posteReqValidators.validate('update'), function (req, res,
             return;
         }
 
-        const body = _.pick(req.body, ['console_id', 'arduino_pin', '_id']);
+        const body = _.pick(req.body, ['console_id',  'arduino_pin' , 'board_id' ,  '_id']);
         
         let where = {
             _id: body._id
@@ -180,7 +198,8 @@ router.put('/update', posteReqValidators.validate('update'), function (req, res,
             updated_at: new Date(),
             user_id: req.user.user_id,
             arduino_pin: body.arduino_pin,
-            console_id: body.console_id
+            console_id: body.console_id,
+            board_id: body.board_id
           }
 
         Poste.update(where, {$set: set}, {}, function(err, num, poste) {
@@ -340,13 +359,16 @@ router.get('/list/tarifs', function (req, res, next) {
         
         let consolesPromiseArr = postesData.map(function (posteData) {
             // return the promise to array
-            return getConsolesPromise(posteData).then(
+            return getConsolesBoardsPromise(posteData).then(
                 (data) => {
-                    if (data.length) {
+                    if (data) {
+
                         postes.push({
                             poste: posteData,
-                            console: data[0]
+                            console: data.console.length ? data.console[0] : null,
+                            board: data.board.length ? data.board[0] : null
                         }); 
+
                     }
                    return;  
                 }, (error) => {
@@ -370,6 +392,7 @@ router.get('/list/tarifs', function (req, res, next) {
                                 posteTarifs.push({
                                     poste: posteData.poste,
                                     console: posteData.console,
+                                    board: posteData.board,
                                     tarifs: data
                                 }); 
                             }
@@ -457,7 +480,7 @@ router.get('/arduino/pin/validate', posteReqValidators.validate('arduino_pin_val
             return;
         }
 
-        const body = _.pick(req.query, ['arduino_pin']);
+        const body = _.pick(req.query, ['arduino_pin', 'board_id']);
 
         Poste.find({}, function(err, postes) {
             if (err) {
@@ -469,7 +492,7 @@ router.get('/arduino/pin/validate', posteReqValidators.validate('arduino_pin_val
             let used_pin_poste_id = null;
 
             postes.forEach(poste => {
-                if (poste.arduino_pin === body.arduino_pin) {
+                if (poste.arduino_pin === body.arduino_pin && poste.board_id === body.board_id) {
                     pin_is_valid = false;
                     used_pin_poste_id = poste._id;
                 }

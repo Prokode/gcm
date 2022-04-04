@@ -92,12 +92,12 @@
       <div fxFlex.gt-sm="60" fxFlex.gt-xs="100" fxFlex="100"></div>
       <div fxFlex.gt-sm="40" fxFlex.gt-xs="100" fxFlex="100">
         <a  type="button" mat-raised-button class="" color="accent"
-            [routerLink]="['/console']">
+            [routerLink]="['/board']">
           <mat-icon>clear</mat-icon> Annuler
         </a>
         <button
         mat-raised-button color="primary" type="submit"
-        [disabled]="!form.valid || loading" class="organization-submit">
+        [disabled]="!form.valid || loading || !form.value.available" class="organization-submit">
           <mat-icon>done</mat-icon> Valider
           <mat-progress-spinner
             mode="indeterminate"

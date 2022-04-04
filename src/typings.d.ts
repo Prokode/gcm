@@ -4,3 +4,7 @@ interface NodeModule {
   id: string;
 }
 declare module 'screenfull';
+
+interface Window {
+  require: NodeRequire;
+}

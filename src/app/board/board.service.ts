@@ -26,8 +26,8 @@ export class BoardService {
       );
   }
 
-  getConsole(id) {
-    return this.http.get(GlobalVariable.BASE_API_URL+'/logged/console/show', {
+  getBoard(id) {
+    return this.http.get(GlobalVariable.BASE_API_URL+'/logged/board/show', {
       params: {id: id}
     })
     .map(
@@ -73,8 +73,8 @@ export class BoardService {
       );
   }
 
-  updateConsole(data) {
-    return this.http.put(GlobalVariable.BASE_API_URL+'/logged/console/update', data)
+  updateBoard(data) {
+    return this.http.put(GlobalVariable.BASE_API_URL+'/logged/board/update', data)
     .map(
         (response: any) => {  return response; }
       ).catch(

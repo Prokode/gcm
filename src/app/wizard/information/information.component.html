@@ -6,7 +6,7 @@
   </p>
   <p *ngIf="!recover" style="text-align: center; color: white;">
     Vous avez déjà un compte utilisateur? Cliquez ici 
-    <a (click)="toggleRecover()" style="text-decoration: underline; color: rgb(69, 69, 204)" >J'ai déjà un compte</a>
+    <a (click)="toggleRecover()" style="text-decoration: underline; color: white;" ><strong>J'ai déjà un compte</strong></a>
   </p>
   <p *ngIf="recover" style="text-align: center; color: white;">
     Entrer votre numéro de téléphone utilisé lors de votre dernière inscription
@@ -142,7 +142,8 @@
             </p>
             <button style="float: right;" mat-raised-button color="warn" type="button" 
              (click)="restoreConfigs()" >Restaurer ma sauvegarde</button>
-             <br>
+             <br/>
+             <br/>
           </div>
          
           

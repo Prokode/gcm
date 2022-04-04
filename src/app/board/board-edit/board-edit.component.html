@@ -1,3 +1,12 @@
-<p>
-  board-edit works!
-</p>
+<mat-card>
+  <mat-card-title>
+    <div class="mat-card-title-content">
+      <mat-icon [routerLink]="['/board']">arrow_back</mat-icon>
+      <span class="organization-modification-title">Création</span>
+      <span class="theme-color organization-name">Carte</span>
+    </div>
+  </mat-card-title>
+  <app-board-form [board]="board" (onBoardFormSubmit)="onBoardFormSubmit($event)" [formstate]="'edit'"></app-board-form>
+</mat-card>
+
+

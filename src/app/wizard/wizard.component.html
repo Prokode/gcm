@@ -1,5 +1,5 @@
 <wizard [navBarLocation]="'bottom'" [navBarLayout]="'large-filled'">
-  <wizard-step stepTitle="Présentation">
+  <wizard-step class="wiz-step" stepTitle="Présentation" >
     <div class="centered-content">
       <div class="wizard-content">
         <h1 class="presentation-title">Présentation GCM</h1>
@@ -27,7 +27,7 @@
       </div>
     </div>
   </wizard-step>
-  <wizard-step class="wiz-content" stepTitle="Activation">
+  <wizard-step class="wiz-content wiz-step" stepTitle="Activation">
     <div class="centered-content">
       <div class="wizard-content">
         <app-activation (onActivationSuccess)="onActivationSuccess($event)" ></app-activation>
@@ -36,7 +36,7 @@
       </div>
     </div>
   </wizard-step>
-  <wizard-step class="wiz-content" stepTitle="Informations">
+  <wizard-step class="wiz-content wiz-step" stepTitle="Informations">
     <div class="centered-content">
       <div class="wizard-content">
         <app-information (onInformationSuccess)="onInformationSuccess($event)" ></app-information>
@@ -46,7 +46,7 @@
     </div>
   </wizard-step>
 
-  <wizard-step class="wiz-content" stepTitle="Compte">
+  <wizard-step class="wiz-content wiz-step" stepTitle="Compte">
     <div class="centered-content">
       <div class="wizard-content">
         <app-account  (onAccountSuccess)="onAccountSuccess($event)" ></app-account>

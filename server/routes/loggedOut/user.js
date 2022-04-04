@@ -102,7 +102,7 @@ router.post('/create', userReqValidators.validate('createUser'), function (req, 
             const body = _.pick(req.body, ['username', 'password', 'lastname', 'firstname', 'rp', 'society']);
 
             const user = { firstname: body.firstname, lastname: body.lastname,
-                 username: body.username, password: pwdhash.generate(body.password), role: 'ADMIN', 
+                username: body.username, password: pwdhash.generate(body.password), role: 'ADMIN', 
                 society: body.society };
                  
             const root =  { firstname: 'ROOT', lastname: 'root',

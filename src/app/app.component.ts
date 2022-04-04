@@ -7,6 +7,7 @@ import { SnackMessage } from './shared/snack-messages/snack-message.model';
 import { UserService } from './shared/user/user.service';
 import { AuthService } from './shared/auth/auth.service';
 import { Router } from '@angular/router';
+import { IpcService } from './shared/ipc/ipc.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,10 @@ export class AppComponent {
     horizontalPosition: 'right',
     verticalPosition: 'top'
   };
+
   constructor(translate: TranslateService,  private snackBar: MatSnackBar, private authService: AuthService,
-     private snackMessageService: SnackMessageService, private userService: UserService, private router: Router ) {
+     private snackMessageService: SnackMessageService, private userService: UserService, private router: Router,
+     private readonly _ipc: IpcService ) {
     translate.addLangs(['en', 'fr']);
     translate.setDefaultLang('en');
 
@@ -44,7 +47,11 @@ export class AppComponent {
           );
         }
       }
-    )
+    );
+
+    this._ipc.on('pong', (event: Electron.IpcMessageEvent) => {
+      console.log('pong');
+    });
   }
 
   

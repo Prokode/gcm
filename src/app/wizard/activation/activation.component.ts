@@ -15,7 +15,7 @@ export class ActivationComponent implements OnInit {
   @Output() onActivationSuccess: EventEmitter<any> = new EventEmitter<any>();
   @Input('state') state: string = 'activation';
   code_recover: any = null;
-
+  loading: boolean = false;
   reactivationForm: FormGroup;
   countries = [
     {lib: 'TOGO', code: '00228'},
@@ -49,6 +49,7 @@ export class ActivationComponent implements OnInit {
   }
 
   submit() {
+    this.loading = true;
     this.wizardService.getMacAddress().subscribe(
       (res) => {
         this.activationService.postActivation({mac: res.mac, code: this.form.value.activationCode}).subscribe(
@@ -56,6 +57,7 @@ export class ActivationComponent implements OnInit {
             if (response.message === 'success') {
               this.activationService.registerLocalActivation(response).subscribe(
                 (response2) => {
+                  this.loading = false;
                   this.snackMessageService.newMessage.next(
                     new SnackMessage('success', 'L\'activation s\'est effectuée avec succès.'));
                   // this.code_recover = response.rcode;
@@ -66,20 +68,25 @@ export class ActivationComponent implements OnInit {
                     rp: response.rp
                   });
                 }, (err) => {
+                  this.loading = false;
                   console.log(err);
                 }
               );
             } else if (response.message === 'used code') {
+              this.loading = false;
               this.snackMessageService.newMessage.next(
                 new SnackMessage('danger', 'Le code d\'activation entré a été déjà utilisé par un autre client.'));
             } else if (response.message === 'bad code') {
+              this.loading = false;
               this.snackMessageService.newMessage.next(
                 new SnackMessage('danger', 'Le code entré est incorrect.'));
             } else if (response.message === 'code has expired') {
+              this.loading = false;
               this.snackMessageService.newMessage.next(
                 new SnackMessage('danger', 'Le code entré est expiré.'));
             }
           }, (err) => {
+            this.loading = false;
             console.log(err);
           }
         );
@@ -95,6 +102,7 @@ export class ActivationComponent implements OnInit {
     }
   }
   reactivationSubmit() {
+    this.loading = true;
     const form = this.reactivationForm.value;
     this.wizardService.getMacAddress().subscribe(
       (res) => {
@@ -108,6 +116,7 @@ export class ActivationComponent implements OnInit {
             if (response.message === 'success') {
               this.activationService.registerLocalActivation(response).subscribe(
                 (response2) => {
+                  this.loading = false;
                   this.snackMessageService.newMessage.next(
                     new SnackMessage('success', 'La réactivation s\'est effectuée avec succès.'));
                     // this.code_recover = response.rcode;
@@ -117,23 +126,29 @@ export class ActivationComponent implements OnInit {
                       history: response.history
                     });
                 }, (err) => {
+                  this.loading = false;
                   console.log(err);
                 }
               );
             } else if (response.message === 'used code') {
+              this.loading = false;
               this.snackMessageService.newMessage.next(
                 new SnackMessage('danger', 'Le code d\'activation entré a été déjà utilisé par un autre client.'));
             } else if (response.message === 'bad code') {
+              this.loading = false;
               this.snackMessageService.newMessage.next(
                 new SnackMessage('danger', 'Le code entré est incorrect.'));
             } else if (response.message === 'user_not_found') {
+              this.loading = false;
               this.snackMessageService.newMessage.next(
                 new SnackMessage('danger', 'Aucun utilisateur n\'a été trouvé pour ce numéro.'));
             } else if (response.message === 'code has expired') {
+              this.loading = false;
               this.snackMessageService.newMessage.next(
                 new SnackMessage('danger', 'Le code entré est expiré.'));
             }
           }, (err) => {
+            this.loading = false;
             console.log(err);
           }
         );

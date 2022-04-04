@@ -10,6 +10,8 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutes } from './dashboard.routing';
 import { DashboardService } from './dashboard.service';
+import { LicenceResolver } from '../licence/licence.resolver';
+import { LicenceService } from '../licence/licence.service';
 
 @NgModule({
   imports: [
@@ -25,7 +27,7 @@ import { DashboardService } from './dashboard.service';
     NgxDatatableModule,
     FlexLayoutModule
   ],
-  providers: [ DashboardService ],
+  providers: [ DashboardService, LicenceService, LicenceResolver ],
   declarations: [ DashboardComponent ]
 })
 

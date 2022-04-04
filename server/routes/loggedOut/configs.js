@@ -7,6 +7,7 @@ const Tarif = require('../../shared/db/models/Tarif');
 const Console = require('../../shared/db/models/Console');
 const Poste = require('../../shared/db/models/Poste');
 const Posteact = require('../../shared/db/models/Posteact');
+const Board = require('../../shared/db/models/Board');
 
 const User = require('../../shared/db/models/User');
 const phash = require('password-hash');
@@ -27,6 +28,7 @@ router.post('/restore', configsReqValidators.validate('restore'),  async functio
     let consoles = _.pick(req.body, ['consoles']);
     let tarifs = _.pick(req.body, ['tarifs']);
     let postes = _.pick(req.body, ['postes']);
+    let boards = _.pick(req.body, ['boards']);
 
     posteacts = posteacts.posteact;
 
@@ -35,6 +37,8 @@ router.post('/restore', configsReqValidators.validate('restore'),  async functio
     tarifs = tarifs.tarifs;
 
     postes = postes.postes;
+    
+    boards = boards.boards;
 
 
           // Post activation
@@ -132,6 +136,31 @@ router.post('/restore', configsReqValidators.validate('restore'),  async functio
                     });
                 });    
                 if (id === (postes.length - 1)) {
+                  resolve();
+                }
+            });
+            }
+          );
+
+
+          // Postes  
+          await new Promise(
+            (resolve, reject) => {
+              boards.forEach( async (brd, id) => {
+                const board = new Board(brd);
+                await new Promise(
+                  (resolve, reject) => {
+                    board.save(function(err) {
+                      if (err) {
+                          error.status = 500;
+                          error.message = err;
+                          next(error);
+                          return;
+                      }
+                      resolve();
+                    });
+                });    
+                if (id === (boards.length - 1)) {
                   resolve();
                 }
             });

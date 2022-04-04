@@ -8,6 +8,21 @@
 </mat-card>
 
 <mat-card>
+  <mat-card-content style="text-align: right;">
+    <a type="button" mat-raised-button (click)="getVenteNotFinished()" 
+    color="primary">
+      Ventes non terminées
+    </a>
+  </mat-card-content>
+</mat-card>
+<mat-progress-spinner
+color="mat-indigo"
+mode="indeterminate"
+class="white loading-circle"
+*ngIf="loading"
+[diameter]="40" [strokeWidth]="3">
+</mat-progress-spinner>
+<mat-card>
   <mat-card-content>
     
     <div fxLayout="row wrap">
@@ -24,6 +39,9 @@
               </button>
             </mat-card-subtitle>
             <mat-menu class="_mat_menu" #card1="matMenu" x-position="before" >
+              <div style="height: 50px !important; " (click)="testBoard(poste)" mat-menu-item>
+                Carte arduino
+              </div>
               <form [formGroup]="form"
                *ngIf="poste.time && poste.tarif" mat-menu-item >
                 <mat-form-field style="width: 100% !important;"> 
@@ -122,6 +140,7 @@
     </div>
   </mat-card-content> 
 </mat-card>
+
 
 <div class="pb-1 add-element-button-container">
     <button mat-fab class="mr-1 mat-warn add-element-button" routerLink="/vente/list">

@@ -1,3 +1,17 @@
+<mat-card>
+  <mat-card-content>
+    <div style="display: inline-block;">
+      <h4>
+        <strong>Date d'expiration: </strong>
+        {{formatToDate(licence.details.activation.end) | date: 'dd/MM/yyyy'}}
+        dans <strong [ngClass]="{'licence_expire': licence_time_rest <= 5 }">{{licence_time_rest}} jrs</strong>
+        <a routerLink="/licence"  type="button" mat-raised-button class="mat-teal">
+          Détails
+        </a>
+      </h4>
+    </div>
+  </mat-card-content>
+</mat-card>
 <div fxLayout="row wrap">
     <div fxFlex.gt-sm="25" fxFlex.gt-xs="50" fxFlex="100">
         <mat-card *ngIf="currentUser.role === 'ADMIN' || currentUser.role === 'ROOT'"  class="card-widget mat-purple">

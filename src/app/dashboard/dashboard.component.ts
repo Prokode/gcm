@@ -1,4 +1,5 @@
 import { Component,  OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from './dashboard.service';
 // declare let moment: any;
 
@@ -8,6 +9,8 @@ import { DashboardService } from './dashboard.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  licence: any = null;
+  licence_time_rest: any = 0;
   card1;
   card2;
   card3;
@@ -188,7 +191,7 @@ export class DashboardComponent implements OnInit {
     subject: 'Brunch this weekend?',
   }, ];
   currentUser: any = null;
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService, private route: ActivatedRoute) {
     console.log('Dashboard entry');
     this.currentUser = JSON.parse(window.localStorage.getItem('gcmUser'));
     /*
@@ -204,7 +207,19 @@ export class DashboardComponent implements OnInit {
     
   }
 
+  formatToDate(d) {
+    return new Date(d);
+  }
+
   ngOnInit() { 
+    this.route.data.subscribe(
+      (data: any) => {
+        this.licence = data['licence'];
+        this.licence_time_rest = this.formatToDate(this.licence.details.activation.end).getTime() - (new Date()).getTime();
+        this.licence_time_rest = Number(this.licence_time_rest / (1000 * 60 * 60 * 24)).toFixed(0);
+        console.log(this.licence);
+      }
+    );
     this.getWeekReport();
     this.getMonthReport();
   }

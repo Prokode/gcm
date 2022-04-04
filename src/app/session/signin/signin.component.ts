@@ -54,23 +54,25 @@ export class SigninComponent implements OnInit {
         }
         window.localStorage.setItem('gcmUser', JSON.stringify(user));
         this.userService.currentUser.next(user);
-        this.venteService.getVenteNotFinished().subscribe(
-          (ventes) => {
-            console.log(res);
-            const ventesNotFinished = window.localStorage.getItem('ventesNotFinished');
-            if (ventesNotFinished) {
-              window.localStorage.removeItem('ventesNotFinished');
-            }
-            window.localStorage.setItem('ventesNotFinished', JSON.stringify(ventes.ventes));
-            this.router.navigate( ['/'] );
-          }, (err) => {
-            console.log(err);
-            this.errorMsg = "Une erreur s'est produite, réesseyez s'il vous plaît.";
-            this.showErrorMsg = true;
-            this.loading = false;
-          }
-        );
-        //
+        this.router.navigate( ['/'] );
+
+        // this.venteService.getVenteNotFinished().subscribe(
+        //   (ventes) => {
+        //     console.log(res);
+        //     const ventesNotFinished = window.localStorage.getItem('ventesNotFinished');
+        //     if (ventesNotFinished) {
+        //       window.localStorage.removeItem('ventesNotFinished');
+        //     }
+        //     window.localStorage.setItem('ventesNotFinished', JSON.stringify(ventes.ventes));
+           
+        //   }, (err) => {
+        //     console.log(err);
+        //     this.errorMsg = "Une erreur s'est produite, réesseyez s'il vous plaît.";
+        //     this.showErrorMsg = true;
+        //     this.loading = false;
+        //   }
+        // );
+        
       }, (err) => {
         console.log(err.message);
         this.errorMsg = "Les paramètres de connexion sont incorrectes";

@@ -12,7 +12,7 @@ export class BoardDetailResolver implements Resolve<any> {
   resolve(route: ActivatedRouteSnapshot,
           state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
 
-    return this.boardService.getConsole(route.params['id']);
+    return this.boardService.getBoard(route.params['id']);
 
   }
 

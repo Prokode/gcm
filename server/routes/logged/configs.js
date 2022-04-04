@@ -7,6 +7,7 @@ const Tarif = require('../../shared/db/models/Tarif');
 const Console = require('../../shared/db/models/Console');
 const Poste = require('../../shared/db/models/Poste');
 const Posteact = require('../../shared/db/models/Posteact');
+const Board = require('../../shared/db/models/Board');
 
 const User = require('../../shared/db/models/User');
 const phash = require('password-hash');
@@ -125,6 +126,24 @@ router.get('/', async function (req, res, next) {
           ).then(
             (postes) => {
               configs.postes = postes;
+            }
+          );
+
+          // Boards  
+          await new Promise(
+            (resolve, reject) => {
+              Board.find({}, function(err, boards) {
+                if (err) {
+                    error.status = 500;
+                    error.message = err;
+                    next(error);
+                }
+                resolve(boards);
+              });
+            }
+          ).then(
+            (boards) => {
+              configs.boards = boards;
             }
           );
 

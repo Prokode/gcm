@@ -19,7 +19,7 @@
               form.controls['activationCode'].touched" class="mat-text-warn">
                 Ce champs est requis.</small>
             </div>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Activer</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid || loading">Activer</button>
           </div>
         </form>
         <br>
@@ -43,7 +43,7 @@
       de continuer l'utilisation du produit.
     </p>
     <hr >
-    <p style="text-align: center; color: white;"><b>Contactez nous : 90 - 25 - 32 - 51 / 91 - 64 - 69 - 85 </b></p>
+    <p style="text-align: center; color: white;"><b>Contactez nous : 90 - 06 - 53 - 16 / 91 - 64 - 69 - 85 </b></p>
   </div>
   <div class="wizard-form-container">
     <mat-card style="border-radius:20px;">
@@ -82,7 +82,7 @@
               reactivationForm.controls['activationCode'].touched" class="mat-text-warn">
                 Ce champs est requis.</small>
             </div>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!reactivationForm.valid">Activer</button>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!reactivationForm.valid || loading">Activer</button>
           </div>
         </form>
         <br>

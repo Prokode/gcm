@@ -55,4 +55,19 @@ export class BoardComponent implements OnInit {
       );
     }
   }
+
+  testBoard(row) {
+    this.loading = true;
+    this.boardService.testBoard(row).subscribe(
+      (res) => {
+        this.loading = false;
+        this.snackMessageService.newMessage.next(
+          new SnackMessage('success', 'La carte est bien disponible, vous pouvez continuer'));
+      }, (err) => {
+        this.loading = false;
+        this.snackMessageService.newMessage.next(
+          new SnackMessage('danger', 'Carte non disponible.'));
+      }
+    )
+  }
 }

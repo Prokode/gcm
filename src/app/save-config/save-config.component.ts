@@ -12,7 +12,8 @@ export class SaveConfigComponent implements OnInit {
   error: any = null;
   successMsg: any = null;
   progress = 0;
-
+  loading: boolean = false;
+  
   constructor(private saveConfigService: SaveConfigService, private fb: FormBuilder) {
     this.form = this.fb.group ({
       password: [null , Validators.compose ([Validators.required]),

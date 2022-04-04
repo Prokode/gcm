@@ -34,7 +34,7 @@ export class LicenceComponent implements OnInit {
       (data: any) => {
         this.licence = data['licence'];
         this.licence_time_rest = this.formatToDate(this.licence.details.activation.end).getTime() - (new Date()).getTime();
-        this.licence_time_rest = Number(this.licence_time_rest / (1000 * 60 * 60 * 24));
+        this.licence_time_rest = Number(this.licence_time_rest / (1000 * 60 * 60 * 24)).toFixed(0);
         console.log(this.licence);
       }
     );

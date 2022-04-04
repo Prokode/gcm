@@ -4,7 +4,6 @@ var base64 = require('base-64');
 const globals = require('../../shared/globals');
 const router = express.Router();
 const db = require('electron-db');
-var tcpp = require('tcp-ping');
 
 const { validationResult } = require('express-validator');
 const boardReqValidators = require('../../shared/board.req.validators');
@@ -15,6 +14,10 @@ const Tarif = require('../../shared/db/models/Tarif');
 
 /**Serial port**/
 let serialport = require('serialport');
+
+// ping
+var ping = require ("net-ping");
+var session = ping.createSession ();
 
 /*
  Routes for boards
@@ -31,13 +34,13 @@ router.get('/show', boardReqValidators.validate('show'), function (req, res, nex
             return;
         }
         
-        Console.findOne({_id:  req.query.id}, function(err, console) {
+        Board.findOne({_id:  req.query.id}, function(err, board) {
             if (err) {
                 error.status = 500;
                 error.message = err;
                 next(error);
             }
-            res.send(console);
+            res.send(board);
         });
 
     } catch(err) {
@@ -88,19 +91,33 @@ router.post('/test', boardReqValidators.validate('test'), function (req, res, ne
 
                 try {  
 
-                    tcpp.probe(`${body.ip}`, 3030, function(err, available) {
-                        if (!available) {
-                            console.log (err);
+                    session.pingHost(`${body.ip}`, function (error, target) {
+                        if (error) {
+                            console.log (target + ": " + error.toString ());
                             res.status(400).send({
-                                success: false
+                                            success: false
                             });
-                        }   
-                        if (available) { 
+                        } else {
+                            console.log (target + ": Alive");
                             res.status(200).send({
                                 success: true
                             });
-                        } 
+                        }
                     });
+
+                    // tcpp.probe(`${body.ip}`, 41234, function(err, available) {
+                    //     if (!available) {
+                    //         console.log (body.ip);
+                    //         res.status(400).send({
+                    //             success: false
+                    //         });
+                    //     }   
+                    //     if (available) { 
+                    //         res.status(200).send({
+                    //             success: true
+                    //         });
+                    //     } 
+                    // });
                         
             
                 } catch(e) {
@@ -224,19 +241,23 @@ function(req, res, next) {
             return;
         }
 
-        const body = _.pick(req.body, ['name', '_id']);
+        const body = _.pick(req.body, ['name', 'operation_mode', 'com', 'ip']);
+
+        // const boardObj = new Board(body);
         
         let where = {
             _id: body._id
-          };
+        };
            
         let set = {
             name: body.name,
-            updated_at: new Date(),
-            user_id: req.user.user_id
-          }
+            operation_mode: body.operation_mode,
+            com: body.com,
+            ip: body.ip,
+            updated_at: new Date()
+        }
 
-        Console.update(where, {$set: set}, {}, function(err, num, console) {
+        Board.update(where, {$set: set}, {}, function(err, num, board) {
             if (err) {
                 error.status = 500;
                 err.message = err;
@@ -245,7 +266,7 @@ function(req, res, next) {
             }
             res.send({
                 message: 'success',
-                id: console._id
+                id: board._id
             });
         });   
 
@@ -255,6 +276,7 @@ function(req, res, next) {
         next(error);
     }      
 });
+
 
 router.put('/delate', boardReqValidators.validate('delate'), function (req, res, next) {
     let error = new Error();

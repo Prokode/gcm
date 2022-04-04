@@ -1,23 +1,26 @@
 .centered-content
 {
   width: 100%;
+  height: 95%;
   box-sizing: border-box;
   margin: 0;
   display: block;
+  height: 100%;
 }
 
 .wizard-content
 {
   width: 100%;
+  //height: 95%;
   background-color: #fff;
-  min-height: 400px;
+  min-height:  95% !important;
   box-sizing: border-box;
   display: block;
   padding: 0px;
   margin: 0px;
   border-top: solid 1px rgba(180, 180, 180, 1);
   background-color: #e21534 !important;
-  max-height : 400px !important;
+  max-height : 95% !important;
   overflow: scroll;
 }
 
@@ -39,4 +42,8 @@
 .wizard-form-container {
   max-height : 200px !important;
   overflow: scroll;
+}
+
+.wiz-step {
+  height: 87vh;
 }

@@ -54,9 +54,9 @@ class='material'
       <button mat-icon-button
               mat-button-sm color="warn"
               class="mr-1"
-              matTooltip="SUPPRIMER"
-              (click)="onBoardDelate(row)">
-        <mat-icon>delete</mat-icon>
+              matTooltip="Available"
+              (click)="testBoard(row)">
+        <mat-icon>wififind</mat-icon>
       </button>
     </ng-template>
   </ngx-datatable-column>
@@ -64,14 +64,14 @@ class='material'
 
 
 <div class="pb-1">
-    <button mat-fab class="mr-1 mat-mini-fab mat-blue-grey-A100 refresh-elements-button"
+    <button  mat-fab class="mr-1 mat-mini-fab mat-blue-grey-A100 refresh-elements-button"
      (click)="getBoards()">
       <mat-icon>cached</mat-icon>
     </button>
   </div>
 
-  <div class="pb-1 add-element-button-container">
+<div *ngIf="boards.length === 0"  class="pb-1 add-element-button-container">
     <button mat-fab class="mr-1 mat-green add-element-button" routerLink="/board/create">
       <mat-icon>add</mat-icon>
     </button>
-  </div>
+</div>

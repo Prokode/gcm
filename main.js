@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain, IpcMessageEvent } = require('electron')
 
 if (handleSquirrelEvent(app)) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
@@ -13,7 +13,10 @@ function createWindow () {
     width: 600, 
     height: 600,
     backgroundColor: '#ffffff',
-    icon: `file://${__dirname}/dist/assets/logo.png`
+    icon: `file://${__dirname}/dist/assets/logo.png`,
+    webPreferences: {
+      nodeIntegration: true // <-- important
+    }
   })
 
 
@@ -49,6 +52,12 @@ app.on('activate', function () {
     createWindow()
   }
 });
+
+ipcMain.on('reload_app', function (event) {
+  app.relaunch();
+  app.exit();
+});
+
 /*
 This setup does not support hot code reloads. Whenever you change some Angular code, you need to rerun the electron-build command. It is possible to setup hot reloads by pointing the window to a remote URL (such as https://localhost:4200) and running ng serve in a separate terminal.
 */

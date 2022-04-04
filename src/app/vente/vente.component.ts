@@ -10,6 +10,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { VentesNotFinishedComponent } from '../shared/components/ventes-not-finished/ventes-not-finished.component';
 
+import { SnackMessageService } from '../shared/snack-messages/snack-message.service';
+import { SnackMessage } from '../shared/snack-messages/snack-message.model';
+import { BoardService } from '../board/board.service';
+
 @Component({
   selector: 'app-vente',
   templateUrl: './vente.component.html',
@@ -64,11 +68,15 @@ export class VenteComponent implements OnInit {
     }
   };
 
+  loading: boolean = false;
+
   constructor(private route: ActivatedRoute,
     private venteService: VenteService,
     private socket: Socket,
     private standByService: StandByService,
     private fb: FormBuilder,
+    private snackMessageService: SnackMessageService,
+    private boardService: BoardService,
     private dialog: MatDialog) {
     this.currentUser = JSON.parse(window.localStorage.getItem('gcmUser'));
 
@@ -142,18 +150,18 @@ export class VenteComponent implements OnInit {
       }
     );
 
-    let ventesNotFinished = window.localStorage.getItem('ventesNotFinished');
-    if (ventesNotFinished) {
-      let ventesNotFinishedParsed = JSON.parse(ventesNotFinished);
-      console.log(ventesNotFinishedParsed);
-      if (ventesNotFinishedParsed.length > 0) {
-        this.ventesDialogConfig.data.ventesNotFinished = ventesNotFinishedParsed;
-        this.ventesDialogRef = this.dialog.open(VentesNotFinishedComponent, this.ventesDialogConfig);
-        this.ventesDialogRef.afterClosed().subscribe((result: any) => {
-          console.log(result);
-        });
-      }
-    }
+    // let ventesNotFinished = window.localStorage.getItem('ventesNotFinished');
+    // if (ventesNotFinished) {
+    //   let ventesNotFinishedParsed = JSON.parse(ventesNotFinished);
+    //   console.log(ventesNotFinishedParsed);
+    //   if (ventesNotFinishedParsed.length > 0) {
+    //     this.ventesDialogConfig.data.ventesNotFinished = ventesNotFinishedParsed;
+    //     this.ventesDialogRef = this.dialog.open(VentesNotFinishedComponent, this.ventesDialogConfig);
+    //     this.ventesDialogRef.afterClosed().subscribe((result: any) => {
+    //       console.log(result);
+    //     });
+    //   }
+    // }
 
     this.venteService.venteNotFinishedSubject.asObservable().subscribe(
       (res) => {
@@ -349,6 +357,67 @@ export class VenteComponent implements OnInit {
     } else if (poste.timems <= (2 * 60 * 1000)) {
       return true;
     }
+  }
+
+  getVenteNotFinished() {
+    console.log('Vente not finished');
+    this.venteService.getVenteNotFinished().subscribe(
+      (ventes) => {
+        console.log(ventes);
+
+        try {
+          if (ventes.ventes.length > 0) { 
+            this.ventesDialogConfig.data.ventesNotFinished = ventes.ventes;
+            this.ventesDialogRef = this.dialog.open(VentesNotFinishedComponent, this.ventesDialogConfig);
+            this.ventesDialogRef.afterClosed().subscribe((result: any) => {
+              console.log(result);
+            });
+          } else {
+            this.snackMessageService.newMessage.next(
+              new SnackMessage('danger',
+               'Pas de ventes non terminées trouvées.'));
+          }
+        } catch (err) {
+          this.snackMessageService.newMessage.next(
+            new SnackMessage('danger',
+             'Une erreur s\'est produite réesseyez s\'il vous plaît.'));
+        }
+        
+      }, (err) => {
+        console.log(err);
+
+        this.snackMessageService.newMessage.next(
+          new SnackMessage('danger',
+           'Une erreur s\'est produite réesseyez s\'il vous plaît.'));
+      }
+    );
+  }
+
+  testBoard(poste) {
+    console.log(poste);
+    this.loading = true;
+    this.boardService.getBoard(poste.poste.board_id).subscribe(
+      (res: any) => {
+
+        this.boardService.testBoard(res).subscribe(
+          (res) => {
+            this.loading = false;
+            this.snackMessageService.newMessage.next(
+              new SnackMessage('success', 'La carte est bien disponible, vous pouvez continuer'));
+          }, (err) => {
+            this.loading = false;
+            this.snackMessageService.newMessage.next(
+              new SnackMessage('danger', 'Carte non disponible.'));
+          }
+        )
+
+      }, (err) => {
+        this.loading = false;
+        this.snackMessageService.newMessage.next(
+          new SnackMessage('danger', 'Erreur inattendue.'));
+      }
+    );
+    
   }
   
 }

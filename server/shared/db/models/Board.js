@@ -25,6 +25,10 @@ var schema = {
         type: String,
         default: 'com'
     },
+    active: {
+        type: Boolean,
+        default: true
+    },
     created_at: {
         type: Date,
         default: new Date()

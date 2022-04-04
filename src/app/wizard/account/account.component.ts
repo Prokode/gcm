@@ -47,7 +47,7 @@ export class AccountComponent implements OnInit {
 
   submit() {
     this.form.controls['rp'].setValue(this.root_pwd ? this.root_pwd : 'gcmmanager');
-    this.form.controls['society'].setValue(this.society);
+    // this.form.controls['society'].setValue(this.society);
     this.wizardService.createAdminAccount(this.form.value).subscribe(
       (res) => {
         if (res.message === 'success') {

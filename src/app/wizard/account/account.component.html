@@ -64,6 +64,16 @@
                 form.controls['passwordConfirm'].touched" class="mat-text-warn">
               les 2 mots de passe ne sont pas identiques</small>
           </div>
+          <div class="pb-1">
+            <mat-form-field style="width: 90%">
+              <input matInput placeholder="Nom de votre société" type="text"
+               [formControl]="form.controls['society']">
+            </mat-form-field>
+            <br>
+            <small *ngIf="form.controls['society'].hasError('required') &&
+            form.controls['society'].touched" class="mat-text-warn">
+              Ce champs est requis.</small>
+          </div>
           <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button>
         </div>
       </form>

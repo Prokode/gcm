@@ -87,4 +87,9 @@ process.on('unhandledRejection', (err, promise) => {
   });
 });
 
+
+process.on('', () => {
+
+});
+
 module.exports = app;

@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 const globalData = {
+    board: null,
     jwtSecret: 'GniQ2JathEh',
     APP_ID: 'GCM_IOT_APP',
     // BASE_ONLINE_API_URL: 'http://localhost/gcm',

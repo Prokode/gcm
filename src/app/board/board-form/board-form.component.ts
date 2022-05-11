@@ -21,7 +21,7 @@ export class BoardFormComponent implements OnInit {
   @Output() onBoardFormSubmit: EventEmitter<any> = new EventEmitter<any>(); 
 
   operationModes = [
-    // 'com',
+    'com',
     'ip'
   ];
 

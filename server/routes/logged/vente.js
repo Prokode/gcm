@@ -23,13 +23,6 @@ const {
     EtherPortClient
 } = require('etherport-client');
 
-var VirtualSerialPort = require('udp-serial').SerialPort; 
-
-var firmata = require('firmata');
-
-//Board
-var board;
-
 
 // https://github.com/rwaldron/johnny-five/wiki/Getting-Started#trouble-shooting {port: 'COM9'}
 var fiveBoards;
@@ -41,36 +34,32 @@ Board.find({}).sort({ created_at: -1 }).exec(function (err, boards) {
         next(error);
     }
     if (boards.length > 0) {
-        boards = boards.filter(b => { return  b.active === true; });
-       
-        // if (board.operation_mode === 'ip') {
-            var sp = new VirtualSerialPort({
-                host: boards[0].ip
-            });
-    
-            var io = new firmata.Board(sp);
-    
-            io.once('ready', function() {
-                  console.log('IO Ready');
-                  io.isReady = true;
-              
-                  board  = new five.Board({io: io, repl: true});
-              
-                  board.on('ready', function() {
-                    console.log("Boards are ready");
-                  })
-                  .on("fail", function(event) {
-                    console.log("%s sent a 'fail' message: %s", event.class, event.message);
-                  })
-                  .on("close", function(event) {
-                        console.log("%s Close: %s", event.class, event.message);
-                  })
-                  .on("error", function(event) {
-                        console.log("%s Error: %s", event.class, event.message);
-                  });
-            });
+        var ports = boards.map(
+            (board) => {
+                return { 
+                    id:  board._id,
+                    port: board.operation_mode === 'ip' ? new EtherPortClient({
+                                    host: board.ip,
+                                    port: 3030
+                    }) : `COM${board.com}`,
+                    repl: false}
+            }
+        );
 
-        // }
+        // Create 2 board instances with IDs "A" & "B"
+        fiveBoards = new five.Boards(ports)
+            .on("ready", function() {
+            console.log("Boards are ready");
+            })
+            .on("fail", function(event) {
+                console.log("%s sent a 'fail' message: %s", event.class, event.message);
+            })
+            .on("close", function(event) {
+                console.log("%s Close: %s", event.class, event.message);
+            })
+            .on("error", function(event) {
+                console.log("%s Error: %s", event.class, event.message);
+            });
 
     }
 });
@@ -115,12 +104,10 @@ function NewVenteObj(temps, vente) {
     }
     // new five.Led(Number(vente.poste.arduino_pin));
     
-    this.tele = new five.Led(Number(vente.poste.arduino_pin)
-        // {
-        //     board: fiveBoards.byId(vente.poste.board_id),
-        //     pin: Number(vente.poste.arduino_pin),
-        // }
-    );
+    this.tele = new five.Led({
+        board: fiveBoards.byId(vente.poste.board_id),
+        pin: Number(vente.poste.arduino_pin),
+    });
     this.ident = 0;
     this.vente = vente;
     this.countDown = new Stopwatch(temps, timerOptions);//new Timer({direction:'up',startValue:'00:00:00',showHours: true});
@@ -468,23 +455,19 @@ io.on('connection', function (socket) {
 
     socket.on('simple_on',function(poste) {
         // let tele = new five.Led(Number(poste.arduino_pin));
-        let tele = new five.Led(Number(poste.arduino_pin)
-            // {
-            // board: fiveBoards.byId(poste.board_id),
-            // pin: Number(poste.arduino_pin),
-            // }
-        );
+        let tele = new five.Led({
+            board: fiveBoards.byId(poste.board_id),
+            pin: Number(poste.arduino_pin),
+        });
         tele.on();
         socket.emit('simple_on_success', poste);
     });
 
     socket.on('simple_off',function(poste) {
-        let tele = new five.Led(Number(poste.arduino_pin)
-            // {
-            // board: fiveBoards.byId(poste.board_id),
-            // pin: Number(poste.arduino_pin),
-            // }
-        );
+        let tele = new five.Led({
+            board: fiveBoards.byId(poste.board_id),
+            pin: Number(poste.arduino_pin),
+        });
         tele.off();
         socket.emit('simple_off_success', poste);
 

@@ -1,0 +1,5 @@
+2022/05/11-23:30:59.213 2cd0 Recovering log #30
+2022/05/11-23:30:59.213 2cd0 Level-0 table #32: started
+2022/05/11-23:30:59.377 2cd0 Level-0 table #32: 394 bytes OK
+2022/05/11-23:30:59.822 2cd0 Delete type=0 #30
+2022/05/11-23:30:59.822 2cd0 Delete type=3 #28

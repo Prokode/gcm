@@ -7,14 +7,15 @@
   </mat-card-content>
 </mat-card>
 
-<mat-card>
+<!-- <mat-card>
   <mat-card-content style="text-align: right;">
     <a type="button" mat-raised-button (click)="getVenteNotFinished()" 
     color="primary">
       Ventes non terminées
     </a>
   </mat-card-content>
-</mat-card>
+</mat-card> -->
+
 <mat-progress-spinner
 color="mat-indigo"
 mode="indeterminate"
@@ -142,6 +143,11 @@ class="white loading-circle"
 </mat-card>
 
 
+<div class="pb-1">
+  <button mat-fab class="mr-1 mat-mini-fab mat-blue-grey-A100 refresh-elements-button" (click)="getVenteNotFinished()">
+    <mat-icon>restore</mat-icon>
+  </button>
+</div>
 <div class="pb-1 add-element-button-container">
     <button mat-fab class="mr-1 mat-warn add-element-button" routerLink="/vente/list">
       <mat-icon>list</mat-icon>

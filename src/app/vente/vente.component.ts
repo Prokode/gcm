@@ -21,6 +21,7 @@ import { BoardService } from '../board/board.service';
 })
 export class VenteComponent implements OnInit {
   postes: any = [];
+  boards: any = [];
   dialogRef: MatDialogRef<VenteDialogComponent> | null;
   dialogRef2: MatDialogRef<ConfirmPasswordComponent> | null;
   config = {
@@ -195,11 +196,13 @@ export class VenteComponent implements OnInit {
           }
         );
         this.temp = this.postes;
+        this.boards = data['boards'];
       }
     );
   }
 
   openVenteDialog(poste, state) {
+    
     let cur_p = {
       poste: poste.poste,
       tarif: null,
@@ -236,16 +239,39 @@ export class VenteComponent implements OnInit {
   }
 
   startTime(poste) {
-    this.venteService.createVente(poste).subscribe(
-      (res) => {
-        if(res.message === 'success') {
-          this.vente_en_cours = res.vente;
-          this.socket.emit("start_chrono", res.vente);
-        }
+    this.loading = true;
+    this.boardService.getBoard(poste.poste.board_id).subscribe(
+      (res: any) => {
+
+        this.boardService.testBoard(res).subscribe(
+          (res) => {
+            
+            this.loading = false;
+            this.venteService.createVente(poste).subscribe(
+              (res) => {
+                if(res.message === 'success') {
+                  this.vente_en_cours = res.vente;
+                  this.socket.emit("start_chrono", res.vente);
+                }
+              }, (err) => {
+                console.log(err);
+              }
+            );
+
+          }, (err) => {
+            this.loading = false;
+            this.snackMessageService.newMessage.next(
+              new SnackMessage('danger', 'Carte non disponible.'));
+          }
+        )
+
       }, (err) => {
-        console.log(err);
+        this.loading = false;
+        this.snackMessageService.newMessage.next(
+          new SnackMessage('danger', 'Erreur inattendue.'));
       }
     );
+    
   }
 
   abortTime(poste) {
@@ -318,7 +344,15 @@ export class VenteComponent implements OnInit {
         poste.vente.tarif.hour = h;
         poste.vente.tarif.minute = m > 1 ? (m - 1) : m;
         poste.vente.tarif.second = s;
-        poste.vente.poste = posteToTranfertTo.poste;
+        let board = this.boards.filter((brd) => {
+          return  brd._id == posteToTranfertTo.poste.board_id;
+        });
+        console.log('Board filtered');
+        console.log(board[0]);
+        poste.vente.poste = {
+          ...posteToTranfertTo.poste,
+          board: board[0]
+        };
         this.form.reset();
         this.socket.emit("start_chrono", poste.vente);
         setTimeout(

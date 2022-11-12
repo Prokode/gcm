@@ -5,6 +5,7 @@ import { SnackMessageService } from '../../shared/snack-messages/snack-message.s
 import { SnackMessage } from '../../shared/snack-messages/snack-message.model';
 import { Router } from '@angular/router';
 import { PosteValidators } from '../poste.validators';
+import { of } from 'rxjs/observable/of';
 
 @Component({
   selector: 'app-poste-form',
@@ -19,6 +20,7 @@ export class PosteFormComponent implements OnInit {
   @Input('newPosteName') newPosteName: any;
 
   @Input('poste') poste: any;
+  authorizePins  = [4, 13, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33];
 
   constructor(private fb: FormBuilder, 
     private snackMessageService: SnackMessageService,
@@ -28,7 +30,8 @@ export class PosteFormComponent implements OnInit {
       name: [null , Validators.compose ([Validators.required, Validators.minLength(2)])],
       console_id: [null , Validators.compose ([Validators.required])],
       board_id: [null , Validators.compose ([Validators.required])],
-      arduino_pin: [null , Validators.compose([Validators.required, this.arduinoPinValidator.bind(this)]),
+      arduino_pin: [null , Validators.compose([Validators.required, this.arduinoPinValidator.bind(this), 
+       this.isAuthorizePin.bind(this) ]),
        Validators.composeAsync([ this.posteValidators.arduinoPinValidator.bind(this.posteValidators) ])],
       _id: [null , Validators.compose ([])]
     });
@@ -58,6 +61,37 @@ export class PosteFormComponent implements OnInit {
         return false;
       }
     }
+  }
+
+  
+  isAuthorizePin(control: FormControl) {
+    if (control) {
+      if (control.parent) {
+        if (control.parent.controls['board_id'].value !== null) {
+
+          let board = this.boards.filter((b) => { return b._id === control.parent.controls['board_id'].value; } );
+    
+          if (board.length > 0 ) {
+    
+            if (board[0].operation_mode === 'com') {
+              return false;
+            }
+    
+            
+              if (control.value) {
+                if (this.authorizePins.indexOf(Number(control.value)) < 0) {
+                  return { invalidPin: true };
+                }
+                return false;
+              }
+            }
+          }
+      }
+    
+     
+    }
+    
+    return false; 
   }
 
   submit() {

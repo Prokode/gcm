@@ -13,6 +13,7 @@ const Tarif = {
 const Poste =  {
     name: { type: String },
     arduino_pin: { type: String },
+    board: { type: Object },
     _id: { type: String }
 };
 

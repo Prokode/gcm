@@ -1,5 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
+const axios = require('axios');
 
 const globals = require('../../shared/globals');
 const router = express.Router();
@@ -23,6 +24,33 @@ const {
     EtherPortClient
 } = require('etherport-client');
 
+var onOff = (board_id, board_pin, action) => {
+    return new Promise(
+        (resolve, reject) => {
+            Board.findOne({_id: board_id}, async function(err, board) {
+                if (err) {
+                    reject(err);
+                }
+                // res.send(board);
+                await axios.get( 'http://' + board.ip + ':3030/onoff', {
+                    params: {
+                        'pin': board_pin,
+                        'action': action
+                    }
+                })
+                .then(function (response) {
+                    resolve(response);
+                    // newVente.startTime();
+                })
+                .catch(function (error) {
+                    // handle error
+                    reject(error);
+        
+                });
+            });
+        });    
+}
+
 
 // https://github.com/rwaldron/johnny-five/wiki/Getting-Started#trouble-shooting {port: 'COM9'}
 var fiveBoards;
@@ -34,32 +62,32 @@ Board.find({}).sort({ created_at: -1 }).exec(function (err, boards) {
         next(error);
     }
     if (boards.length > 0) {
-        var ports = boards.map(
+        var ports = boards.filter((board) => {
+            return board.operation_mode === 'com';
+        }).map(
             (board) => {
                 return { 
                     id:  board._id,
-                    port: board.operation_mode === 'ip' ? new EtherPortClient({
-                                    host: board.ip,
-                                    port: 3030
-                    }) : `COM${board.com}`,
+                    port: `COM${board.com}`,
                     repl: false}
             }
         );
 
-        // Create 2 board instances with IDs "A" & "B"
-        fiveBoards = new five.Boards(ports)
+        if (ports.length > 0) {
+            fiveBoards = new five.Boards(ports)
             .on("ready", function() {
-            console.log("Boards are ready");
-            })
-            .on("fail", function(event) {
-                console.log("%s sent a 'fail' message: %s", event.class, event.message);
-            })
-            .on("close", function(event) {
-                console.log("%s Close: %s", event.class, event.message);
-            })
-            .on("error", function(event) {
-                console.log("%s Error: %s", event.class, event.message);
+                console.log("Boards are ready");
             });
+            // .on("fail", function(event) {
+            //     console.log("%s sent a 'fail' message: %s", event.class, event.message);
+            // })
+            // .on("close", function(event) {
+            //     console.log("%s Close: %s", event.class, event.message);
+            // })
+            // .on("error", function(event) {
+            //     console.log("%s Error: %s", event.class, event.message);
+            // });
+        }
 
     }
 });
@@ -97,17 +125,36 @@ Board.find({}).sort({ created_at: -1 }).exec(function (err, boards) {
 // } while( !boardConnected );
 
 // var board;
-function NewVenteObj(temps, vente) {
+function NewVenteObj(temps, vente ) {
+    console.log(vente);
+
     var timerOptions = {
         refreshRateMS: 1000,    // How often the clock should be updated 
         almostDoneMS: 0,  // When counting down - this event will fire with this many milliseconds remaining on the clock 
     }
     // new five.Led(Number(vente.poste.arduino_pin));
     
-    this.tele = new five.Led({
-        board: fiveBoards.byId(vente.poste.board_id),
-        pin: Number(vente.poste.arduino_pin),
-    });
+    // this.tele = new five.Led({
+    //     board: fiveBoards.byId(vente.poste.board_id),
+    //     pin: Number(vente.poste.arduino_pin),
+    // });
+  
+        
+        if (vente.poste.hasOwnProperty('board')) {
+            this.poste = vente.poste;
+            this.tele = vente.poste.board.operation_mode === 'ip' ? vente.poste : new five.Led({
+                board: fiveBoards.byId(vente.poste.board._id),
+                pin: Number(vente.poste.arduino_pin),
+            });
+        } else {
+            this.poste = vente.vente.poste;
+            this.tele = vente.vente.poste.board.operation_mode === 'ip' ? vente.vente.poste : new five.Led({
+                board: fiveBoards.byId(vente.vente.poste.board._id),
+                pin: Number(vente.vente.poste.arduino_pin),
+             });
+        }
+        
+    
     this.ident = 0;
     this.vente = vente;
     this.countDown = new Stopwatch(temps, timerOptions);//new Timer({direction:'up',startValue:'00:00:00',showHours: true});
@@ -145,38 +192,47 @@ router.post('/create', venteReqValidators.validate('create'), function (req, res
                     return;
                 }
 
-                const venteObj = new Vente({
-                    unid: uniqid.time(),
-                    poste: {
-                        name: body.poste.name,
-                        arduino_pin: body.poste.arduino_pin,
-                        board_id: body.poste.board_id,
-                        _id: body.poste._id
-                    },
-                    console: consoleData[0], 
-                    tarif: {
-                        hour: body.tarif.hour,
-                        minute: body.tarif.minute,
-                        second: '00',
-                        cost: body.tarif.cost,
-                        _id: body.tarif._id
-                    },
-                    user_id: req.user.user_id,
-                    remaining_time: { hour: body.tarif.hour, minute: body.tarif.minute },
-                    created_at: new Date()
-                });
-    
-                venteObj.save(function(err) {
+                Board.findOne({_id: body.poste.board_id}, function(err, boardData) {
                     if (err) {
                         error.status = 500;
                         error.message = err;
                         next(error);
+                        return;
                     }
-                    res.send({
-                        message: 'success',
-                        vente: venteObj
+
+                    const venteObj = new Vente({
+                        unid: uniqid.time(),
+                        poste: {
+                            name: body.poste.name,
+                            arduino_pin: body.poste.arduino_pin,
+                            board: boardData,
+                            _id: body.poste._id
+                        },
+                        console: consoleData[0], 
+                        tarif: {
+                            hour: body.tarif.hour,
+                            minute: body.tarif.minute,
+                            second: '00',
+                            cost: body.tarif.cost,
+                            _id: body.tarif._id
+                        },
+                        user_id: req.user.user_id,
+                        remaining_time: { hour: body.tarif.hour, minute: body.tarif.minute },
+                        created_at: new Date()
                     });
-                });
+        
+                    venteObj.save(function(err) {
+                        if (err) {
+                            error.status = 500;
+                            error.message = err;
+                            next(error);
+                        }
+                        res.send({
+                            message: 'success',
+                            vente: venteObj
+                        });
+                    });
+                });    
             });
     } catch(err) {
         error.status = 500;
@@ -333,10 +389,11 @@ router.put('/stop_vente', venteReqValidators.validate('stopVente'), function (re
 
 
 // Socket communication block
-io.on('connection', function (socket) {
+io.on('connection', async function (socket) {
     console.log('on connection');
     var games = [];
-    socket.on('start_chrono',function(venteObj) {
+    socket.on('start_chrono', async function(venteObj) { 
+        console.log(venteObj);
         const time_to_count_down = (parseInt(venteObj.tarif.hour) * 60 * 60 * 1000 ) +
          (parseInt(venteObj.tarif.minute) * 60 * 1000 ) + (parseInt(venteObj.tarif.second) * 1000 ); 
 
@@ -350,15 +407,19 @@ io.on('connection', function (socket) {
             }
         );
         var newVente = null;
-        if (gameFiltered.length) {
+        if (gameFiltered.length > 0) {
+            console.log('Time 1');
             newVente = gameFiltered[0];
             var new_time_to_count_down =  parseInt(newVente.showValueTime()) + time_to_count_down;
             newVente.resetTime(new_time_to_count_down); 
             games[current_game_id] = newVente;
         } else {
+            console.log('Time 2');
             newVente = new NewVenteObj(time_to_count_down, venteObj);
             games.push(newVente);
         }
+
+        console.log(newVente);
         
         // console.log('--------');
         // games.forEach(g => {
@@ -402,21 +463,69 @@ io.on('connection', function (socket) {
             });
         });
 
-        newVente.timeChange().onDone(function() {
-            newVente.tele.off();
-            io.emit('broadcast', {
-                message: 'clock_end',
-                poste: newVente.vente.poste
-            });
+        newVente.timeChange().onDone(async function() {
+            if (newVente.poste.board.operation_mode === 'ip') {
+                await onOff(newVente.tele.board._id, newVente.tele.arduino_pin, 'off')
+                .then(function (response) {
+                        console.log(response.data);
+                        io.emit('broadcast', {
+                            message: 'clock_end',
+                            poste: newVente.vente.poste
+                        });
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log("error");
+                        console.log(error.response);
+            
+                    });
+            } else if (newVente.poste.board.operation_mode === 'com') {
+
+                newVente.tele.off();
+                io.emit('broadcast', {
+                    message: 'clock_end',
+                    poste: newVente.vente.poste
+                });
+        
+            }           
+        });
+            // newVente.tele.off();
+           
             // socket.dispatch('clock_end', {
             //     poste: newVente.vente.poste
             // })
-        });
-        newVente.tele.on();
-        newVente.startTime();  
+        // });
+
+        // newVente.tele.on();
+        // On tele request
+
+        if (newVente.poste.board.operation_mode === 'ip') {
+
+            await onOff(newVente.tele.board._id, newVente.tele.arduino_pin, 'on')
+            .then(function (response) {
+                    console.log(response.data);
+                    newVente.startTime();
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log("error");
+                    console.log(error.response);
+        
+                });
+            
+        } else if (newVente.poste.board.operation_mode === 'com') {
+
+            newVente.tele.on();
+            newVente.startTime();
+
+        }     
+
+        
+
+        
     });
 
-    socket.on('stop_chrono',function(poste) {
+    socket.on('stop_chrono', async function(poste) {
         const gameFiltered = games.filter(
             (game) => {
                 return game.vente.poste._id === poste._id;
@@ -436,40 +545,106 @@ io.on('connection', function (socket) {
                
             let set = {
                 wasStop: true
-              }
-            Vente.update(where, {$set: set}, {}, function(err, num, vente) {
+            };
+
+            Vente.update(where, {$set: set}, {}, async function(err, num, vente) {
                 if (vente.wasStop) {
-                    gameFiltered[0].tele.off();
-                    io.emit('broadcast', {
-                        message: 'clock_end',
-                        poste: poste
-                    });
-                    // socket.dispatch('clock_end', {
-                    //     poste: poste
-                    // });
+                    if (gameFiltered[0].poste.board.operation_mode === 'ip') {
+                        await onOff(gameFiltered[0].tele.board._id, gameFiltered[0].tele.arduino_pin, 'off')
+                        .then(function (response) {
+                            console.log(response.data);
+                            io.emit('broadcast', {
+                                message: 'clock_end',
+                                poste: poste
+                            });
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log("error");
+                            console.log(error.response);
+                
+                        });
+                    } else if (gameFiltered[0].poste.board.operation_mode === 'com') {
+                        gameFiltered[0].tele.off();
+                        io.emit('broadcast', {
+                            message: 'clock_end',
+                            poste: poste
+                        });
+                    }    
+                    
                 }   
             });   
            
         }
     });
 
-    socket.on('simple_on',function(poste) {
-        // let tele = new five.Led(Number(poste.arduino_pin));
-        let tele = new five.Led({
-            board: fiveBoards.byId(poste.board_id),
-            pin: Number(poste.arduino_pin),
+    socket.on('simple_on', async function(poste) {
+
+        Board.findOne({_id: poste.board_id}, async function(err, board) {
+            if (err) {
+                error.status = 500;
+                error.message = err;
+                next(error);
+            }
+
+            console.log(board.operation_mode);
+
+      
+            if (board.operation_mode === 'ip') {
+                await onOff(poste.board_id, poste.arduino_pin, 'on')
+                        .then(function (response) {
+                                console.log(response.data);
+                                socket.emit('simple_on_success', poste);
+                            })
+                            .catch(function (error) {
+                                // handle error
+                                console.log("error");
+                                console.log(error.response);
+                    
+                            });
+            } else if (board.operation_mode === 'com') {
+                let tele = new five.Led({
+                    board: fiveBoards.byId(poste.board_id),
+                    pin: Number(poste.arduino_pin),
+                });
+                tele.on();
+                socket.emit('simple_on_success', poste);
+            }                
+        
         });
-        tele.on();
-        socket.emit('simple_on_success', poste);
+
     });
 
-    socket.on('simple_off',function(poste) {
-        let tele = new five.Led({
-            board: fiveBoards.byId(poste.board_id),
-            pin: Number(poste.arduino_pin),
-        });
-        tele.off();
-        socket.emit('simple_off_success', poste);
+    socket.on('simple_off',async function(poste) {
+        Board.findOne({_id: poste.board_id}, async function(err, board) {
+            if (err) {
+                error.status = 500;
+                error.message = err;
+                next(error);
+            }
+
+            if (board.operation_mode === 'ip') {
+                await onOff(poste.board_id, poste.arduino_pin, 'off')
+                .then(function (response) {
+                                console.log(response.data);
+                                socket.emit('simple_off_success', poste);
+                })
+                .catch(function (error) {
+                                // handle error
+                                console.log("error");
+                                console.log(error.response);
+                    
+                });
+            } else if (board.operation_mode === 'com') {
+                let tele = new five.Led({
+                    board: fiveBoards.byId(poste.board_id),
+                    pin: Number(poste.arduino_pin),
+                });
+                tele.off();
+                socket.emit('simple_off_success', poste);
+            }
+
+        });    
 
     });
 

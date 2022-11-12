@@ -9,6 +9,7 @@ export class BoardValidators {
 
   constructor(private http: HttpClient) {}
 
+
   uniqueNameValidator(control: FormControl): Promise<any> | Observable<any> {
     if (control.parent) {
       return this.http.get(GlobalVariable.BASE_API_URL + '/logged/board/name/check', {

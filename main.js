@@ -1,7 +1,14 @@
-const { app, BrowserWindow, ipcMain, IpcMessageEvent } = require('electron')
+const { app, BrowserWindow, ipcMain, IpcMessageEvent } = require('electron');
+const fs = require('fs');
+require('update-electron-app')({
+  repo: 'Prokode/gcm'
+});
+
 
 if (handleSquirrelEvent(app)) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
+  // 
+  // cp "D:/projects/GCM/gcm/src/assets/icon.ico" "D:/projects/GCM/gcm/dist"
   return;
 }
 
@@ -23,11 +30,18 @@ function createWindow () {
   win.loadURL(`file://${__dirname}/dist/index.html`)
 
   //// uncomment below to open the DevTools.
-  // win.webContents.openDevTools()
+  // win.webContents.openDevTools();
+  
+  win.on('close', async function () {
+
+  });
+
 
   // Event when the window is closed.
-  win.on('closed', function () {
+  win.on('closed', async function () {
+
     win = null;
+    
   });
 
   win.removeMenu();
@@ -61,6 +75,29 @@ ipcMain.on('reload_app', function (event) {
 /*
 This setup does not support hot code reloads. Whenever you change some Angular code, you need to rerun the electron-build command. It is possible to setup hot reloads by pointing the window to a remote URL (such as https://localhost:4200) and running ng serve in a separate terminal.
 */
+
+// Check for data directory to check if exists
+try {
+
+  const userDataPath = app.getPath('userData');
+  const dir = userDataPath + '/db/data';
+
+  console.log(userDataPath);
+  console.log(dir);
+
+  // check if directory exists
+  if (fs.existsSync(dir)) {
+      console.log('Directory exists!');
+  } else {
+    // If data don't exist create data directory
+      console.log('Directory not found.');
+      fs.mkdirSync(dir, { recursive: true });
+  }
+
+} catch(e) {
+  console.log(e);
+}
+
 require('./server/server.js');
 /*
 electron-packager ./build/dist build-with-native-modules --platform=darwin --arch=x64 --out=./build/sa_packager --overwrite=true

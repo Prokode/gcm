@@ -30,6 +30,34 @@ class='material'
       {{value}}
     </ng-template>
   </ngx-datatable-column>
+
+  <ngx-datatable-column name="operation_mode" [sortable]="false">
+    <ng-template let-column="column" ngx-datatable-header-template>
+      <strong >Mode</strong>
+    </ng-template>
+    <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+      {{row.operation_mode}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="com" [sortable]="false">
+    <ng-template let-column="column" ngx-datatable-header-template>
+      <strong >PORT COM</strong>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value}}
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="ip" [sortable]="false">
+    <ng-template let-column="column" ngx-datatable-header-template>
+      <strong >Ip</strong>
+    </ng-template>
+    <ng-template let-value="value" ngx-datatable-cell-template>
+      {{value}}
+    </ng-template>
+  </ngx-datatable-column>
+
   <ngx-datatable-column name="created_at" [sortable]="false">
     <ng-template let-column="column" ngx-datatable-header-template>
       <strong>Date de création</strong>
@@ -70,7 +98,7 @@ class='material'
     </button>
   </div>
 
-<div *ngIf="boards.length === 0"  class="pb-1 add-element-button-container">
+<div  class="pb-1 add-element-button-container">
     <button mat-fab class="mr-1 mat-green add-element-button" routerLink="/board/create">
       <mat-icon>add</mat-icon>
     </button>

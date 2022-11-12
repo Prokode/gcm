@@ -25,6 +25,23 @@ var getSellUser = (vente) => {
   )
 }
 
+var getSociety = () => {
+  return new Promise(
+    function(resolve, reject) {
+
+      User.findOne({role: 'ADMIN'}, function(err, user) {
+        if (err) {
+          console.log(err);
+          reject();
+        }
+
+        resolve(user);
+
+      });
+    }
+  )
+}
+
 cron.schedule('* * * * *', () => {
 
     var error = new Error();
@@ -40,6 +57,8 @@ cron.schedule('* * * * *', () => {
         activation_decode = jwt.decode(activation.token, {json: true});
 
         // Make a request to online to get last sell 
+
+        console.log(activation_decode.activation.code);
 
         axios.get(globals.BASE_ONLINE_API_URL + '/getLastSell.php', { 
             params: {
@@ -97,10 +116,19 @@ cron.schedule('* * * * *', () => {
 
                   console.log(venteFormated);
 
+                  var society = null;
+
+                  await getSociety().then(
+                    (user) => {
+                      society = user.society;
+                    }
+                  );
+
 
                   axios.post(globals.BASE_ONLINE_API_URL + '/postSells.php', {
                     'sells': venteFormated,
-                    'code': activation_decode.activation.code
+                    'code': activation_decode.activation.code,
+                    'society': society
                   }, {
                     headers: {
                         'X-App-Id': globals.APP_ID
@@ -112,7 +140,7 @@ cron.schedule('* * * * *', () => {
                   .catch(function (error) {
                       // handle error
                       console.log("error");
-                      console.log(error.response);
+                      console.log(error);
           
                   });
 
@@ -122,7 +150,7 @@ cron.schedule('* * * * *', () => {
         .catch(function (error) {
             // handle error
             console.log("error");
-            console.log(error.response);
+            console.log(error);
 
         });
         

@@ -4,6 +4,7 @@ import { PostesTarifsResolver } from './postes-tarifs.resolver';
 import { VenteListComponent } from './vente-list/vente-list.component';
 import { VenteListResolver } from './vente-list.resolvver';
 import { VenteCurrentComponent } from './vente-current/vente-current.component';
+import { BoardListResolver } from '../board/board-list.resolver';
 
 export const VenteRoutes: Routes = [
   {
@@ -11,7 +12,7 @@ export const VenteRoutes: Routes = [
     children: [{
       path: '',
       component: VenteComponent,
-      resolve: {postestarifs: PostesTarifsResolver}
+      resolve: {postestarifs: PostesTarifsResolver, boards: BoardListResolver }
     },
     {
       path: 'list',

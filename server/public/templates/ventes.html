@@ -1,0 +1,61 @@
+<div>
+    <div ng-show="loading" style="text-align: center; padding-top: 100px;">
+        <h1 style="color:brown;">
+            CHARGEMENT...
+        </h1>
+    </div>
+    <div ng-show="!loading">
+        <div ng-show="!postes.length" style="text-align: center; padding-top: 100px;">
+            <h1 style="color:rgb(39, 25, 25);">
+                PAS DE POSTES ACTIFS
+            </h1>
+        </div>
+        <div ng-show="postes.length">
+            <h1 style="text-align:  center; color: #3f51b5; text-decoration: underline;">
+                <b>
+                    POSTES - GCM
+                </b>
+            </h1>
+            <br>
+            <div class="container"> 
+                <div class="row">
+                    <div ng-repeat="poste in postes" class="col-md-3" style="padding: 4px;">
+                        <div>
+                            <!--ng-class="{'end_signal': getEndSignal(poste)}"-->
+                        <div >
+                            <h4 style="text-align: center;"><b>{{poste.poste.name}}</b></h4>
+                                <div class="television-container">
+                                    <div class="television">
+                                        <div class="row">
+                                            <div class="col-md-12" style="text-align: center; padding-top: 8px;">
+                                                  <h1  style="color:#f44336;">
+                                                    <b ng-show="!poste.time && !poste.tarif">READY !</b>
+                                                    <b ng-show="!poste.time && poste.tarif">{{poste.tarif.hour + ' : ' + poste.tarif.minute + ' : ' + '00' }} </b>
+                                                    <b ng-class="{'end_signal': getEndSignal(poste)}" ng-show="poste.time && poste.tarif">{{poste.time}}</b>
+                                                  </h1>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                    <div class="television-footer-vertical"></div>
+                                    <div class="television-footer-horizotal"></div>
+                                </div>
+                                <div  ng-class="{'console-red': ((!poste.time && !poste.tarif) || (!poste.time && poste.tarif)),
+                                'console-green': (poste.time && poste.tarif)}"  class="console">
+                                      <b>{{poste.console.name}}</b>
+                                </div>
+                                <!-- <div class="row">
+                                    <div class="col-md-12" style="text-align: center; padding-top: 5px;">
+                                          <h1  style="color:brown; ">
+                                            <b ng-show="!poste.time && !poste.tarif">{{'00 : 00 : 00'}} </b>
+                                            <b ng-show="poste.time && poste.tarif">{{poste.time}}</b>
+                                          </h1>
+                                    </div>
+                                </div>  -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

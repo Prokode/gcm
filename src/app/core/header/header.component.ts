@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { StandByService } from '../../stand-by/stand-by.service';
 import { AppService } from '../../app.service';
 import { InformationService } from '../../information/information.service';
+import { IpcService } from '../../shared/ipc/ipc.service';
 
 @Component({
   selector: 'app-header',
@@ -22,7 +23,7 @@ export class HeaderComponent {
     private router: Router,
     private appService: AppService,
     private standByService: StandByService,
-
+    private readonly _ipc: IpcService,
     private userService: UserService) {
       // this.getUserSociety();
       this.appService.userInfoChange.asObservable().subscribe(
@@ -60,4 +61,9 @@ export class HeaderComponent {
       }
     )
   }
+
+  restart() {
+    this._ipc.send('reload_app');
+  }
+
 }

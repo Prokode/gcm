@@ -13,6 +13,10 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const AppIdentity = require('./middlewares/appIdentity');
 
+//Models
+const Board = require('./shared/db/models/Board');
+const axios = require('axios');
+
 
 // Routes list per App
 var loggedOut = require('./routes/loggedOut');
@@ -88,8 +92,65 @@ process.on('unhandledRejection', (err, promise) => {
 });
 
 
-process.on('', () => {
+// Exiting processing
 
-});
+
+// var arduinoFilter = ()  => {
+//   var results = [];
+//   return new Promise((resolve, reject) => {
+//     Board.find({}).sort({ created_at: -1 }).exec(function (err, boards) {
+//       if (err) {
+//          console.log(err);
+//       }
+//       if (boards.length > 0) {
+//         boards.forEach((board, id) => {
+//           if (board.operation_mode === 'ip') {
+//               results.push(board);
+//           }
+//           if (id === (boards.length - 1)) {
+//               resolve(results);
+//           }
+//         });
+//       }
+//     });
+//   });
+  
+// }
+
+// var esp32InitializationRequests = (arr) => {
+//   var results = [];
+
+//   return new Promise((resolve, reject) => {
+//     arr.forEach(async (board, id) => {
+//       if (board.operation_mode === 'ip') {
+//         await axios.get( 'http://' + board.ip + ':3030/initialize');
+//       }
+//       if (id === (arr.length - 1)) {
+//           resolve();
+//       }
+//     });
+//   });
+  
+// }
+
+// process.on('exit', async function (code) {
+ 
+//   var ipBoards;
+
+//   await arduinoFilter().then(
+//       (results) => {
+//         ipBoards = results;
+//       }
+//     );
+
+//   console.log(ipBoards);
+    
+//   if(ipBoards.length > 0) {
+//       await esp32InitializationRequests(ipBoards);
+//     }
+
+//   return console.log(`Process to exit with code ${code}`);
+    
+// });
 
 module.exports = app;

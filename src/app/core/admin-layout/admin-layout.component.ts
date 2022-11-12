@@ -12,7 +12,7 @@ import { AuthService } from '../../shared/auth/auth.service';
 import { UserService } from '../../shared/user/user.service';
 import { AppService } from '../../app.service';
 
-
+const electron = window.require('electron');
 
 const SMALL_WIDTH_BREAKPOINT = 960;
 
@@ -49,6 +49,8 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
   user: any;
   society: any;
 
+  appVersion: any = '';
+
   
 
   constructor(
@@ -61,10 +63,10 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,  
     private appService: AppService ) {
 
-    this.mediaMatcher.addListener(mql => zone.run(() => {
+    this.mediaMatcher.addListener( (mql: any) => zone.run(() => {
       this.mediaMatcher = mql;
     }));
-    this.initTimer(this.logoutTimeout);
+    this.initTimer(this.logoutTimeout); 
     
     this.standByService.standBySubject.asObservable().subscribe(
       (res) => {
@@ -95,6 +97,12 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
         }
       }
     );
+
+    try {
+      this.appVersion = electron.remote.app.getVersion();
+    } catch (e) {
+      console.log("Error getting version");
+    }
 
     
     

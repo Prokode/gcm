@@ -56,8 +56,12 @@
                         class="mat-text-warn">Ce champs est requis</mat-error>
             <mat-error *ngIf="form.controls['arduino_pin'].hasError('pinNotValid') &&
               form.controls['arduino_pin'].touched"
-                        class="mat-text-warn">Le Pin n'est pas valide ou il est déjà utilisé
+                        class="mat-text-warn">Le Pin est déjà utilisé
                       </mat-error>  
+              <mat-error *ngIf="form.controls['arduino_pin'].hasError('invalidPin') &&
+                      form.controls['arduino_pin'].touched"
+                class="mat-text-warn">Les pins autorisés sont 4, 13, 16, 17, 18, 19, 21, 22, 23, 25, 26, 27, 32, 33.
+                              </mat-error>              
             <mat-error *ngIf="form.controls['arduino_pin'].hasError('maxlength') &&
                                 form.controls['arduino_pin'].touched"
                                           class="mat-text-warn">Longueure invalide</mat-error>                                

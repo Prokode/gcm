@@ -16,9 +16,11 @@ const Tarif = require('../../shared/db/models/Tarif');
 let serialport = require('serialport');
 
 // ping
-var ping = require ("net-ping");
-var session = ping.createSession ();
+// var ping = require ("net-ping");
+// var session = ping.createSession ();
 
+// TCP-PING
+var tcpp = require('tcp-ping');
 /*
  Routes for boards
 */
@@ -91,34 +93,33 @@ router.post('/test', boardReqValidators.validate('test'), function (req, res, ne
 
                 try {  
 
-                    session.pingHost(`${body.ip}`, function (error, target) {
-                        if (error) {
-                            console.log (target + ": " + error.toString ());
-                            res.status(400).send({
-                                            success: false
-                            });
-                        } else {
-                            console.log (target + ": Alive");
-                            res.status(200).send({
-                                success: true
-                            });
-                        }
-                    });
-
-                    // tcpp.probe(`${body.ip}`, 41234, function(err, available) {
-                    //     if (!available) {
-                    //         console.log (body.ip);
+                    // session.pingHost(`${body.ip}`, function (error, target) {
+                    //     if (error) {
+                    //         console.log (target + ": " + error.toString ());
                     //         res.status(400).send({
-                    //             success: false
+                    //                         success: false
                     //         });
-                    //     }   
-                    //     if (available) { 
+                    //     } else {
+                    //         console.log (target + ": Alive");
                     //         res.status(200).send({
                     //             success: true
                     //         });
-                    //     } 
+                    //     }
                     // });
-                        
+
+                    tcpp.probe(`${body.ip}`, 3030, function(err, available) {
+                        if (!available) {
+                            console.log (body.ip);
+                            res.status(400).send({
+                                success: false
+                            });
+                        }   
+                        if (available) { 
+                            res.status(200).send({
+                                success: true
+                            });
+                        } 
+                    });
             
                 } catch(e) {
                     console.log('Board exception error');
@@ -134,32 +135,62 @@ router.post('/test', boardReqValidators.validate('test'), function (req, res, ne
                     // Test for configured Com port
                     try {
 
-                        let myPort = new serialport(`COM${body.com}`, body.comBaudRate);
-                    
-                        myPort.on(
-                            'error', function() {
-                                console.log("We have error");
+                        let portExist = false;
+
+                        serialport.list().then(function(ports) {
+                            
+                            let portFilter = ports.filter(function(port) {
+                                console.log(`COM${body.com}`);
+                                return port.path == `COM${body.com}`;
+                            });
+
+                            if (portFilter.length > 0) {
+                                let port = portFilter[0];
+                                if (port.locationId !== undefined && port.locationId !== null) {
+                                    portExist = true;
+                                }
+                            }
+
+                            if (!portExist) {
                                 res.status(400).send({
                                     success: false
                                 });
-                            } 
-                        );
-                    
-                        myPort.on(
-                            'open', function() {
-                                console.log("Port open");
-                                myPort.close(( err ) => {
-                                    if (err) {
-                                        console.log(err);
-                                    }
-        
-                                    console.log('Port close');
-                                });
+                            }
+                            
+                            if (portExist) {
                                 res.status(200).send({
                                     success: true
                                 });
-                            }
-                        );
+                            } 
+
+                        });
+
+                         
+
+                        // let myPort = new serialport(`COM${body.com}`, {
+                        //     baudRate: body.comBaudRate
+                        // });
+                    
+                        // myPort.on(
+                        //     'error', function() {
+                        //         console.log("We have error...");
+                                
+                        //     } 
+                        // );
+                    
+                        // myPort.on(
+                        //     'open', function() {
+                        //         console.log("Port open");
+                        //         myPort.close(( err ) => {
+                        //             if (err) {
+                        //                 console.log(err);
+                        //             }
+        
+                        //             console.log('Port close');
+                        //         });
+                                
+                        //     }
+                        // );
 
                         
                     

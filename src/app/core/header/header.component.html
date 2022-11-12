@@ -27,13 +27,18 @@
     <mat-icon>person</mat-icon>
   </button>
   <mat-menu #user="matMenu" >
-    <button (click)="placeInStandBy()" mat-menu-item>
+    <button style="max-height: 40px;" (click)="placeInStandBy()" mat-menu-item>
       <mat-icon>lock</mat-icon>
       Mette en veille
     </button>
-    <button (click)="logout()" mat-menu-item>
+    <button style="max-height: 40px;" (click)="logout()" mat-menu-item>
       <mat-icon>power_settings_new</mat-icon>
       Déconnexion
+    </button>
+    <hr>
+    <br>
+    <button (click)="restart()" type="button" mat-raised-button class="mat-red" style="width: 100%; box-sizing: border-box; margin: 0 auto; max-height: 40px;" >
+      Redémarrer
     </button>
     <!-- <button mat-menu-item>
       <mat-icon>account_box</mat-icon>

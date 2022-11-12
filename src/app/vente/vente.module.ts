@@ -25,6 +25,7 @@ import { StandByService } from '../stand-by/stand-by.service';
 import { ConfirmPasswordComponent } from './confirm-password/confirm-password.component';
 import { VenteCurrentComponent } from './vente-current/vente-current.component';
 import { BoardService } from '../board/board.service';
+import { BoardListResolver } from '../board/board-list.resolver';
 
 const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
 
@@ -64,7 +65,8 @@ const config: SocketIoConfig = { url: 'http://localhost:8080', options: {} };
     VenteListResolver,
     StandByService,
     PostesStatesResolver,
-    BoardService
+    BoardService,
+    BoardListResolver
   ],
   entryComponents: [
       VenteDialogComponent,

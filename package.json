@@ -1,10 +1,17 @@
 {
   "name": "GCM",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "license": "MIT",
   "main": "main.js",
   "build": {
     "appId": "com.electron.gcm",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "prokode",
+        "repo": "gcm"
+      }
+    ],
     "productName": "Game_Center_Manager",
     "files": [
       "**/*",
@@ -25,6 +32,9 @@
           ]
         }
       ]
+    },
+    "nsis": {
+      "oneClick": false
     }
   },
   "scripts": {
@@ -43,7 +53,8 @@
     "rebuild": "electron-rebuild -f -w node_modules",
     "create_installer": "node build.js",
     "build_win": "electron-builder build --windows",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "publish": "electron-builder --win -p always"
   },
   "private": true,
   "dependencies": {
@@ -79,6 +90,7 @@
     "electron-db": "^0.15.1",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^4.0.0",
+    "electron-updater": "^5.3.0",
     "etherport-client": "^0.1.4",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
@@ -122,6 +134,7 @@
     "time-counter": "^1.0.0",
     "timer-stopwatch": "^0.2.0",
     "uniqid": "^5.0.3",
+    "update-electron-app": "^2.0.1",
     "usb": "^2.1.2",
     "zone.js": "0.8.20"
   },
@@ -138,6 +151,7 @@
     "electron-installer-windows": "^3.0.0",
     "electron-rebuild": "^1.8.8",
     "electron-winstaller": "^4.0.0",
+    "electron-wix-msi": "^5.0.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",

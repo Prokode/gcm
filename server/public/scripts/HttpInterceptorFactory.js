@@ -1,10 +1,17 @@
-app.factory('HttpInterceptorFactory', function($q) {
+app.factory('HttpInterceptorFactory', ['$q',  function($q ) {
+    
     return {
       // On request success
       request: function (config) {
           // console.log(config); // Contains the data about the request before it is sent.
           // Return the config or wrap it in a promise if blank.
-          config.headers['X-APP-ID'] = 'GCM_IOT_APP';
+        config.headers['X-APP-ID'] = 'GCM_IOT_APP';
+
+        const gcmUser = window.localStorage.getItem('gcmUser');
+        let gcmUserParsed = JSON.parse(gcmUser);
+        if (gcmUserParsed?.name != "" && gcmUserParsed?.token != "" && gcmUserParsed?.role != "") {
+            config.headers['Authorization'] = 'Bearer ' + gcmUserParsed?.token;
+        }
 
           return config || $q.when(config);
       },
@@ -38,4 +45,10 @@ app.factory('HttpInterceptorFactory', function($q) {
   
       }
     };
-  });
+}]);
+
+/***********************************HTTP INTERCEPTOR***************************************/
+app.config(function ($httpProvider) {
+    // Add the interceptor to the $httpProvider.
+    $httpProvider.interceptors.push('HttpInterceptorFactory');
+});

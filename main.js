@@ -1,8 +1,6 @@
 const { app, BrowserWindow, ipcMain, IpcMessageEvent } = require('electron');
 const fs = require('fs');
-require('update-electron-app')({
-  repo: 'Prokode/gcm'
-});
+const { autoUpdater } = require("electron-updater");
 
 
 if (handleSquirrelEvent(app)) {
@@ -43,6 +41,11 @@ function createWindow () {
     win = null;
     
   });
+
+  const log = require("electron-log");
+  log.transports.file.level = "debug";
+  autoUpdater.logger = log;
+  autoUpdater.checkForUpdatesAndNotify();
 
   win.removeMenu();
 

@@ -1,6 +1,6 @@
 {
   "name": "GCM",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "license": "MIT",
   "main": "main.js",
   "build": {
@@ -40,7 +40,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",

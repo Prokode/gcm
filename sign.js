@@ -1,5 +1,5 @@
 const { MSICreator } = require('electron-wix-msi');
-
+// "build": "ng build",
 ( async () => { 
 // Step 1: Instantiate the MSICreator
 const msiCreator = new MSICreator({

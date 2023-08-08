@@ -43,9 +43,10 @@ var getSociety = () => {
 }
 
 cron.schedule('* * * * *', () => {
+  try {
 
     var error = new Error();
-    Activation.find({}, function (err, activations) {
+    Activation.find({}, async function (err, activations) {
       if(err) {
         // error.status = 500;
         // next(error);
@@ -56,13 +57,26 @@ cron.schedule('* * * * *', () => {
         const activation = (activations.reverse())[0];
         activation_decode = jwt.decode(activation.token, {json: true});
 
+        // Get society
+
+        var society = null;
+
+        await getSociety().then(
+          (user) => {
+            if (user !== null  && user !== undefined) {
+              society = user.society;
+            } 
+          }
+        );
+
         // Make a request to online to get last sell 
 
         console.log(activation_decode.activation.code);
 
         axios.get(globals.BASE_ONLINE_API_URL + '/getLastSell.php', { 
             params: {
-                'code': activation_decode.activation.code
+                'code': activation_decode.activation.code,
+                'society': society
             },
             headers: {
                 'X-App-Id': globals.APP_ID
@@ -116,15 +130,6 @@ cron.schedule('* * * * *', () => {
 
                   console.log(venteFormated);
 
-                  var society = null;
-
-                  await getSociety().then(
-                    (user) => {
-                      society = user.society;
-                    }
-                  );
-
-
                   axios.post(globals.BASE_ONLINE_API_URL + '/postSells.php', {
                     'sells': venteFormated,
                     'code': activation_decode.activation.code,
@@ -160,5 +165,8 @@ cron.schedule('* * * * *', () => {
         // next(error);
       }
     });  
+  } catch(err) {
+      console.log('Error when updating sells online.')
+  }
     
 });

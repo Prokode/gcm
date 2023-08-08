@@ -1,6 +1,6 @@
 {
   "name": "GCM",
-  "version": "1.0.7",
+  "version": "1.0.15",
   "license": "MIT",
   "main": "main.js",
   "build": {
@@ -9,7 +9,9 @@
       {
         "provider": "github",
         "owner": "prokode",
-        "repo": "gcm"
+        "repo": "gcm-downloads",
+        "token": "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",
+        "private": false
       }
     ],
     "productName": "Game_Center_Manager",
@@ -80,6 +82,7 @@
     "angular-calendar": "0.23.7",
     "angular-tree-component": "7.0.1",
     "axios": "^0.26.0",
+    "bagpipe": "^0.3.5",
     "base-64": "^0.1.0",
     "body-parser": "^1.19.0",
     "chart.js": "2.7.2",
@@ -88,6 +91,7 @@
     "d3": "4.13.0",
     "dragula": "3.7.2",
     "electron-db": "^0.15.1",
+    "electron-log": "^4.4.8",
     "electron-squirrel-startup": "^1.0.0",
     "electron-store": "^4.0.0",
     "electron-updater": "^5.3.0",

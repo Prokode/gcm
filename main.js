@@ -1,6 +1,53 @@
-const { app, BrowserWindow, ipcMain, IpcMessageEvent } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog  } = require('electron');
 const fs = require('fs');
 const { autoUpdater } = require("electron-updater");
+
+const log = require("electron-log");
+
+log.transports.file.level = "info";
+autoUpdater.logger = log;
+
+
+autoUpdater.on('checking-for-update', () => {
+  console.log('Checking for update...');
+});
+
+autoUpdater.on('update-available', (info) => {
+  console.log('Update avalaible...');
+  console.log('Version', info.version);
+});
+
+
+autoUpdater.on('update-not-available', () => {
+  console.log('Update not avalaible...'); 
+});
+
+autoUpdater.on('download-progress', (progress) => {
+  console.log('Download on progress..'); 
+});
+
+autoUpdater.on('update-downloaded', (event, releaseNotes, releaseName) => {
+  console.log('Update downloaded..'); 
+  
+  const dialogOpts = {
+    type: 'info',
+    buttons: ['Rédémarrer', 'Après'],
+    title: 'Mise à jour application GCM',
+    message: process.platform === 'win32' ? releaseNotes : releaseName,
+    detail: 'Une nouvelle version a été téléchargée. Redémarrez l\'application pour appliquer les mises à jour.'
+  }
+
+  const dialogTestResponse = dialog.showMessageBox(dialogOpts);
+
+  if (dialogTestResponse === 0) {
+    autoUpdater.quitAndInstall();
+  }
+
+});
+
+autoUpdater.on('error', (error) => {
+  console.error(error); 
+});
 
 
 if (handleSquirrelEvent(app)) {
@@ -13,6 +60,13 @@ if (handleSquirrelEvent(app)) {
 let win;
 
 function createWindow () {
+
+  const UPDATE_CHECK_INTERVAL = 1 * 60 * 1000;
+
+  autoUpdater.checkForUpdatesAndNotify().catch(err => {
+    console.error(`Update check went wrong`, err);
+  });
+  
   // Create the browser window.
   win = new BrowserWindow({
     width: 600, 
@@ -42,13 +96,8 @@ function createWindow () {
     
   });
 
-  const log = require("electron-log");
-  log.transports.file.level = "debug";
-  autoUpdater.logger = log;
-  autoUpdater.checkForUpdatesAndNotify();
-
   win.removeMenu();
-
+ 
 }
 
 // Create window on electron intialization

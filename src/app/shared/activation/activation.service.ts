@@ -5,6 +5,16 @@ import 'rxjs/Rx';
 import {GlobalVariable} from '../../global';
 import {Subject} from 'rxjs/Subject';
 
+interface COUNTRY {
+  id: number;
+  iso: string;
+  name: string;
+  nicename: string;
+  iso3: string;
+  numcode: number;
+  phonecode: number
+}
+
 @Injectable()
 export class ActivationService {
   private subject = new Subject<any>();
@@ -119,5 +129,9 @@ export class ActivationService {
           });
         }
       );
+  }
+
+  loadCountry() {
+    return this.http.get('./countries.json');
   }
 }

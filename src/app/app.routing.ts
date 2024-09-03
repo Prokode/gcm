@@ -5,12 +5,13 @@ import { AuthGuard } from './shared/auth/auth-guard.service';
 import { LocalGuard } from './shared/local/local-guard.service';
 import { UserResolver } from './shared/user/user.resolver';
 import { SocietyResolver } from './shared/user/society.resolver';
+import { CurrencyResolver } from './shared/user/currency.resolver';
 
 export const AppRoutes: Routes = [{
   path: '',
   component: AdminLayoutComponent,
   canActivate: [ LocalGuard, ActivationGuard ],
-  resolve: { user: UserResolver, society: SocietyResolver },
+  resolve: { user: UserResolver, society: SocietyResolver, currency: CurrencyResolver },
   children: [{
     path: '',
     loadChildren: './dashboard/dashboard.module#DashboardModule',

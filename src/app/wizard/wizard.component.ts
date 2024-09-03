@@ -82,7 +82,8 @@ export class WizardComponent implements OnInit {
 
   onInformationSuccess(e) {
     if (e) {
-      this.wizardService.societyShare.next(e);
+      this.wizardService.societyShare.next(e.society);
+      this.wizardService.currencyShare.next(e.currency);
       this.wizardService.rootPasswordShare.next(this.root_pwd);
       this.information = true;
     }

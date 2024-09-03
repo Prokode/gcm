@@ -28,6 +28,10 @@ var schema = {
         type: String,
         default: null
     },
+    currency : {
+        type: String,
+        default: "CFA"
+    },
     wasDisable: {
         type: Boolean,
         default: false

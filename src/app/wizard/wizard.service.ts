@@ -10,6 +10,7 @@ export class WizardService {
   public activationIdShare = new Subject<any>();
   public rootPasswordShare = new Subject<any>();
   public societyShare = new Subject<any>();
+  public currencyShare = new Subject<any>();
   constructor(private http: HttpClient) {
   }
 

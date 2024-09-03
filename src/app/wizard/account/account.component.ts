@@ -15,6 +15,7 @@ export class AccountComponent implements OnInit {
   @Output() onAccountSuccess: EventEmitter<any> = new EventEmitter<any>(); 
   root_pwd = null;
   society = null;
+  currency = null;
   constructor(private fb: FormBuilder, private accountValidators: AccountValidators,
      private wizardService: WizardService,  private snackMessageService : SnackMessageService ) {
     this.form = this.fb.group ( {
@@ -26,6 +27,7 @@ export class AccountComponent implements OnInit {
       passwordConfirm:  [null , Validators.compose ( [Validators.required, this.accountValidators.samePasswordValidator.bind(this.accountValidators) ] )],
       rp: [null , Validators.compose ( [ ] )],
       society: [null , Validators.compose ( [ ] )],
+      currency: [null , Validators.compose ( [ ] )]
     });
 
     this.wizardService.rootPasswordShare.asObservable().subscribe(
@@ -40,6 +42,12 @@ export class AccountComponent implements OnInit {
       }
     );
 
+    this.wizardService.currencyShare.asObservable().subscribe(
+      (currency) => {
+       this.currency = currency;
+      }
+    );
+
    }
 
   ngOnInit() {
@@ -47,6 +55,7 @@ export class AccountComponent implements OnInit {
 
   submit() {
     this.form.controls['rp'].setValue(this.root_pwd ? this.root_pwd : 'gcmmanager');
+    this.form.controls['currency'].setValue(this.currency ? this.currency : 'CFA');
     // this.form.controls['society'].setValue(this.society);
     this.wizardService.createAdminAccount(this.form.value).subscribe(
       (res) => {

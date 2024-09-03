@@ -122,6 +122,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.user = data['user'];
         this.society = data['society'].society;
+        window.localStorage.setItem('appCurrency', data['currency'].currency);
       }
     );
     

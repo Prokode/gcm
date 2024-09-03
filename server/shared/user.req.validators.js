@@ -11,7 +11,8 @@ const Validators = {
                 body('username', 'Username must exist').exists(),
                 body('password', 'Password must exist').exists().isLength({ min: 8 }),
                 body('role').optional(),
-                body('society').optional()
+                body('society').optional(),
+                body('currency').optional()
               ];   
             break;
           case 'updateUser':

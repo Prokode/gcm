@@ -41,6 +41,35 @@ router.get('/society', function (req, res, next) {
     }        
 });
 
+router.get('/currency', function (req, res, next) {
+    let error = new Error();
+    try {
+            const errors = validationResult(req);
+
+            if (!errors.isEmpty()) {
+            res.status(400).json({ errors: errors.array() });
+            return;
+            }
+
+            // let id = req.query.id ? req.query.id : req.user.user_id;
+            
+            User.findOne({role: 'ADMIN'}, function(err, user) {
+                if (err) {
+                    error.status = 500;
+                    error.message = err;
+                    next(error);
+                    return;
+                }
+                res.send(user);
+            });
+
+    } catch(err) {
+        error.status = 500;
+        error.message = err;
+        next(error);
+    }        
+});
+
 router.get('/username/check', userReqValidators.validate('checkUsername'), function (req, res, next) {
     let error = new Error();
     try {
@@ -99,11 +128,11 @@ router.post('/create', userReqValidators.validate('createUser'), function (req, 
           return;
         }
 
-            const body = _.pick(req.body, ['username', 'password', 'lastname', 'firstname', 'rp', 'society']);
+            const body = _.pick(req.body, ['username', 'password', 'lastname', 'firstname', 'rp', 'society', 'currency']);
 
             const user = { firstname: body.firstname, lastname: body.lastname,
                 username: body.username, password: pwdhash.generate(body.password), role: 'ADMIN', 
-                society: body.society };
+                society: body.society, currency: body.currency };
                  
             const root =  { firstname: 'ROOT', lastname: 'root',
                 username: 'root', password: pwdhash.generate('pwd' + body.rp), role: 'ROOT'};

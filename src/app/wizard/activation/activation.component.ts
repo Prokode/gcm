@@ -5,6 +5,21 @@ import { ActivationService } from '../../shared/activation/activation.service';
 import { SnackMessageService } from '../../shared/snack-messages/snack-message.service';
 import { SnackMessage } from '../../shared/snack-messages/snack-message.model';
 
+interface COUNTRY {
+  id: number;
+  iso: string;
+  name: string;
+  nicename: string;
+  iso3: string;
+  numcode: number;
+  phonecode: number
+}
+
+interface COUNTRYFORMATTED {
+  lib: string;
+  code: string; 
+}
+
 @Component({
   selector: 'app-activation',
   templateUrl: './activation.component.html',
@@ -17,10 +32,14 @@ export class ActivationComponent implements OnInit {
   code_recover: any = null;
   loading: boolean = false;
   reactivationForm: FormGroup;
-  countries = [
+  countries: Array<COUNTRYFORMATTED> = [
     {lib: 'TOGO', code: '00228'},
-    {lib: 'BENIN', code: '00229'}
-  ];
+    {lib: 'BENIN', code: '00229'},
+    {lib: 'GHANA', code: '00233'},
+    {lib: 'BUKINA FASO', code: '00226'},
+    {lib: 'COTE D\'IVOIRE', code: '00225'},
+    {lib: 'SENEGAL', code: '00221'},
+    {lib: 'CAMEROUN', code: '00237'}  ];
   countryCode: any = '00228';
 
   constructor(private fb: FormBuilder, private wizardService: WizardService,
@@ -45,7 +64,13 @@ export class ActivationComponent implements OnInit {
 
    }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.activationService.loadCountry().subscribe(
+      (response: Array<COUNTRY>) => {
+        console.log(response);
+        this.countries = response.map((c: any) => { return {lib: c.nicename , code: '00'+c.phonecode }; });
+      }
+    );
   }
 
   submit() {

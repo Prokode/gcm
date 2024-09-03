@@ -40,6 +40,7 @@
                          class="mat-text-warn">Ce champs est requis</mat-error>
             </mat-form-field>
           </div>
+
           <div class="pb-1">
             <mat-form-field style="width: 100%">
                 <mat-select placeholder="Pays"
@@ -77,6 +78,21 @@
             form.controls['society'].touched" class="mat-text-warn">
               Ce champs est requis.</small>
           </div>
+
+          <div class="pb-1">
+            <mat-form-field style="width: 100%">
+                <mat-select placeholder="Monnaie à utiliser sur la plateforme"
+                            [formControl]="form.controls['currency']">
+                  <mat-option  *ngFor="let curr of currencies" [value]="currency.value"
+                               [matTooltip]="currency.name">
+                    {{currency.name}} </mat-option>
+                </mat-select>
+                <mat-error *ngIf="form.controls['currency'].hasError('required') && form.controls['currency'].touched"
+                           class="mat-text-warn">Ce champs est requis</mat-error>
+            </mat-form-field>
+          </div>
+
+
           <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid">Valider</button>
         </div>
       </form>

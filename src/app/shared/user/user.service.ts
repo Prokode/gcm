@@ -49,6 +49,22 @@ export class UserService {
       );
   }
 
+
+  getCurrency() {
+    return this.http.get(GlobalVariable.BASE_API_URL+'/logged-out/user/currency')
+    .map(
+        (response: any) => { return response; }
+      ).catch(
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          return Observable.throw({
+            code: error.status,
+            content: JSON.parse(error.error).message
+          });
+        }
+      );
+  }
+
   showUser() {
     return this.http.get(GlobalVariable.BASE_API_URL+'/logged/user/show')
     .map(

@@ -5,6 +5,27 @@ import {SnackMessageService} from "../../shared/snack-messages/snack-message.ser
 import { SnackMessage } from '../../shared/snack-messages/snack-message.model';
 import { InformationValidators } from './information.validators';
 
+interface COUNTRY {
+  id: number;
+  iso: string;
+  name: string;
+  nicename: string;
+  iso3: string;
+  numcode: number;
+  phonecode: number
+}
+
+interface CURRENCY {
+  name: string;
+  value: string;
+}
+
+interface COUNTRYFORMATTED {
+  lib: string;
+  code: string; 
+}
+
+
 @Component({
   selector: 'app-information',
   templateUrl: './information.component.html',
@@ -13,13 +34,40 @@ import { InformationValidators } from './information.validators';
 export class InformationComponent implements OnInit {
   form: FormGroup;
   recoverForm: FormGroup;
-  countries = [
+  countries: Array<COUNTRYFORMATTED> = [
     {lib: 'TOGO', code: '00228'},
-    {lib: 'BENIN', code: '00229'}
-  ];
-  activationId: any = null;
-  @Output() onInformationSuccess: EventEmitter<any> = new EventEmitter<any>(); 
+    {lib: 'BENIN', code: '00229'},
+    {lib: 'GHANA', code: '00233'},
+    {lib: 'BUKINA FASO', code: '00226'},
+    {lib: 'COTE D\'IVOIRE', code: '00225'},
+    {lib: 'SENEGAL', code: '00221'},
+    {lib: 'CAMEROUN', code: '00237'}  ];
   countryCode: any = '00228';
+
+  currencies: Array<CURRENCY> = [
+    {
+      name: 'Franc CFA',
+      value: 'CFA'
+    },
+    {
+      name: 'Cedi GHS',
+      value: 'GHS'
+    },
+    {
+      name: 'Naira NGN',
+      value: 'NGN'
+    },
+    {
+      name: 'Euro EUR',
+      value: 'EUR'
+    },
+    {
+      name: 'DOLLAR USD',
+      value: 'USD'
+    }
+  ]
+  activationId: any = null;
+  @Output() onInformationSuccess: EventEmitter<any> = new EventEmitter<any>();  
   historyId: any = null;
   recover: boolean = false;
   userRecovered: any = null;
@@ -31,6 +79,7 @@ export class InformationComponent implements OnInit {
       firstname: [null , Validators.compose ( [ Validators.required ] )],
       address:  [null , Validators.compose ( [] )],
       country:  [this.countries[0], Validators.compose ( [ Validators.required ])],
+      currency:  ['CFA', Validators.compose ( [ Validators.required ])],
       phone:  [null , Validators.compose ([ Validators.required ]),
        Validators.composeAsync([ 
          this.informationValidators.uniquePhoneValidator.bind(this.informationValidators) ]) ],
@@ -82,7 +131,8 @@ export class InformationComponent implements OnInit {
       society: form.society,
       activationId: this.activationId,
       countryCode: this.countryCode,
-      historyId: this.historyId
+      historyId: this.historyId,
+      currency: form.currency
     }
   }
 
@@ -94,7 +144,10 @@ export class InformationComponent implements OnInit {
             this.form.disable();
             this.snackMessageService.newMessage.next(
               new SnackMessage('success', 'Vos informations ont été bien enrégistrées'));
-            this.onInformationSuccess.emit(data.society);
+            this.onInformationSuccess.emit({
+              currency: data.currency,
+              society: data.society
+            });
           }
         },
         (err) => {

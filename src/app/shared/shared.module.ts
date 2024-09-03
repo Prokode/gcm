@@ -14,6 +14,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {
   VenteService
 } from '../vente/vente.service';
+import { AppCurrencyComponent } from './components/app-currency/app-currency.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import {
     MatCardModule,
   ],
   declarations: [
-  VentesNotFinishedComponent],
+  VentesNotFinishedComponent,
+  AppCurrencyComponent],
   exports: [
     VentesNotFinishedComponent
    ],

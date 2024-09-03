@@ -67,6 +67,7 @@ import { UserResolver } from './shared/user/user.resolver';
 import { SocietyResolver } from './shared/user/society.resolver';
 import { AboutComponent } from './about/about.component';
 import { IpcService } from './shared/ipc/ipc.service';
+import { CurrencyResolver } from './shared/user/currency.resolver';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -160,6 +161,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AppService,
     UserResolver,
     SocietyResolver,
+    CurrencyResolver,
     IpcService
   ],
   entryComponents: [

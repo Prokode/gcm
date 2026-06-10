@@ -1,12 +1,72 @@
 const express = require('express');
 const _ = require('lodash');
-const axios = require('axios');
+const http = require('http');
+const https = require('https');
+const { URL } = require('url');
 
 const globals = require('../../shared/globals');
 const router = express.Router();
 var uniqid = require('uniqid');
 const { validationResult } = require('express-validator');
 const venteReqValidators = require('../../shared/vente.req.validators');
+
+function buildUrlWithParams(baseUrl, params) {
+  const url = new URL(baseUrl);
+  if (params) {
+    Object.keys(params).forEach((key) => {
+      const value = params[key];
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, value);
+      }
+    });
+  }
+  return url.toString();
+}
+
+function fetchUrl(url, options) {
+  return new Promise((resolve, reject) => {
+    const parsedUrl = new URL(url);
+    const lib = parsedUrl.protocol === 'https:' ? https : http;
+    const requestOptions = {
+      method: options && options.method ? options.method : 'GET',
+      headers: options && options.headers ? options.headers : {}
+    };
+
+    const req = lib.request(parsedUrl, requestOptions, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => {
+        const body = Buffer.concat(chunks).toString();
+        resolve({
+          ok: res.statusCode >= 200 && res.statusCode < 300,
+          status: res.statusCode,
+          statusText: res.statusMessage,
+          headers: res.headers,
+          text: async () => body,
+          json: async () => JSON.parse(body)
+        });
+      });
+    });
+
+    req.on('error', reject);
+    if (options && options.body) {
+      req.write(options.body);
+    }
+    req.end();
+  });
+}
+
+function fetchGetJson(url, headers) {
+  return fetchUrl(url, { headers: headers || {} });
+}
+
+function fetchPostJson(url, body, headers) {
+  return fetchUrl(url, {
+    method: 'POST',
+    headers: Object.assign({'Content-Type': 'application/json'}, headers || {}),
+    body: JSON.stringify(body)
+  });
+}
 
 let Vente = require('../../shared/db/models/Vente');
 let Poste = require('../../shared/db/models/Poste');
@@ -30,22 +90,26 @@ var onOff = (board_id, board_pin, action) => {
             Board.findOne({_id: board_id}, async function(err, board) {
                 if (err) {
                     reject(err);
+                    return;
                 }
-                // res.send(board);
-                await axios.get( 'http://' + board.ip + ':3030/onoff', {
-                    params: {
-                        'pin': board_pin,
-                        'action': action
+
+                const url = buildUrlWithParams('http://' + board.ip + ':3030/onoff', {
+                    pin: board_pin,
+                    action: action
+                });
+
+                fetchGetJson(url)
+                .then(async function (response) {
+                    if (!response.ok) {
+                      const errorText = await response.text();
+                      reject(new Error(`HTTP ${response.status}: ${errorText}`));
+                      return;
                     }
-                })
-                .then(function (response) {
-                    resolve(response);
-                    // newVente.startTime();
+                    const data = await response.json();
+                    resolve({ data });
                 })
                 .catch(function (error) {
-                    // handle error
                     reject(error);
-        
                 });
             });
         });    

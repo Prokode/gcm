@@ -15,7 +15,6 @@ const AppIdentity = require('./middlewares/appIdentity');
 
 //Models
 const Board = require('./shared/db/models/Board');
-const axios = require('axios');
 
 
 // Routes list per App
@@ -123,7 +122,7 @@ process.on('unhandledRejection', (err, promise) => {
 //   return new Promise((resolve, reject) => {
 //     arr.forEach(async (board, id) => {
 //       if (board.operation_mode === 'ip') {
-//         await axios.get( 'http://' + board.ip + ':3030/initialize');
+//         // await fetch request to initialize the board
 //       }
 //       if (id === (arr.length - 1)) {
 //           resolve();
